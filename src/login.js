@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import fire from './config/fire';
+import './login.css';
 
 class Login extends Component {
     constructor(props) {
@@ -44,29 +45,33 @@ class Login extends Component {
     render() {
 
         return (
-            <div className="col-md-6">
-                <form>
-                    <div class="form-group">
-                        <label for="InputEmail1"> Email Address</label>
-                        <input value={this.state.email} onChange={this.handleChange} type="email" name="email"
-                            class="form-control" id="InputEmail1" aria-describedby="emailHelp"
-                            placeholder="Enter email" />
-                        <small id="emailHelp" class="form-text text-muted"> We will never share your email with anyone else .</small>
-                    </div>
+            <div className='row pad '>
+                <div className='col-3'></div>
+                <div className="col-6 jumbotron shadow">
+                    <form>
+                        <div className="form-group">
+                            <label for="InputEmail1"> Email Address</label>
+                            <input value={this.state.email} onChange={this.handleChange} type="email" name="email"
+                                className="form-control" id="InputEmail1" aria-describedby="emailHelp"
+                                placeholder="Enter email" />
+                            <small id="emailHelp" class="form-text text-muted"> We will never share your email with anyone else .</small>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="InputPassword1">Password</label>
-                        <input value={this.state.password} onChange={this.handleChange} type='password'
-                            name='password' class="form-control" id="InputPassword1"
-                            placeholder="Enter password" />
-                    </div>
+                        <div className="form-group">
+                            <label for="InputPassword1">Password</label>
+                            <input value={this.state.password} onChange={this.handleChange} type='password'
+                                name='password' className="form-control" id="InputPassword1"
+                                placeholder="Enter password" />
+                        </div>
 
 
-                    <button type="submit" onClick={this.login} class="btn btn-primary"> Login </button>
-                    <button onClick={this.signup} style={{ marginLeft: '25px' }} className='btn btn-success'> Signup</button>
+                        <button type="submit" onClick={this.login} className="btn btn-primary"> Login </button>
+                        <button onClick={this.signup} style={{ marginLeft: '25px' }} className='btn btn-success'> Signup</button>
 
-                </form>
+                    </form>
 
+                </div>
+                <div className='col-3'></div>
             </div>
         );
     }
