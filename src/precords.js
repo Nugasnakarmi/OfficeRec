@@ -41,13 +41,23 @@ updateUserProfile()
         if( user != null ){
             user.updateProfile(
                 {
-                    displayName: this.state.name,
-                    email : this.state.email
+                    displayName: this.state.name
+                    
                 }
+           
             ).catch( function(error)  {
                 window.alert("error while updating");
-
+              console.log(user.displayName);  
             });
+            // 
+            // user.updateEmail(
+            //     {
+            //         email : this.state.email
+            //     }
+            // ).catch( function(error)  {
+            //     window.alert("error while updating"); } );
+            //     console.log(user.email);
+            window.alert("updated successfully" );
         }
     })
 }
@@ -66,12 +76,12 @@ return(
             
             <form>
                 <div class="form-group">
-                    <input value ={this.state.name} type="text" onChange={this.handleChange}
+                    <input value ={this.state.name} name ="name" type="text" onChange={this.handleChange}
                     class="form-control" id="Inputname1" placeholder="Enter your real name" />
                     <label for ="Inputname1"><small>Enter name </small> </label>
                 </div>  
                 <div class="form-group">
-                    <input value ={this.state.email} type="email" onChange={this.handleChange} 
+                    <input value ={this.state.email} name = "email" type="email" onChange={this.handleChange} 
                     class="form-control" id="Inputemail1" placeholder="Change email"/>
                     <label for ="Inputemail1"><small>Change email </small> </label>
                 </div>    
