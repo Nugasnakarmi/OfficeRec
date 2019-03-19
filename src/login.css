@@ -1,0 +1,15 @@
+.my-center{
+    text-align: center;
+}
+
+.pad{
+    padding-top: 20px;
+    position: absolute;
+    top: 25%;
+    bottom: 25%;
+    left: 25%;
+    right: 25%;
+    width: auto;
+    height: fit-content;
+}
+
