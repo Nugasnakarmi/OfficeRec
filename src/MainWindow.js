@@ -17,6 +17,11 @@ class MainWindow extends Component {
                 this.setState({
                     userInfo: doc.data()
                 });
+                localStorage.setItem('localInfo', JSON.stringify(doc.data()));
+                this.storedData = JSON.parse(localStorage.getItem('localInfo'));
+                
+                console.log('Localstorage: ', this.storedData);
+                
                 this.user = {
                     uid: '',
                     displayName: '',
@@ -45,9 +50,6 @@ class MainWindow extends Component {
         });
 
     }
-
-
-
     // componentWillMount(){
     //     var db = fire.firestore();
     //     var datab = db.collection('User');
@@ -55,7 +57,7 @@ class MainWindow extends Component {
     // }
 
     render() {
-        console.log(this.state.userInfo);
+        console.log("StoredData inside render", this.storedData);
         //console.log("Date of birth", this.state.userInfo['Date of Birth']['seconds']);
         //var link = this.props.link;
         var date = this.state.userInfo['Date of Birth'];
@@ -71,8 +73,8 @@ class MainWindow extends Component {
                 <h1 className='mainwindow-header'>Dashboard</h1>
                 <div className='dashboard-content'>
                     <p className='content-para'>User ID: {this.props.user}</p>
-                    <p className='content-para'>Name: {this.state.userInfo['Name']}</p>
-                    <p className='content-para'>Citizenship Number: {this.state.userInfo['Citizenship Number']}</p>
+                    <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
+                    <p className='content-para'>Citizenship Number: {this.storedData ? this.storedData['Citizenship Number'] : this.state.userInfo['Citizenship Number']}</p>
                     <p className='content-para'>Date of Birth: {date ? dateHolder : 'Not Available'}</p>
                     <div className="user-details" >
                         {this.authListener()}
