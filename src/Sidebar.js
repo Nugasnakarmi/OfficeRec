@@ -64,7 +64,7 @@ class Sidebar extends Component {
                     <span className='flex-grow-1 d-flex justify-content-end'>
                         <span className = 'abc'>Hi {user1}!!
                         </span>
-                        <button type="submit" onClick={this.props.signout} className="btn btn-outline-primary" style = {bStyle}> Logout </button>
+                        <button type="submit" onClick={ () => {this.props.signout()}} className="btn btn-outline-primary" style = {bStyle}> Logout </button>
                     </span>
                 </div>
                 : <h1>waiting</h1>}

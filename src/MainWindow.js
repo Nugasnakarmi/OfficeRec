@@ -8,27 +8,30 @@ import Precords from './precords';
 class MainWindow extends Component {
     constructor(props) {
         super(props);
-
-        this.state = { value: '' }
+        this.state = { userInfo: '' };
         this.db = fire.firestore();
-        // this.user = fire.auth().currentUser;
-        this.db.collection('User').doc('W2xD0Op2KkA1yVDvhZZ2').get().then((doc) => {
-            this.setState({
-                value: doc.data()
-            });
-            this.user = {
-                uid: '',
-                displayName: '',
-                photoUrl: ''
-            };
+        // this.user = fire.auth().currentUser;     
 
-        });
+        if (this.props.user){
+            this.db.collection('UserBase').doc(this.props.user).get().then((doc) => {
+                this.setState({
+                    userInfo: doc.data()
+                });
+                this.user = {
+                    uid: '',
+                    displayName: '',
+                    photoUrl: ''
+                };
+            });
+        }
         this.authListener = this.authListener.bind(this);
     }
     authListener() {
         fire.auth().onAuthStateChanged((user) => {
             //console.log(user);
             if (user) {
+                console.log("document is", user.uid, user.displayName);
+                console.log("login by", this.props.user);
                 // this.user.uid = user.uid;
                 // this.user.displayName = user.displayName;
 
@@ -52,10 +55,10 @@ class MainWindow extends Component {
     // }
 
     render() {
-        //console.log(this.state.value);
-        //console.log("Date of birth", this.state.value['Date of Birth']['seconds']);
+        console.log(this.state.userInfo);
+        //console.log("Date of birth", this.state.userInfo['Date of Birth']['seconds']);
         //var link = this.props.link;
-        var date = this.state.value['Date of Birth'];
+        var date = this.state.userInfo['Date of Birth'];
         var dateHolder = null;
         //console.log ('dATE: ', date);
         if (date) {
@@ -68,8 +71,8 @@ class MainWindow extends Component {
                 <h1 className='mainwindow-header'>Dashboard</h1>
                 <div className='dashboard-content'>
                     <p className='content-para'>User ID: {this.props.user}</p>
-                    <p className='content-para'>Name: {this.state.value['Name']}</p>
-                    <p className='content-para'>Citizenship Number: {this.state.value['Citizenship Number']}</p>
+                    <p className='content-para'>Name: {this.state.userInfo['Name']}</p>
+                    <p className='content-para'>Citizenship Number: {this.state.userInfo['Citizenship Number']}</p>
                     <p className='content-para'>Date of Birth: {date ? dateHolder : 'Not Available'}</p>
                     <div className="user-details" >
                         {this.authListener()}
@@ -86,8 +89,8 @@ class MainWindow extends Component {
                     </div>
                 </div>
             </div>
-                );
-            }
-        }
-        
+        );
+    }
+}
+
 export default MainWindow;
