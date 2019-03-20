@@ -31,7 +31,7 @@ class Sidebar extends Component {
             });
            
         }
-        console.log(this.state.user);
+        // console.log(this.state.user);
 
         if (link === 'Dashboard' && this.state.toggler) {
             this.setState({ toggler: false, dash: 'active', details: '' });
