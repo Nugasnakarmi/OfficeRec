@@ -43,9 +43,9 @@ class Home extends Component {
         var user = this.props.user;
         return (
             <div>
-                <div className='sticky-top top-bar bg-dark'><Sidebar link={this.state.abc} handler={this.changelink} user={user}></Sidebar></div>
+                <div className='sticky-top top-bar bg-dark'><Sidebar link={this.state.abc} handler={this.changelink} user={user} signout = {this.logout}></Sidebar></div>
                 <div className="row">
-                    <div onClick={this.changeToggler} className="menuIcon"></div>
+                    {/* <div onClick={this.changeToggler} className="menuIcon"></div> */}
                     <div>
                         <MainWindow link={this.state.abc} user={user}></MainWindow>
                     </div>
