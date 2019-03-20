@@ -64,7 +64,7 @@ class MainWindow extends Component {
         //console.log("After if: ", dateHolder);
         return (
             <div>
-                <nav className='navbar-main'></nav>
+                {/* <nav className='navbar-main'></nav> */}
                 <h1 className='mainwindow-header'>Dashboard</h1>
                 <div className='dashboard-content'>
                     <p className='content-para'>User ID: {this.props.user}</p>
