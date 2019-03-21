@@ -31,26 +31,7 @@ class MainWindow extends Component {
         }
         this.authListener = this.authListener.bind(this);
     }
-    authListener() {
-        fire.auth().onAuthStateChanged((user) => {
-            //console.log(user);
-            if (user) {
-                console.log("document is", user.uid, user.displayName);
-                console.log("login by", this.props.user);
-                console.log(user.uid);
-                // this.user.uid = user.uid;
-                // this.user.displayName = user.displayName;
 
-
-            }
-            else {
-                console.log("user: null ");
-                //localStorage.removeItem('user');
-            }
-
-        });
-
-    }
     // componentWillMount(){
     //     var db = fire.firestore();
     //     var datab = db.collection('User');
@@ -77,19 +58,6 @@ class MainWindow extends Component {
                     <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
                     <p className='content-para'>Citizenship Number: {this.storedData ? this.storedData['Citizenship Number'] : this.state.userInfo['Citizenship Number']}</p>
                     <p className='content-para'>Date of Birth: {date ? dateHolder : 'Not Available'}</p>
-                    <div className="user-details" >
-                        {this.authListener()}
-                        <Router>
-                            <span className="input-group-btn">
-
-                                <Link to="/prerecords">Fill your personal information</Link>
-                                <Route path="/prerecords" component={Precords} />
-
-
-
-                            </span>
-                        </Router>
-                    </div>
                 </div>
             </div>
         );

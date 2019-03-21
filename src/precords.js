@@ -94,7 +94,7 @@ render() {
 
 return(
 
-        <div className="col-md-6">
+        <div className="col-12">
             <small><i>Please fill your details</i></small>
             
             <form>
