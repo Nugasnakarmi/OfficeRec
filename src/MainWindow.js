@@ -12,16 +12,16 @@ class MainWindow extends Component {
         this.db = fire.firestore();
         // this.user = fire.auth().currentUser;     
 
-        if (this.props.user){
+        if (this.props.user) {
             this.db.collection('UserBase').doc(this.props.user).get().then((doc) => {
                 this.setState({
                     userInfo: doc.data()
                 });
                 localStorage.setItem('localInfo', JSON.stringify(doc.data()));
                 this.storedData = JSON.parse(localStorage.getItem('localInfo'));
-                
+
                 console.log('Localstorage: ', this.storedData);
-                
+
                 this.user = {
                     uid: '',
                     displayName: '',
@@ -37,11 +37,11 @@ class MainWindow extends Component {
             if (user) {
                 console.log("document is", user.uid, user.displayName);
                 console.log("login by", this.props.user);
-                console.log( user.uid );
+                console.log(user.uid);
                 // this.user.uid = user.uid;
                 // this.user.displayName = user.displayName;
 
-                
+
             }
             else {
                 console.log("user: null ");
