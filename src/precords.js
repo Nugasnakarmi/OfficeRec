@@ -1,6 +1,6 @@
 import React ,{Component} from 'react';
 import fire from './config/fire';
-
+import firebase from 'firebase';
 
 
 
@@ -14,26 +14,11 @@ class Precords extends Component{
 
         }
 
-        this.getCredentialsfire=this.getCredentialsfire.bind(this);
+       
         this.handleChange = this.handleChange.bind(this);
         this.updateUserProfile = this.updateUserProfile.bind(this);
 
     }
-
-
-getCredentialsfire()
-{
-        fire.auth().onAuthStateChanged( (user)=>{
-        if( user != null ){
-            this.info.name = user.displayName;
-            this.info.email= user.email;
-           
-
-        }
-    });
-
-        
-}
 
 updateUserProfile()
 {
@@ -53,14 +38,14 @@ updateUserProfile()
               // 
             });
            
-            const currentUser = fire.auth.currentUser;
+           
             const credential = fire.auth.EmailAuthProvider.credential(
-                currentUser.email,
-                currentUser.password
+                user.email,
+                user.password
             );
             user.reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
                 console.log("reauthentication successful");
-              }).catch(function(error) {
+              }).catch( (error) => {
                 window.alert(error.message);
               });
             
@@ -68,7 +53,7 @@ updateUserProfile()
                 
                    this.state.email
                 
-            ).then( function(){
+            ).then( ()=>{
                 window.alert("updated successfully" );
                 console.log(user.email);
             })
@@ -94,16 +79,16 @@ render() {
 
 return(
 
-        <div className="col-md-6">
+        <div >
             <small><i>Please fill your details</i></small>
             
             <form>
-                <div className="form-group">
+                <div className="form-group beta">
                     <input value ={this.state.name} name ="name" type="text" onChange={this.handleChange}
                     className="form-control" id="Inputname1" placeholder="Enter your real name" />
                     <label for ="Inputname1"><small>Enter name </small> </label>
                 </div>  
-                <div className="form-group">
+                <div className="form-group beta">
                     <input value ={this.state.email} name = "email" type="email" onChange={this.handleChange} 
                     className="form-control" id="Inputemail1" placeholder="Change email"/>
                     <label for ="Inputemail1"><small>Change email </small> </label>

@@ -66,7 +66,7 @@ class Home extends Component {
                     <div onClick={this.changeToggler} className="menuIcon"></div>
                     <div>
                         
-                        <MainWindow link={this.state.abc} user={user}></MainWindow>
+                        <MainWindow link={this.state.abc} user={user} />
                     </div>
                 </div>
             </div>
