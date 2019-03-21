@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import './mainwindow.css';
 
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Precords from './precords';
-
 class MainWindow extends Component {
     constructor(props) {
         super(props);
