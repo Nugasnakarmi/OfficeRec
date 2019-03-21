@@ -4,7 +4,7 @@ import './App.css';
 import Login from './login';
 import Home from './home';
 import './bootstrap.css';
-import admin from './config/admin';
+
 
 class App extends Component {
     constructor(props) {
@@ -36,19 +36,7 @@ class App extends Component {
 
         }
 
-        createToken(){
-            const uid = "aQ4e9fDxBQCoKdiFuPoL";
-            const claim={ 
-                isAdmin:true
-            };
-            admin.auth().createCustomToken( uid , claim)
-            .then(function(customToken) {
-                // Send token back to client
-              })
-              .catch(function(error) {
-                console.log("Error creating custom token:", error);
-              });
-        }
+        
         render() {
             
             return (
