@@ -45,7 +45,7 @@ class Home extends Component {
             <div>
                 <div className='sticky-top top-bar bg-dark'><Sidebar link={this.state.abc} handler={this.changelink} user={user} signout = {this.logout}></Sidebar></div>
                 <div className="row">
-                    {/* <div onClick={this.changeToggler} className="menuIcon"></div> */}
+                    <div onClick={this.changeToggler} className="menuIcon"></div>
                     <div>
                         <MainWindow link={this.state.abc} user={user}></MainWindow>
                     </div>
@@ -56,13 +56,6 @@ class Home extends Component {
     }
 }
 export default Home;
-
-
-
-
-
-
-
 
 
 

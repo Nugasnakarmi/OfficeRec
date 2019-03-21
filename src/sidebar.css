@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .abc[status = 'active']{
     font-weight: bolder;
 }
@@ -31,4 +32,39 @@
 
 .abc{
     padding: 10px;
+=======
+.abc[status = 'active']{
+    font-weight: bolder;
+}
+
+.abc[status = '']{
+    font-weight: 100;
+    color: white;
+}
+
+.abc:hover{
+    cursor: pointer;
+}
+
+.sidebar{
+    padding: 10px;
+    padding-left: 10px;
+    background:rgb(230, 45, 115);
+    color: white;
+    padding-top: 2em;
+    text-align: center;
+    border-radius: 10px;
+    width: 20em;
+    height: 40em;
+}
+
+.top-bar{
+    padding: 10px 10px 10px 10px;
+    color: white;
+
+}
+
+.abc{
+    padding: 10px;
+>>>>>>> 935f28def285150dfe786b9516173da95349a0aa
 }
