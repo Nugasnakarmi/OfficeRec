@@ -37,10 +37,11 @@ class MainWindow extends Component {
             if (user) {
                 console.log("document is", user.uid, user.displayName);
                 console.log("login by", this.props.user);
+                console.log( user.uid )
                 // this.user.uid = user.uid;
                 // this.user.displayName = user.displayName;
 
-
+                
             }
             else {
                 console.log("user: null ");

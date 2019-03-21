@@ -4,6 +4,7 @@ import './App.css';
 import Login from './login';
 import Home from './home';
 import './bootstrap.css';
+import admin from './config/admin';
 
 class App extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ class App extends Component {
                 if (user) {
                     this.setState({ user });
                     // console.log("HHHHHHHHHHHH", user.email)  //localStorage.setItem('user', user.uid);
-
+                        
                 }
                 else {
                     this.setState({ user: null });
@@ -30,12 +31,29 @@ class App extends Component {
                 }
 
             });
+        
+        
 
+        }
+
+        createToken(){
+            const uid = "aQ4e9fDxBQCoKdiFuPoL";
+            const claim={ 
+                isAdmin:true
+            };
+            admin.auth().createCustomToken( uid , claim)
+            .then(function(customToken) {
+                // Send token back to client
+              })
+              .catch(function(error) {
+                console.log("Error creating custom token:", error);
+              });
         }
         render() {
             
             return (
                 <div className="App">
+                
                     { this.state.user ?( <Home user={this.state.user.email}/>) : (<Login />) }
                 </div>
             );
