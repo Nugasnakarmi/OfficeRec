@@ -10,7 +10,7 @@ class Precords extends Component{
         this.state= {
             name:'',
             email:'',
-            
+            password: ''
 
         }
 
@@ -37,6 +37,7 @@ getCredentialsfire()
 
 updateUserProfile()
 {
+    
     fire.auth().onAuthStateChanged( (user)=>{
         if( user != null ){
             user.updateProfile(
@@ -45,20 +46,42 @@ updateUserProfile()
                     
                 }
            
-            ).catch( function(error)  {
-                window.alert("error while updating");
-              console.log(user.displayName);  
+            ).then(function(){
+                console.log(user.displayName); 
+            }).catch( function(error)  {
+                window.alert("error while updating");       
+              // 
             });
-            // 
-            // user.updateEmail(
-            //     {
-            //         email : this.state.email
-            //     }
-            // ).catch( function(error)  {
-            //     window.alert("error while updating"); } );
-            //     console.log(user.email);
-            window.alert("updated successfully" );
-        }
+           
+            const currentUser = fire.auth.currentUser;
+            const credential = fire.auth.EmailAuthProvider.credential(
+                currentUser.email,
+                currentUser.password
+            );
+            user.reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
+                console.log("reauthentication successful");
+              }).catch(function(error) {
+                window.alert(error.message);
+              });
+            
+            user.updateEmail(
+                
+                   this.state.email
+                
+            ).then( function(){
+                window.alert("updated successfully" );
+                console.log(user.email);
+            })
+            
+            
+            .catch( function(error)  {
+                
+                window.alert(error.message); } );
+                
+            }
+                
+            
+        
     })
 }
     
@@ -75,14 +98,14 @@ return(
             <small><i>Please fill your details</i></small>
             
             <form>
-                <div class="form-group">
+                <div className="form-group">
                     <input value ={this.state.name} name ="name" type="text" onChange={this.handleChange}
-                    class="form-control" id="Inputname1" placeholder="Enter your real name" />
+                    className="form-control" id="Inputname1" placeholder="Enter your real name" />
                     <label for ="Inputname1"><small>Enter name </small> </label>
                 </div>  
-                <div class="form-group">
+                <div className="form-group">
                     <input value ={this.state.email} name = "email" type="email" onChange={this.handleChange} 
-                    class="form-control" id="Inputemail1" placeholder="Change email"/>
+                    className="form-control" id="Inputemail1" placeholder="Change email"/>
                     <label for ="Inputemail1"><small>Change email </small> </label>
                 </div>    
              </form>

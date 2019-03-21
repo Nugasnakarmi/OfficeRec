@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import './sidebar.css';
 
+const bStyle = {
+    height: '40px'
+};
+
 class Sidebar extends Component {
     constructor(props) {
         super(props);
@@ -31,7 +35,7 @@ class Sidebar extends Component {
             });
            
         }
-        console.log(this.state.user);
+        // console.log(this.state.user);
 
         if (link === 'Dashboard' && this.state.toggler) {
             this.setState({ toggler: false, dash: 'active', details: '' });
@@ -60,7 +64,7 @@ class Sidebar extends Component {
                     <span className='flex-grow-1 d-flex justify-content-end'>
                         <span className = 'abc'>Hi {user1}!!
                         </span>
-                        <button type="submit" onClick={this.login} className="btn btn-primary"> Logout </button>
+                        <button type="submit" onClick={ () => {this.props.signout()}} className="btn btn-outline-primary" style = {bStyle}> Logout </button>
                     </span>
                 </div>
                 : <h1>waiting</h1>}

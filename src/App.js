@@ -5,6 +5,7 @@ import Login from './login';
 import Home from './home';
 import './bootstrap.css';
 
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -22,7 +23,7 @@ class App extends Component {
                 if (user) {
                     this.setState({ user });
                     // console.log("HHHHHHHHHHHH", user.email)  //localStorage.setItem('user', user.uid);
-
+                        
                 }
                 else {
                     this.setState({ user: null });
@@ -30,10 +31,12 @@ class App extends Component {
                 }
 
             });
+        
+        
 
         }
 
-
+        
         render() {
             
             return (
