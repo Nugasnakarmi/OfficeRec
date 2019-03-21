@@ -9,7 +9,7 @@ class AdminWindow extends Component {
     render() { 
         return (  
             <div>
-                {/* <h1>You are an Admin</h1> */}
+                <h1>Admin Panel</h1>
                 <Precords />
             </div>
         );
