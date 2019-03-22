@@ -1,9 +1,5 @@
 import React ,{Component} from 'react';
 import fire from './config/fire';
-
-
-
-
 class Precords extends Component{
     constructor( props ){
         super( props );
@@ -19,8 +15,6 @@ class Precords extends Component{
         this.updateUserProfile = this.updateUserProfile.bind(this);
 
     }
-
-
 getCredentialsfire()
 {
         fire.auth().onAuthStateChanged( (user)=>{

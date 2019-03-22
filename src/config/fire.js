@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+
   // Initialize Firebase
   const config = {
     apiKey: "AIzaSyDx3zXrXm4vTJxd9-ROOf4lLtdVIcugwe0",
@@ -8,6 +9,8 @@ import firebase from 'firebase';
     storageBucket: "test-742c5.appspot.com",
     messagingSenderId: "629550931392"
   };
-  const fire = firebase.initializeApp(config);
+  var fire = firebase.initializeApp(config);
+  
+
 
 export default fire;
