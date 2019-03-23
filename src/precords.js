@@ -79,11 +79,7 @@ render() {
 
 return(
 
-<<<<<<< HEAD
-        <div >
-=======
         <div className="col-12">
->>>>>>> 1633027a0d03dfe4efd13c3f545d26c9104ecacb
             <small><i>Please fill your details</i></small>
             
             <form>

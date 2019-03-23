@@ -11,6 +11,7 @@ class MainWindow extends Component {
 
         if (this.props.user) {
             this.db.collection('UserBase').doc(this.props.user).get().then((doc) => {
+                
                 this.setState({
                     userInfo: doc.data()
                 });
@@ -26,7 +27,7 @@ class MainWindow extends Component {
                 };
             });
         }
-        this.authListener = this.authListener.bind(this);
+      
     }
 
     // componentWillMount(){
