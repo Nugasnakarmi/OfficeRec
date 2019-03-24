@@ -34,6 +34,8 @@ updateUserProfile()
 
     fire.auth().onAuthStateChanged( (user)=>{
         if( user != null ){
+            var currentUser = fire.auth().currentUser;
+            console.log( currentUser);  
             user.updateProfile(
                 {
                     displayName: this.state.name
@@ -44,6 +46,18 @@ updateUserProfile()
                 window.alert("error while updating");
               console.log(user.displayName);  
             });
+            // const currentUser = fire.auth.currentUser;
+          
+            const credential = user.EmailAuthProvider.credential(
+               currentUser.email,
+               "abc123"
+            );
+            
+            fire.auth().reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
+                console.log("reauthentication successful");
+              }).catch(function(error) {
+                window.alert(error.message);
+              });
             
             user.updateEmail(this.state.email
             
@@ -75,16 +89,16 @@ return(
             <form className ="precords">
                 <div className="form-group">
                     <input value ={this.state.name} name ="name" type="text" onChange={this.handleChange}
-                    className="form-control" id="Inputname1" placeholder="Enter your real name" />
-                    <label for ="Inputname1"><small>Enter name </small> </label>
+                    className="form-control" id="Inputname1" placeholder="Enter email" />
+                    <label htmlFor ="Inputname1"><small>email of user </small> </label>
                 </div>  
-                <div className="form-group">
+                {/* <div className="form-group">
                     <input value ={this.state.email} name = "email" type="email" onChange={this.handleChange} 
                     className="form-control" id="Inputemail1" placeholder="Change email"/>
                     <label for ="Inputemail1"><small>Change email </small> </label>
-                </div>    
+                </div>     */}
              </form>
-             <button type = "submit" onClick ={this.updateUserProfile} className="btn btn-primary">Save</button>
+             <button  onClick ={this.updateUserProfile} className="btn btn-primary">Search</button>
              
         </div>
     
