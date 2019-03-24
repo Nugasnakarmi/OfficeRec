@@ -11,13 +11,8 @@ class Home extends Component {
         this.logout = this.logout.bind(this);
         this.changelink = this.changelink.bind(this);
         this.db = fire.firestore();
-<<<<<<< HEAD
-        // this.isAdmin = this.db.collection('UserBase').doc('abc@mail.com')   //isAdmin doesnot need to 
-        //         .get().then((doc) => { return doc.data().isAdmin });        // be a state variable
-=======
 
 
->>>>>>> 15d56af0722d747ef6440d239c4f64f113db965e
         // this.changeToggler = this.changeToggler.bind(this);
         this.state = {
             abc: '',
@@ -80,28 +75,17 @@ class Home extends Component {
     render() {
 
         var user = this.props.user;
-<<<<<<< HEAD
-        this.props.isAdmin ? (console.log("this is admin")) : (console.log("this is user"));
-=======
         this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"));
->>>>>>> 15d56af0722d747ef6440d239c4f64f113db965e
         return (
             <div>
                 {this.state.loaded ?
                     <div>
-<<<<<<< HEAD
-                        
-                       
-
-                        {this.props.isAdmin ? <AdminWindow /> : (<MainWindow link={this.state.abc} user={user} />)} 
-=======
                         <div className='sticky-top top-bar bg-dark'><Sidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></Sidebar></div>
                         <div className="row">
                             <div>
                                 {this.state.isAdmin ? <AdminWindow /> : (<MainWindow link={this.state.abc} user={user} />)}
                             </div>
                         </div>
->>>>>>> 15d56af0722d747ef6440d239c4f64f113db965e
                     </div>
 
                     : <div>Loading</div>}

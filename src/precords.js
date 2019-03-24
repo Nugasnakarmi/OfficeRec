@@ -31,6 +31,7 @@ getCredentialsfire()
 
 updateUserProfile()
 {
+
     fire.auth().onAuthStateChanged( (user)=>{
         if( user != null ){
             user.updateProfile(
@@ -43,14 +44,17 @@ updateUserProfile()
                 window.alert("error while updating");
               console.log(user.displayName);  
             });
-            // 
-            // user.updateEmail(
-            //     {
-            //         email : this.state.email
-            //     }
-            // ).catch( function(error)  {
-            //     window.alert("error while updating"); } );
-            //     console.log(user.email);
+            
+            user.updateEmail(this.state.email
+            
+                  
+                
+            ).catch( function(error)  {
+                console.log(error.code);
+                window.alert(error.message); } );
+                
+            console.log(user.email);
+            console.log( user.displayName)
             window.alert("updated successfully" );
         }
     })
@@ -65,22 +69,18 @@ render() {
 
 return(
 
-<<<<<<< HEAD
-        <div className="col-12">
-=======
-        <div className="col-md-6">
->>>>>>> 15d56af0722d747ef6440d239c4f64f113db965e
+        <div className="precords">
             <small><i>Please fill your details</i></small>
             
-            <form>
-                <div class="form-group">
+            <form className ="precords">
+                <div className="form-group">
                     <input value ={this.state.name} name ="name" type="text" onChange={this.handleChange}
-                    class="form-control" id="Inputname1" placeholder="Enter your real name" />
+                    className="form-control" id="Inputname1" placeholder="Enter your real name" />
                     <label for ="Inputname1"><small>Enter name </small> </label>
                 </div>  
-                <div class="form-group">
+                <div className="form-group">
                     <input value ={this.state.email} name = "email" type="email" onChange={this.handleChange} 
-                    class="form-control" id="Inputemail1" placeholder="Change email"/>
+                    className="form-control" id="Inputemail1" placeholder="Change email"/>
                     <label for ="Inputemail1"><small>Change email </small> </label>
                 </div>    
              </form>

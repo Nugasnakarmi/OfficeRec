@@ -1,4 +1,4 @@
-div{
+.admin-panel{
     width: fit-content;
     
     position: absolute;
@@ -8,10 +8,4 @@ div{
     right: 25%;
     width: auto;
     height: fit-content;
-}
-
-.precords{
-    size: auto;
-    left: 25%;
-    position: absolute;
 }
