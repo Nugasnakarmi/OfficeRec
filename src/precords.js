@@ -1,5 +1,6 @@
 import React ,{Component} from 'react';
 import fire from './config/fire';
+import firebase from 'firebase';
 class Precords extends Component{
     constructor( props ){
         super( props );
@@ -35,7 +36,7 @@ updateUserProfile()
     fire.auth().onAuthStateChanged( (user)=>{
         if( user != null ){
             var currentUser = fire.auth().currentUser;
-            console.log( currentUser);  
+            //console.log("Current user line38",currentUser);  
             user.updateProfile(
                 {
                     displayName: this.state.name
@@ -47,13 +48,13 @@ updateUserProfile()
               console.log(user.displayName);  
             });
             // const currentUser = fire.auth.currentUser;
-          
-            const credential = user.EmailAuthProvider.credential(
+            console.log("CurrentUser", currentUser.email);
+            const credential = firebase.auth.EmailAuthProvider.credential(
                currentUser.email,
                "abc123"
             );
             
-            fire.auth().reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
+            user.reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
                 console.log("reauthentication successful");
               }).catch(function(error) {
                 window.alert(error.message);
