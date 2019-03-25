@@ -4,6 +4,7 @@ import MainWindow from './MainWindow';
 import fire from './config/fire';
 import Sidebar from './Sidebar';
 import AdminWindow from './AdminWindow';
+import Details from './Details';
 
 class Home extends Component {
     constructor(props) {
@@ -15,10 +16,10 @@ class Home extends Component {
 
         // this.changeToggler = this.changeToggler.bind(this);
         this.state = {
-            abc: '',
+            abc: 'Dashboard',
             toggler: 'disappear',
             loaded: false,
-            isAdmin: false
+            isAdmin: false,
             // state.isAdmin: this.db.collection('UserBase').doc('abc@mail.com')
             //     .get().then((doc) => { return doc.data().state.isAdmin })
         };
@@ -31,7 +32,7 @@ class Home extends Component {
                 this.setState({
                     loaded: true
                 }));
-                
+
         console.log('after promise', this.state.isAdmin);
         //     if( this.props.user != null){
 
@@ -52,8 +53,6 @@ class Home extends Component {
     // {
     //  }   
 
-
-
     // changeToggler() {
     //     if (this.state.toggler === 'disappear') {
     //         this.setState({
@@ -72,6 +71,8 @@ class Home extends Component {
         });
         console.log("Changed");
     }
+    
+
     render() {
 
         var user = this.props.user;
@@ -83,7 +84,7 @@ class Home extends Component {
                         <div className='sticky-top top-bar bg-dark'><Sidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></Sidebar></div>
                         <div className="row">
                             <div>
-                                {this.state.isAdmin ? <AdminWindow /> : (<MainWindow link={this.state.abc} user={user} />)}
+                                {this.state.isAdmin ? <AdminWindow /> : ((this.state.abc === 'Dashboard') ? <MainWindow link={this.state.abc} user={user} /> : <Details></Details>)}
                             </div>
                         </div>
                     </div>
