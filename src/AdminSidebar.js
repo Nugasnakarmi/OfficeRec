@@ -5,7 +5,7 @@ const bStyle = {
     height: '40px'
 };
 
-class Sidebar extends Component {
+class AdminSidebar extends Component {
     constructor(props) {
         super(props);
         this.toggle = this.toggle.bind(this);
@@ -60,8 +60,6 @@ class Sidebar extends Component {
                         <span className='abc' onClick={() => { this.props.handler('Dashboard') }} status={this.state.dash}>
                             Dashboard
                         </span>
-
-
                         <span className='abc' onClick={() => { this.props.handler('Add User') }} status={this.state.add_user}>
                             Add User
                         </span>
@@ -79,4 +77,4 @@ class Sidebar extends Component {
         );
     }
 }
-export default Sidebar;
+export default AdminSidebar;

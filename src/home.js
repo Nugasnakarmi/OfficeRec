@@ -6,6 +6,8 @@ import Sidebar from './Sidebar';
 import AdminWindow from './AdminWindow';
 import Details from './Details';
 import AdminSidebar from './AdminSidebar'
+import Precords from './precords';
+import AddUser from './AddUser';
 
 class Home extends Component {
     constructor(props) {
@@ -78,8 +80,12 @@ class Home extends Component {
 
         // 
         var user = this.props.user;
+        let renderthing;
         console.log('inside render', this.props.user);
         this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"));
+        if (this.state.abc === 'Dashboard') renderthing = <AdminWindow />
+        else if (this.state.abc === 'Add User') renderthing = <AddUser />
+        else if (this.state.abc === 'Edit Details') renderthing = <Precords />
         return (
             <div>
                 {this.state.loaded ?
@@ -90,7 +96,8 @@ class Home extends Component {
                         </div>
                         <div className="row">
                             <div>
-                                {this.state.isAdmin ? <AdminWindow /> : ((this.state.abc === 'Dashboard') ? <MainWindow link={this.state.abc} user={user} /> : <Details></Details>)}
+                                {this.state.isAdmin ? 
+                                    renderthing : ((this.state.abc === 'Dashboard') ? <MainWindow link={this.state.abc} user={user} /> : <Details></Details>)}
                             </div>
                         </div>
                     </div>
