@@ -1,17 +1,6 @@
-div{
-    width: fit-content;
-    
-    position: absolute;
-    top: 25%;
-    bottom: 25%;
-    left: 25%;
-    right: 25%;
-    width: auto;
-    height: fit-content;
-}
 
 .precords{
     size: auto;
     left: 25%;
-    position: absolute;
+    position: center;
 }

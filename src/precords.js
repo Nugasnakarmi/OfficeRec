@@ -3,84 +3,121 @@ import fire from './config/fire';
 class Precords extends Component{
     constructor( props ){
         super( props );
-        this.state= {
-            name:'',
-            email:'',
-            
+        this.state = { 
+            userInfo: '',
+            email :'',
+            searched : false
+             };
 
-        }
-
-        this.getCredentialsfire=this.getCredentialsfire.bind(this);
+        this.db = fire.firestore();
+        // this.storedData ='';
+       
+        this.getUserDetails=this.getUserDetails.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.updateUserProfile = this.updateUserProfile.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        // this.updateUserProfile = this.updateUserProfile.bind(this);
 
     }
-getCredentialsfire()
+getUserDetails( mail )
 {
-        fire.auth().onAuthStateChanged( (user)=>{
-        if( user != null ){
-            this.info.name = user.displayName;
-            this.info.email= user.email;
-           
+   if( mail !== ''){
+    this.db.collection('UserBase').doc( mail ).get()
+    .then((doc) => {
+    this.setState({
+        userInfo: doc.data() ,
+        searched:true   
+        } 
+    )
+    // localStorage.setItem('localInfo', JSON.stringify(doc.data()));
+    // this.storedData = JSON.parse(localStorage.getItem('localInfo'));
+    
+   
 
-        }
-    });
-
+}).catch(function(error){
+    console.log( error.message );
+    window.alert("user not found")
+}
+    
+)
+    // .then( () =>{
+    //     this.setState(
+    //         {
+    //             searched: true
+    //         }
+    //     )
+    //     console.log("searched variable to true");
+    // });
+    
+    
+    
+    // }
         
 }
+}
 
-updateUserProfile()
-{
-
-    fire.auth().onAuthStateChanged( (user)=>{
-        if( user != null ){
-            var currentUser = fire.auth().currentUser;
-            console.log( currentUser);  
-            user.updateProfile(
-                {
-                    displayName: this.state.name
+// updateUserProfile()
+// {
+//    var credential;
+//     fire.auth().onAuthStateChanged( (user)=>{
+//         if( user != null ){
+//             var currentUser = fire.auth().currentUser;
+//             console.log( currentUser);  
+//             user.updateProfile(
+//                 {
+//                     displayName: this.state.name
                     
-                }
+//                 }
            
-            ).catch( function(error)  {
-                window.alert("error while updating");
-              console.log(user.displayName);  
-            });
-            // const currentUser = fire.auth.currentUser;
-          
-            const credential = user.EmailAuthProvider.credential(
-               currentUser.email,
-               "abc123"
-            );
+//             ).catch( function(error)  {
+//                 window.alert("error while updating");
+//               console.log(user.displayName);  
+//             });
+//             // const currentUser = fire.auth.currentUser;
+           
+//              user.EmailAuthProvider.credential(
+//                currentUser.email,
+//                "abc123"
+//             ).then( function( cred){ 
+//                 credential = cred;
+//             });
             
-            fire.auth().reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
-                console.log("reauthentication successful");
-              }).catch(function(error) {
-                window.alert(error.message);
-              });
+//             fire.auth().reauthenticateAndRetrieveDataWithCredential(credential).then(function() {
+//                 console.log("reauthentication successful");
+//               }).catch(function(error) {
+//                 window.alert(error.message);
+//               });
             
-            user.updateEmail(this.state.email
+//             user.updateEmail(this.state.email
             
                   
                 
-            ).catch( function(error)  {
-                console.log(error.code);
-                window.alert(error.message); } );
+//             ).catch( function(error)  {
+//                 console.log(error.code);
+//                 window.alert(error.message); } );
                 
-            console.log(user.email);
-            console.log( user.displayName)
-            window.alert("updated successfully" );
-        }
-    })
-}
+//             console.log(user.email);
+//             console.log( user.displayName)
+//             window.alert("updated successfully" );
+//         }
+//     })
+// }
     
-
+handleClick(){
+    (this.state.email !== '')?( this.getUserDetails( this.state.email) ): ( window.log( "enter email please")) ;
+}
 
 handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
 
 render() {
-
+  
+    // var date = this.state.userInfo['Date of Birth'];
+    // var dateHolder = null;
+   
+    // if (date) {
+    //     dateHolder = date.toDate().toString();
+    // }
+   
 return(
 
         <div className="precords">
@@ -88,20 +125,34 @@ return(
             
             <form className ="precords">
                 <div className="form-group">
-                    <input value ={this.state.name} name ="name" type="text" onChange={this.handleChange}
+                    <input value ={ this.state.email } name ="email" type="email" onChange={this.handleChange}
                     className="form-control" id="Inputname1" placeholder="Enter email" />
-                    <label htmlFor ="Inputname1"><small>email of user </small> </label>
-                </div>  
-                {/* <div className="form-group">
-                    <input value ={this.state.email} name = "email" type="email" onChange={this.handleChange} 
-                    className="form-control" id="Inputemail1" placeholder="Change email"/>
-                    <label for ="Inputemail1"><small>Change email </small> </label>
-                </div>     */}
+                    <label htmlFor ="Inputemail1"><small>email of user </small> </label>
+                </div> 
+                
+                    
              </form>
-             <button  onClick ={this.updateUserProfile} className="btn btn-primary">Search</button>
              
-        </div>
+
+             <button  onClick ={this.handleClick} className="btn btn-primary">Search</button>
+             {/* <button  onClick ={this.updateUserProfile} className="btn btn-primary">Update</button> */}
+           {this.state.searched ? ( <div className="precords-content">
+                <p className='content-para'>User Email: {this.state.email }</p>
+                {console.log("displaying")};
+                <p className='content-para'>Name: {this.state.userInfo['Name']}</p>
+                <p className='content-para'>Citizenship Number: { this.state.userInfo['Citizenship Number']}</p>
+                {/* <p className='content-para'>Date of Birth: {date ? dateHolder : 'Not Available'}</p> */}
+           </div>  )
+            : (
+            <div> 
+                <small> <i> Please search for user</i></small> 
+            </div>
+            )
+            }
+                
     
+       </div>
+     
 
 );
 }

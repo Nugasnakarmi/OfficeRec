@@ -50,12 +50,12 @@ class MainWindow extends Component {
             <div>
                 {/* <nav className='navbar-main'></nav> */}
                 <h1 className='mainwindow-header'>Dashboard</h1>
-                <div className='dashboard-content'>
-                    <p className='content-para'>User ID: {this.props.user}</p>
-                    <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
-                    <p className='content-para'>Citizenship Number: {this.storedData ? this.storedData['Citizenship Number'] : this.state.userInfo['Citizenship Number']}</p>
-                    <p className='content-para'>Date of Birth: {date ? dateHolder : 'Not Available'}</p>
-                </div>
+                    <div className='dashboard-content'>
+                        <p className='content-para'>User ID: {this.props.user}</p>
+                        <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
+                        <p className='content-para'>Citizenship Number: {this.storedData ? this.storedData['Citizenship Number'] : this.state.userInfo['Citizenship Number']}</p>
+                        <p className='content-para'>Date of Birth: {date ? dateHolder : 'Not Available'}</p>
+                    </div>
             </div>
         );
     }
