@@ -14,28 +14,32 @@ class Home extends Component {
         super(props);
         this.logout = this.logout.bind(this);
         this.changelink = this.changelink.bind(this);
+        this.verifyAdmin =this.verifyAdmin.bind(this);
         this.db = fire.firestore();
-
+        this.email = this.props.user;
 
         // this.changeToggler = this.changeToggler.bind(this);
         this.state = {
             openTab: 'Dashboard',
             toggler: 'disappear',
             loaded: false,
-            isAdmin: false,
+            isAdmin: false
             // state.isAdmin: this.db.collection('UserBase').doc('openTab@mail.com')
             //     .get().then((doc) => { return doc.data().state.isAdmin })
         };
+       
+        // this.state.loaded = false;
+        // this.state.isAdmin = false;
 
-        this.db.collection('UserBase').doc('abc@mail.com').get()
-            .then((doc) => {
-                this.setState({
-                    isAdmin: doc.data().isAdmin
-                })
-            }).then(() =>
-                this.setState({
-                    loaded: true
-                }));
+        // this.db.collection('UserBase').doc(this.email).get()
+        //     .then((doc) => {
+        //         this.setState({
+        //             isAdmin: doc.data().isAdmin
+        //         })
+        //     }).then(() =>
+        //         this.setState({
+        //             loaded: true
+        //         }));
 
 
         console.log('after promise', this.state.isAdmin);
@@ -55,18 +59,7 @@ class Home extends Component {
         fire.auth().signOut();
     }
 
-    // changeToggler() {
-    //     if (this.state.toggler === 'disappear') {
-    //         this.setState({
-    //             toggler: 'appear shadow sidebar'
-    //         });
-    //     }
-    //     else if (this.state.toggler === 'appear shadow sidebar') {
-    //         this.setState({
-    //             toggler: 'disappear'
-    //         });
-    //     }
-    // }
+    
     changelink(value) {
         this.setState({
             openTab: value
@@ -74,20 +67,47 @@ class Home extends Component {
         console.log("Changed");
     }
 
+    verifyAdmin( User){
+        User ? (this.db.collection('UserBase').doc(User).get()
+        .then((doc) => {
+                
+                this.setState(
+                    {
+                        isAdmin : doc.data()['isAdmin'] 
+                    }
+                )
+            })
+        .then(() =>
+            
+        this.setState({
+                        loaded: true
+         } )
+    ) ) :(console.log("user null") );
+    }
 
     render() {
-        // 
+        
 
-        // 
-        var user = this.props.user;
         let renderthing;
+        var user= this.props.user;
+       
+
         console.log('inside render', this.props.user);
-        this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"));
+         user = this.props.user;
+        
+        if(this.state.loaded === false){this.verifyAdmin(user);}
+        
         if (this.state.openTab === 'Dashboard') renderthing = <AdminWindow />
         else if (this.state.openTab === 'Add User') renderthing = <AddUser />
         else if (this.state.openTab === 'Edit Details') renderthing = <Precords />
+        
         return (
+            
             <div>
+                
+
+        {this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"))}
+
                 {this.state.loaded ?
                     <div>
                         <div className='sticky-top top-bar bg-dark'>
