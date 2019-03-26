@@ -19,11 +19,11 @@ class Home extends Component {
 
         // this.changeToggler = this.changeToggler.bind(this);
         this.state = {
-            abc: 'Dashboard',
+            openTab: 'Dashboard',
             toggler: 'disappear',
             loaded: false,
             isAdmin: false,
-            // state.isAdmin: this.db.collection('UserBase').doc('abc@mail.com')
+            // state.isAdmin: this.db.collection('UserBase').doc('openTab@mail.com')
             //     .get().then((doc) => { return doc.data().state.isAdmin })
         };
 
@@ -69,7 +69,7 @@ class Home extends Component {
     // }
     changelink(value) {
         this.setState({
-            abc: value
+            openTab: value
         });
         console.log("Changed");
     }
@@ -83,21 +83,21 @@ class Home extends Component {
         let renderthing;
         console.log('inside render', this.props.user);
         this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"));
-        if (this.state.abc === 'Dashboard') renderthing = <AdminWindow />
-        else if (this.state.abc === 'Add User') renderthing = <AddUser />
-        else if (this.state.abc === 'Edit Details') renderthing = <Precords />
+        if (this.state.openTab === 'Dashboard') renderthing = <AdminWindow />
+        else if (this.state.openTab === 'Add User') renderthing = <AddUser />
+        else if (this.state.openTab === 'Edit Details') renderthing = <Precords />
         return (
             <div>
                 {this.state.loaded ?
                     <div>
                         <div className='sticky-top top-bar bg-dark'>
-                            {this.state.isAdmin ? <AdminSidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></AdminSidebar>
-                                : <Sidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></Sidebar>}
+                            {this.state.isAdmin ? <AdminSidebar link={this.state.openTab} handler={this.changelink} user={user} signout={this.logout}></AdminSidebar>
+                                : <Sidebar link={this.state.openTab} handler={this.changelink} user={user} signout={this.logout}></Sidebar>}
                         </div>
                         <div className="d-flex flex-row">
                             <div>
                                 {this.state.isAdmin ? 
-                                    renderthing : ((this.state.abc === 'Dashboard') ? <MainWindow link={this.state.abc} user={user} /> : <Details></Details>)}
+                                    renderthing : ((this.state.openTab === 'Dashboard') ? <MainWindow link={this.state.openTab} user={user} /> : <Details></Details>)}
                             </div>
                         </div>
                     </div>

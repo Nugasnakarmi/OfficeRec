@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
+import firebase from 'firebase';
 
 class AddUser extends Component {
     constructor(props) {
@@ -8,17 +9,33 @@ class AddUser extends Component {
         this.signup = this.signup.bind(this);
         this.writeDetails = this.writeDetails.bind(this);
         this.signupAndWriteDetails = this.signupAndWriteDetails.bind(this);
+        this.handleRadioButton = this.handleRadioButton.bind(this);
+        this.handlePhoto = this.handlePhoto.bind(this);
+
+        this.photoInput = React.createRef();
 
         this.db = fire.firestore();
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            isAdmin: false,
+            photoLocation: ''
         }
     }
 
     handleChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ [e.target.name]: (e.target.type === 'radio') ? e.target.checked : e.target.value });
+    }
+
+    handleRadioButton(value) {
+        this.setState({ value: value });
+    }
+
+    handlePhoto() {        
+        console.log('photolocation', this.photoInput.current.files[0].webkitRelativePath);
+
+        this.setState({ photoLocation: this.photoInput});
     }
 
     signup() {
@@ -38,9 +55,10 @@ class AddUser extends Component {
         //e.preventDefault();
         this.db.collection("UserBase").doc(this.state.email).set({
             ['Citizenship Number']: this.state.citizenship_num,
-            ['Date of Birth']: this.state.dob,
+            ['Date of Birth']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dob)),
             Name: this.state.name,
-            isAdmin: false
+            isAdmin: this.state.value === 2,
+            photo: this.state.photoLocation
         })
             .then(function () {
                 console.log("Document successfully written!");
@@ -52,11 +70,15 @@ class AddUser extends Component {
 
     signupAndWriteDetails(e) {
         e.preventDefault();
+        this.handlePhoto();
         this.signup();
         this.writeDetails();
     }
 
     render() {
+
+    if(this.photoInput.current!==null&& this.photoInput.current.files[0]){        console.log('photolocation', this.photoInput.current.files[0].webkitRelativePath);
+    }
         return (<div>
             <header><h1>Add a New User</h1></header>
             <div className='container'>
@@ -68,7 +90,7 @@ class AddUser extends Component {
                             <input value={this.state.email} onChange={this.handleChange} type="email" name="email"
                                 className="form-control" id="InputEmail1" aria-describedby="emailHelp"
                                 placeholder="Enter email" />
-                            <small id="emailHelp" className="form-text text-muted"> We will never share your email with anyone else .</small>
+                            <small id="emailHelp" className="form-text text-muted"> We will never share your email with anyone else.</small>
                         </div>
 
                         <div className="form-group">
@@ -88,13 +110,13 @@ class AddUser extends Component {
                     <section>
                         <h2>User Details</h2>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="user" value="option1" checked />
+                            <input class="form-check-input" type="radio" name="isAdmin" id="user" onChange={() => this.handleRadioButton(1)} checked={this.state.value === 1} />
                             <label class="form-check-label" for="user">
                                 User
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="admin" value="option2" />
+                            <input class="form-check-input" type="radio" name="isAdmin" id="admin" onChange={() => this.handleRadioButton(2)} checked={this.state.value === 2} />
                             <label class="form-check-label" for="admin">
                                 Admin
                             </label>
@@ -104,13 +126,24 @@ class AddUser extends Component {
                             <input value={this.state.name} name="name" type="text" onChange={this.handleChange} className="form-control" id='name' />
                         </div>
                         <div className="form-group">
-                            <label for='name'>Citizenship Number</label>
+                            <label for='citizenship'>Citizenship Number</label>
                             <input value={this.state.citizenship_num} name="citizenship_num" type="text" onChange={this.handleChange} className="form-control" id='citizenship' />
                         </div>
                         <div className="form-group">
-                            <label for='name'>Date of Birth</label>
-                            <input value={this.state.dob} name="dob" type="date" onChange={this.handleChange} placeholder="In AD" className="form-control" id='dob' />
+                            <label for='dob'>Date of Birth</label>
+                            <input value={this.state.dob} name="dob" type="date" onChange={this.handleChange} placeholder="Date in AD" className="form-control" id='dob' />
                         </div>
+                        <label for='photo'>Photo</label>
+                        {/* <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                            </div>
+                            <div className="custom-file">
+                                <input name="photoLocation" type="file" ref = {this.photoInput} className="custom-file-input" id="photo" aria-describedby="inputGroupFileAddon01" />
+                                <label className="custom-file-label" for="photo">Choose file</label>
+                            </div>
+                        </div> */}
+                        <input type = 'file' ref = {this.photoInput}></input>
                     </section>
                     <button onClick={this.signupAndWriteDetails} style={{ marginLeft: '25px' }} className='btn btn-success'>Create User</button>
                 </form>
