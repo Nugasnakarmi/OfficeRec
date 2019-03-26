@@ -9,13 +9,18 @@ class AddUser extends Component {
         this.signup = this.signup.bind(this);
         this.writeDetails = this.writeDetails.bind(this);
         this.signupAndWriteDetails = this.signupAndWriteDetails.bind(this);
+        this.handleRadioButton = this.handleRadioButton.bind(this);
+        this.handlePhoto = this.handlePhoto.bind(this);
+
+        this.photoInput = React.createRef();
 
         this.db = fire.firestore();
 
         this.state = {
             email: '',
             password: '',
-            isAdmin: false
+            isAdmin: false,
+            photoLocation: ''
         }
     }
 
@@ -25,6 +30,12 @@ class AddUser extends Component {
 
     handleRadioButton(value) {
         this.setState({ value: value });
+    }
+
+    handlePhoto() {        
+        console.log('photolocation', this.photoInput.current.files[0].webkitRelativePath);
+
+        this.setState({ photoLocation: this.photoInput});
     }
 
     signup() {
@@ -46,7 +57,8 @@ class AddUser extends Component {
             ['Citizenship Number']: this.state.citizenship_num,
             ['Date of Birth']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dob)),
             Name: this.state.name,
-            isAdmin: this.state.value === 2
+            isAdmin: this.state.value === 2,
+            photo: this.state.photoLocation
         })
             .then(function () {
                 console.log("Document successfully written!");
@@ -58,11 +70,15 @@ class AddUser extends Component {
 
     signupAndWriteDetails(e) {
         e.preventDefault();
+        this.handlePhoto();
         this.signup();
         this.writeDetails();
     }
 
     render() {
+
+    if(this.photoInput.current!==null&& this.photoInput.current.files[0]){        console.log('photolocation', this.photoInput.current.files[0].webkitRelativePath);
+    }
         return (<div>
             <header><h1>Add a New User</h1></header>
             <div className='container'>
@@ -117,6 +133,17 @@ class AddUser extends Component {
                             <label for='dob'>Date of Birth</label>
                             <input value={this.state.dob} name="dob" type="date" onChange={this.handleChange} placeholder="Date in AD" className="form-control" id='dob' />
                         </div>
+                        <label for='photo'>Photo</label>
+                        {/* <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                            </div>
+                            <div className="custom-file">
+                                <input name="photoLocation" type="file" ref = {this.photoInput} className="custom-file-input" id="photo" aria-describedby="inputGroupFileAddon01" />
+                                <label className="custom-file-label" for="photo">Choose file</label>
+                            </div>
+                        </div> */}
+                        <input type = 'file' ref = {this.photoInput}></input>
                     </section>
                     <button onClick={this.signupAndWriteDetails} style={{ marginLeft: '25px' }} className='btn btn-success'>Create User</button>
                 </form>
