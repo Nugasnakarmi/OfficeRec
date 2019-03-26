@@ -8,7 +8,6 @@ class Login extends Component {
         super(props);
         this.login = this.login.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.signup = this.signup.bind(this);
         this.state = {
             email: '',
             password: ''
@@ -25,16 +24,6 @@ class Login extends Component {
         });
     }
 
-    signup(e) {
-        e.preventDefault();
-        fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function (error) {
-            // Handle Errors here.
-            window.alert(error.code, error.message, "Email format is wrong.");
-            //console.log(error.message);
-            // ...
-        });
-    }
-
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
 
@@ -43,7 +32,7 @@ class Login extends Component {
     render() {
 
         return (
-            <div className='row pad '>
+            <div className='row pad'>
                 <div className='col-3'></div>
                 <div className="col-6 jumbotron shadow">
                     <form>
@@ -52,7 +41,7 @@ class Login extends Component {
                             <input value={this.state.email} onChange={this.handleChange} type="email" name="email"
                                 className="form-control" id="InputEmail1" aria-describedby="emailHelp"
                                 placeholder="Enter email" />
-                            <small id="emailHelp" className="form-text text-muted"> We will never share your email with anyone else .</small>
+                            <small id="emailHelp" className="form-text text-muted"> We will never share your email with anyone else.</small>
                         </div>
 
                         <div className="form-group">
@@ -61,11 +50,12 @@ class Login extends Component {
                                 name='password' className="form-control" id="InputPassword1"
                                 placeholder="Enter password" />
                         </div>
-
-
-                        <button type="submit" onClick={this.login} className="btn btn-primary"> Login </button>
-                        <button onClick={this.signup} style={{ marginLeft: '25px' }} className='btn btn-success'> Signup</button>
-
+                        <div className='d-flex justify-content-center'>
+                            <button type="submit" onClick={this.login} className="btn btn-primary loginbutton"> Login </button>
+                        </div>
+                        <div className='d-flex justify-content-center'>
+                            <small id="emailHelp" className="form-text text-muted">To register, contact your administrator.</small>
+                        </div>
                     </form>
 
                 </div>

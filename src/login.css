@@ -4,6 +4,7 @@
 
 .pad{
     padding-top: 20px;
+    padding-bottom: 0;
     position: absolute;
     top: 25%;
     bottom: 25%;
@@ -11,6 +12,9 @@
     right: 25%;
     width: auto;
     height: fit-content;
-   
 }
 
+.loginbutton{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

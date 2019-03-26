@@ -94,7 +94,7 @@ class Home extends Component {
                             {this.state.isAdmin ? <AdminSidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></AdminSidebar>
                                 : <Sidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></Sidebar>}
                         </div>
-                        <div className="row">
+                        <div className="d-flex flex-row">
                             <div>
                                 {this.state.isAdmin ? 
                                     renderthing : ((this.state.abc === 'Dashboard') ? <MainWindow link={this.state.abc} user={user} /> : <Details></Details>)}

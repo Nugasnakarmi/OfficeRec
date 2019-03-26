@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Precords from './precords';
 
 class AdminWindow extends Component {
     constructor(props) {
@@ -10,7 +9,7 @@ class AdminWindow extends Component {
         return (  
             <div className ='admin-panel' >
                 <h1>Admin Panel</h1>
-                <Precords />
+                <p>Search and view User Records here</p>
             </div>
         );
     }

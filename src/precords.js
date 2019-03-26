@@ -109,7 +109,7 @@ class Precords extends Component {
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
-    writeDetails(event ) {
+    writeDetails(event) {
         event.preventDefault();
         this.db.collection("UserBase").doc(this.state.email).set({
             ['Citizenship Number']: this.state.citizenship_num,
