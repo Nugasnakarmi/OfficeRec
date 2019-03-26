@@ -1,5 +1,6 @@
 import React ,{Component} from 'react';
 import fire from './config/fire';
+import firebase from 'firebase';
 class Precords extends Component{
     constructor( props ){
         super( props );
