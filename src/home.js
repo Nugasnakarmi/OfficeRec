@@ -5,6 +5,7 @@ import fire from './config/fire';
 import Sidebar from './Sidebar';
 import AdminWindow from './AdminWindow';
 import Details from './Details';
+import AdminSidebar from './AdminSidebar'
 
 class Home extends Component {
     constructor(props) {
@@ -23,6 +24,7 @@ class Home extends Component {
             // state.isAdmin: this.db.collection('UserBase').doc('abc@mail.com')
             //     .get().then((doc) => { return doc.data().state.isAdmin })
         };
+
         this.db.collection('UserBase').doc('abc@mail.com').get()
             .then((doc) => {
                 this.setState({
@@ -32,6 +34,7 @@ class Home extends Component {
                 this.setState({
                     loaded: true
                 }));
+
 
         console.log('after promise', this.state.isAdmin);
         //     if( this.props.user != null){
@@ -49,9 +52,6 @@ class Home extends Component {
     logout() {
         fire.auth().signOut();
     }
-    // UNSAFE_componentWillMount()
-    // {
-    //  }   
 
     // changeToggler() {
     //     if (this.state.toggler === 'disappear') {
@@ -71,17 +71,23 @@ class Home extends Component {
         });
         console.log("Changed");
     }
-    
+
 
     render() {
+        // 
 
+        // 
         var user = this.props.user;
+        console.log('inside render', this.props.user);
         this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"));
         return (
             <div>
                 {this.state.loaded ?
                     <div>
-                        <div className='sticky-top top-bar bg-dark'><Sidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></Sidebar></div>
+                        <div className='sticky-top top-bar bg-dark'>
+                            {this.state.isAdmin ? <AdminSidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></AdminSidebar>
+                                : <Sidebar link={this.state.abc} handler={this.changelink} user={user} signout={this.logout}></Sidebar>}
+                        </div>
                         <div className="row">
                             <div>
                                 {this.state.isAdmin ? <AdminWindow /> : ((this.state.abc === 'Dashboard') ? <MainWindow link={this.state.abc} user={user} /> : <Details></Details>)}
@@ -94,8 +100,5 @@ class Home extends Component {
         );
     }
 }
-
-export default Home;
-
-
+    export default Home;
 

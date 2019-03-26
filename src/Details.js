@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Land from './Land';
+import Vehicle from './Vehicle';
 
 class Details extends Component {
     constructor(props) {
@@ -8,6 +10,8 @@ class Details extends Component {
     render() { 
         return ( <div>
             <h1>The Details Pane</h1>
+            <Land location = "khjlkh"></Land>
+            <Vehicle vehicleType = '2Wheeler'></Vehicle>
         </div> );
     }
 }

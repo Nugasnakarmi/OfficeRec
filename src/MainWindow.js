@@ -10,7 +10,7 @@ class MainWindow extends Component {
         // this.user = fire.auth().currentUser;     
 
         if (this.props.user) {
-            this.db.collection('UserBase').doc(this.props.user).get().then((doc) => {
+            this.db.collection('UserBase').doc('abc@mail.com').get().then((doc) => {
                 this.setState({
                     userInfo: doc.data()
                 });
