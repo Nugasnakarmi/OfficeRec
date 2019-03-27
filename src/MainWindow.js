@@ -7,7 +7,13 @@ class MainWindow extends Component {
         super(props);
         this.state = { userInfo: '' };
         this.db = fire.firestore();
-        // this.user = fire.auth().currentUser;     
+        var storage = fire.storage();
+        const profilePhotoPath = storage.ref(this.props.user + '/profilepic.jpg');
+        profilePhotoPath.getDownloadURL().then((url) => {
+            this.setState({
+                imageUrl: url
+            });
+        }).catch((error) => console.error("Error in photo loading"));
 
         if (this.props.user) {
             this.db.collection('UserBase').doc(this.props.user).get().then((doc) => {
@@ -50,12 +56,15 @@ class MainWindow extends Component {
             <div>
                 {/* <nav className='navbar-main'></nav> */}
                 <h1 className='mainwindow-header'>Dashboard</h1>
-                    <div className='dashboard-content'>
-                        <p className='content-para'>User ID: {this.props.user}</p>
-                        <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
-                        <p className='content-para'>Citizenship Number: {this.storedData ? this.storedData['Citizenship Number'] : this.state.userInfo['Citizenship Number']}</p>
-                        <p className='content-para'>Date of Birth: {date ? dateHolder : 'Not Available'}</p>
-                    </div>
+                <div className='dashboard-content'>
+                    <picture>
+                        <img src={this.state.imageUrl} className="img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width = '200' height = '200'></img>
+                    </picture>
+                    <p className='content-para'>User ID: {this.props.user}</p>
+                    <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
+                    <p className='content-para'>Citizenship Number: {this.storedData ? this.storedData['Citizenship Number'] : this.state.userInfo['Citizenship Number']}</p>
+                    <p className='content-para'>Date of Birth: {date ? dateHolder : 'Not Available'}</p>
+                </div>
             </div>
         );
     }
