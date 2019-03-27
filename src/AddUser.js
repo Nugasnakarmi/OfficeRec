@@ -63,7 +63,7 @@ class AddUser extends Component {
             isAdmin: this.state.value === 2
         })
             .then(function () {
-                console.log("Document successfully written!");
+                window.alert("User successfully registered!");
             })
             .catch(function (error) {
                 console.error("Error writing document: ", error);
