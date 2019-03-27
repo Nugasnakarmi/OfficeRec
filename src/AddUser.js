@@ -32,7 +32,7 @@ class AddUser extends Component {
     handlePhoto(e) {
         if (this.state.email) {
             var photo = e.target.files[0];
-            var storageRef = firebase.storage().ref(this.state.email.toString() + '/' + photo.name);
+            var storageRef = firebase.storage().ref(this.state.email.toString() + '/profilepic.jpg');
             storageRef.put(photo);
             console.log('Photo PUT!!');
         }
@@ -60,8 +60,7 @@ class AddUser extends Component {
             ['Citizenship Number']: this.state.citizenship_num,
             ['Date of Birth']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dob)),
             Name: this.state.name,
-            isAdmin: this.state.value === 2,
-            photo: this.state.photoLocation
+            isAdmin: this.state.value === 2
         })
             .then(function () {
                 console.log("Document successfully written!");
