@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
-
+import './adduser.css';
 class AddUser extends Component {
     constructor(props) {
         super(props);
@@ -133,16 +133,15 @@ class AddUser extends Component {
                             <input value={this.state.dob} name="dob" type="date" required="required" onChange={this.handleChange} placeholder="Date in AD" className="form-control" id='dob' />
                         </div>
                         <label for='photo'>Photo</label>
-                        {/* <div className="input-group mb-3">
-                            <div className="input-group-prepend">
+                        <div className="input-group mb-3">
+                            {/* <div className="input-group-prepend">
                                 <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                            </div> */}
+                            <div className="custom-file photo-box" style = {{border: '1px solid #ced4da', 'border-radius': '0.25rem'}}>
+                                <input className = "my-input" name="photoLocation" onChange={this.handlePhoto} required="required" accept='image/*' type="file" id="photo" aria-describedby="inputGroupFileAddon01" />
                             </div>
-                            <div className="custom-file">
-                                <input name="photoLocation" type="file" ref = {this.photoInput} className="custom-file-input" id="photo" aria-describedby="inputGroupFileAddon01" />
-                                <label className="custom-file-label" for="photo">Choose file</label>
-                            </div>
-                        </div> */}
-                        <input type='file' onChange={this.handlePhoto} required="required" accept='image/*'></input>
+                        </div>
+                        {/* <input type='file' onChange={this.handlePhoto} required="required" accept='image/*'></input> */}
                     </section>
                     <button onClick={this.signupAndWriteDetails} style={{ marginLeft: '25px' }} className='btn btn-success'>Create User</button>
                 </form>
