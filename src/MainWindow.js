@@ -23,14 +23,14 @@ class MainWindow extends Component {
                 });
                 localStorage.setItem('localInfo', JSON.stringify(doc.data()));
                 this.storedData = JSON.parse(localStorage.getItem('localInfo'));
-
                 console.log('Localstorage: ', this.storedData);
-
+                /*
                 this.user = {
                     uid: '',
                     displayName: '',
                     photoUrl: ''
                 };
+                */
             });
         }
     }

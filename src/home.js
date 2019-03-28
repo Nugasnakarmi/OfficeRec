@@ -117,7 +117,7 @@ class Home extends Component {
                         <div className="d-flex flex-row">
                             <div>
                                 {this.state.isAdmin ? 
-                                    renderthing : ((this.state.openTab === 'Dashboard') ? <MainWindow link={this.state.openTab} user={user} /> : <Details></Details>)}
+                                    renderthing : ((this.state.openTab === 'Dashboard') ? <MainWindow user={user} /> : <Details user = {user}></Details>)}
                             </div>
                         </div>
                     </div>
