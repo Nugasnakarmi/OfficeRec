@@ -1,5 +1,8 @@
 export default function fixDate(date) {
-    var currentDate;
+    
+    if(typeof(date) !== 'string')
+        { 
+        var currentDate;
     var dateHolder = date.toDate();
     currentDate = dateHolder;
     var day = currentDate.getDate();
@@ -27,4 +30,9 @@ export default function fixDate(date) {
     //   var dateWithFullMonthName = monthNames[month] + " " + pad(date) + ", " + year;
     var ordinalDate = ordinal(day) + " " + monthNames[month] + ", " + year;
     return ordinalDate;
+}
+else{
+    console.log( "is string");
+    return date;
+}
 }

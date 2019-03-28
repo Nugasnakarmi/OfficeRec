@@ -21,9 +21,7 @@ class Sidebar extends Component {
             toggler: true
         });
     }
-    componentWillMount() {
-      
-    }
+    
     render() {
 
         let link = this.props.link;

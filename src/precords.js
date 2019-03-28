@@ -7,7 +7,7 @@ class Precords extends Component {
         this.state = {
             userInfo: '',
             email: '',
-            searched: false
+           
         };
 
         this.db = fire.firestore();
@@ -61,11 +61,14 @@ class Precords extends Component {
                     <input value ={ this.state.name } name ="name" type="text" onChange={this.handleChange} placeholder="Name"></input>
                     <button  onClick ={this.writeDetails} className="btn btn-primary">Write</button>
                  </form>
-       
-            
+            <div className="add details">
                 
- 
- </div>       
+            </div>
+            
+            
+            </div>
+            
+            
  )
      
 
