@@ -6,8 +6,8 @@ class Precords extends Component {
         super(props);
         this.state = {
             userInfo: '',
-            email: '',
-           
+            email: ''
+            
         };
 
         this.db = fire.firestore();
@@ -15,9 +15,9 @@ class Precords extends Component {
 
         
         this.handleChange = this.handleChange.bind(this);
-    
+        this.dropChange = this.dropChange.bind(this);
         this.writeDetails = this.writeDetails.bind(this);
-       
+        this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
     }
    
 
@@ -42,12 +42,77 @@ class Precords extends Component {
                 console.error("Error writing document: ", error);
             });
         }
-    
 
-    render() {
+    writeVehicleDetails(e){
+        e.preventDefault();
+        if(this.state.email){
+        var droplist = document.getElementById("drop-vehicle")
+        var selected = droplist.selectedIndex;
+        var vehiclecount;
+        var docRef;
+        console.log(selected +1);
+        
+        if(selected === 0){
+            docRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("2 wheeler");
+             docRef.get().then( (doc) =>{
+               vehiclecount= doc.data()["count"]
+            });
+            if(vehiclecount){
+                docRef.set({
+                    VRN: this.state.VRN,
+                    count: vehiclecount +1
+                    
+                 }) 
+            }
+            else{
+                docRef.set({
+                    VRN: this.state.VRN,
+                    count: 1
+                    
+                 }) 
+            }
+            
+        }
+        else{
+            console.log("4 wheeler");
+            docRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("4 wheeler");
+             docRef.get().then( (doc) =>{
+               vehiclecount= doc.data()["count"]
+            });
+            if(vehiclecount){
+                docRef.set({
+                    VRN: this.state.VRN,
+                    count: vehiclecount +1
+                    
+                 }) 
+            }
+            else{
+                docRef.set({
+                    VRN: this.state.VRN,
+                    count: 1
+                    
+                 }) 
+            }
+        }
+    }
+    else{
+               window.alert( "User cannot be empty");
+           
+    }
+        
+    }
+        
+    dropChange( index ){
+           
+            console.log( index );
+            // this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc()
+        }
 
         
 
+    render() {
+       var selectlist; 
+       
         return (
 
             <div className="precords">
@@ -61,9 +126,23 @@ class Precords extends Component {
                     <input value ={ this.state.name } name ="name" type="text" onChange={this.handleChange} placeholder="Name"></input>
                     <button  onClick ={this.writeDetails} className="btn btn-primary">Write</button>
                  </form>
-            <div className="add details">
-                
-            </div>
+            <span className="add details">
+                <h3> Vehicle details here </h3> 
+                <form>
+
+                    <select id ="drop-vehicle" >
+                    {/* <option value="nothing" defaultValue="selected">---</option> */}
+                    <option> two-wheeler</option>
+                    <option> four-wheeler</option>
+                    </select>
+                    
+                    
+                    <label HTMlfor = "drop-down vehicle" position = "left"> Choose type</label>
+                    </form>
+               
+             <input value ={ this.state.VRN } className = "form-control" name = "VRN" type ="text" length="auto" onChange = {this.handleChange} placeholder =" Vehicle Registration Number Eg: BA 2 CHA 0000"></input> 
+            <button onClick ={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
+            </span>
             
             
             </div>
@@ -71,8 +150,8 @@ class Precords extends Component {
             
  )
      
-
-
+            selectlist =document.getElementById('drop-vehicle');
+           this.dropChange( selectlist.selectedIndex )
 
 
 
