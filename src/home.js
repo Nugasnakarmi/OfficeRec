@@ -64,7 +64,7 @@ class Home extends Component {
         this.setState({
             openTab: value
         });
-        console.log("Changed");
+        //console.log("Changed");
     }
 
     verifyAdmin( User){
@@ -92,7 +92,7 @@ class Home extends Component {
         var user= this.props.user;
        
 
-        console.log('inside render', this.props.user);
+        //console.log('inside render', this.props.user);
          user = this.props.user;
         
         if(this.state.loaded === false){this.verifyAdmin(user);}
@@ -106,7 +106,7 @@ class Home extends Component {
             <div>
                 
 
-        {this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"))}
+        {/* {this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"))} */}
 
                 {this.state.loaded ?
                     <div>

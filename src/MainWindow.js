@@ -23,7 +23,7 @@ class MainWindow extends Component {
                 });
                 localStorage.setItem('localInfo', JSON.stringify(doc.data()));
                 this.storedData = JSON.parse(localStorage.getItem('localInfo'));
-                console.log('Localstorage: ', this.storedData);
+                //console.log('Localstorage: ', this.storedData);
                 /*
                 this.user = {
                     uid: '',
@@ -36,7 +36,7 @@ class MainWindow extends Component {
     }
 
     render() {
-        console.log("StoredData inside render", this.storedData);
+        //console.log("StoredData inside render", this.storedData);
         var date = this.state.userInfo['Date of Birth'];
         return (
             <div>
@@ -44,7 +44,7 @@ class MainWindow extends Component {
                 <h1 className='mainwindow-header'>Dashboard</h1>
                 <div className='dashboard-content'>
                     <picture>
-                        <img src={this.state.imageUrl} className="img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200'></img>
+                        <img src={this.state.imageUrl} className="rounded-photo img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200'></img>
                     </picture>
                     <p className='content-para'>User ID: {this.props.user}</p>
                     <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
