@@ -44,7 +44,7 @@ class MainWindow extends Component {
                 <h1 className='mainwindow-header'>Dashboard</h1>
                 <div className='dashboard-content'>
                     <picture>
-                        <img src={this.state.imageUrl} className="img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200'></img>
+                        <img src={this.state.imageUrl} className="rounded-photo img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200'></img>
                     </picture>
                     <p className='content-para'>User ID: {this.props.user}</p>
                     <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>

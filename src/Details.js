@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import Land from './Land';
 import Vehicle from './Vehicle';
 import fire from './config/fire';
+import fixDate from './FixDate';
+
 class Details extends Component {
     constructor(props) {
         super(props);
         this.taxTypes = ['land-tax','vehicle-tax','income-tax'];
         this.dataObject = {};
         this.getSubcollections = this.getSubcollections.bind(this);
-
+        this.landData = [];
+        this.vehicleData = [];
+        this.incomeData = [];
         this.state = {}
     }
 
@@ -38,10 +42,36 @@ class Details extends Component {
                 
             });
             console.log('Data fetched from userbase', this.dataObject);
+            console.log(this.dataObject[1]);
+            for (let key in this.dataObject){
+                console.log("key");
+                if (key.toString.includes('land-tax')){
+                   this.landData.push(this.data.key);
+                }
+                else if (key.toString.includes('vehicle-tax')){
+                    this.vehicleData.push(this.data.key);
+                 }
+                else if (key.toString.includes('income-tax')){
+                    this.vehicleData.push(this.data.key);
+                 }
+            }
+            //console.table("LandData", this.landData);
         }
     }
 
     render() {
+        // for (let key in this.dataObject){
+        //     if (key.toString.includes('land-tax')){
+        //        this.landData.push(this.data.key);
+        //     }
+        //     else if (key.toString.includes('vehicle-tax')){
+        //         this.vehicleData.push(this.data.key);
+        //      }
+        //     else if (key.toString.includes('income-tax')){
+        //         this.vehicleData.push(this.data.key);
+        //      }
+        // }
+        // console.table("LandData", this.landData);
         return (<div>
             <h1>The Details Pane</h1>
             <Land location="khjlkh"></Land>
