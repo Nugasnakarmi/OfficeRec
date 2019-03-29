@@ -6,10 +6,15 @@ class Precords extends Component {
         super(props);
         this.state = {
             userInfo: '',
+<<<<<<< HEAD
+            email: '',
+=======
             email: ''
+>>>>>>> 2efa0f0a8933b0d25b8e6e3dc0d40530401a317c
 
         };
 
+        this.count = 0;
         this.db = fire.firestore();
 
 
@@ -27,6 +32,7 @@ class Precords extends Component {
 
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
+
 
     writeDetails(event) {
         event.preventDefault();
@@ -112,6 +118,17 @@ class Precords extends Component {
             console.log(selected + 1);
 
             if (selected === 0) {
+<<<<<<< HEAD
+                vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
+                //    vehicleRef.get().then( (doc) =>{
+                //        vehiclecount= doc.data()["count"]
+                //     });
+                vehicleRef.set(
+                    {
+                        amount: parseFloat(this.state.taxAmount),
+                        due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                        type: "2 wheeler"
+=======
                 vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("2 wheeler");
                 //    vehicleRef.get().then( (doc) =>{
                 //        vehiclecount= doc.data()["count"]
@@ -120,33 +137,84 @@ class Precords extends Component {
                     {
                         amount: this.state.taxAmount,
                         due: this.state.dueDate
+>>>>>>> 2efa0f0a8933b0d25b8e6e3dc0d40530401a317c
                     }, { merge: true }
                 )
 
             }
             else {
                 console.log("4 wheeler");
+<<<<<<< HEAD
+                vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
+                vehicleRef.set({
+                    amount: parseFloat(this.state.taxAmount),
+                    due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                    type: "4 wheeler"
+                }, { merge: true });
+            }
+        }
+        else {
+            window.alert("User cannot be empty");
+=======
                 vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("4 wheeler");
                 vehicleRef.collection(this.state.VRN).doc("TAX").set({
                     amount: this.state.taxAmount.toFloat(),
                     due: this.state.dueDate.toDate()
                 }, { merge: true });
             }
+>>>>>>> 2efa0f0a8933b0d25b8e6e3dc0d40530401a317c
 
         }
+
     }
+<<<<<<< HEAD
+=======
     dropChange(index) {
 
         console.log(index);
         // this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc()
     }
+>>>>>>> 2efa0f0a8933b0d25b8e6e3dc0d40530401a317c
 
     writeLandDetails(e) {
         e.preventDefault();
         var landRef;
+<<<<<<< HEAD
+        var count = 0;
+        var fullPath = "UserBase/" + this.state.email + "/land-tax";
+        landRef = this.db.collection("UserBase").doc(this.state.email).collection("land-tax");
+        if (this.state.email) {
+            console.log("Just after if", count);
+            landRef.get().then((doc) => {
+                doc.forEach((sd) => {
+                    count++;
+                    console.log(sd.data());
+                    console.log(count);
+                })
+
+
+            }
+
+            ).then(()=>{landRef.doc((count+1 ).toString()).set({
+                Location: {
+                    province: this.state.province,
+                    district: this.state.district,
+                    municipality: this.state.municipality,
+                    ward: parseFloat(this.state.ward)
+                },
+                listingId: this.state.listingId
+            }, { merge: true });
+});
+            
+
+            
+
+
+=======
 
         if (this.state.email) {
             landRef = this.db.collection("UserBase").doc(this.state.email).collection("")
+>>>>>>> 2efa0f0a8933b0d25b8e6e3dc0d40530401a317c
         }
         else {
             window.alert("User cannot be empty");
@@ -186,6 +254,38 @@ class Precords extends Component {
                             <option> four-wheeler</option>
                         </select>
 
+<<<<<<< HEAD
+
+                        <label htmlFor="drop-vehicle" position="left"> <small><i>Choose type</i></small></label>
+                    </form>
+
+
+                    <input value={this.state.VRN} className="form-control" name="VRN" type="text" onChange={this.handleChange} placeholder=" Vehicle Registration Number Eg: BA 2 CHA 0000"></input>
+                    <label htmlFor="inputDate" position="left"> <small><i>Due date</i></small></label>
+                    <input value={this.state.dueDate} id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                    <label htmlFor="inputTax" position="left"> <small><i>Tax amount</i></small></label>
+                    <input value={this.state.taxAmount} id="inputTax" name="taxAmount" type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
+
+                    <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
+                </span>
+
+
+
+                <span className="add land details">
+                    <h3> Land details here </h3>
+                    <form>
+                        <div className="input-location" id="inputLocation">
+                            <input value={this.state.province} id="inputprovince" name="province" type="text" onChange={this.handleChange} placeholder=" Province "></input>
+                            {/* <label htmlFor="inputLand"><small><i>Enter location</i></small></label>  */}
+                            <input value={this.state.district} id="inputdistrict" name="district" type="text" onChange={this.handleChange} placeholder=" District "></input>
+                            <input value={this.state.municipality} id="inputmuni" name="municipality" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
+                            <input value={this.state.ward} id="inputward" name="ward" type="number" onChange={this.handleChange} placeholder=" Ward"></input>
+                        </div>
+                        <label htmlFor="inputLocation"><small><i>Enter Location</i></small></label>
+                        <input value={this.state.listingId} id="inputListing" name="listingId" className="form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
+                        <label htmlFor="inputListing"><small><i>Enter Listing id</i></small></label>
+                    </form>
+=======
 
                         <label htmlFor="drop-vehicle" position="left"> <small><i>Choose type</i></small></label>
                     </form>
@@ -210,6 +310,7 @@ class Precords extends Component {
                         <input value={this.state.listingId} id="inputListing" name="listingId" className="form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
                         <label htmlFor="inputListing"><small><i>Enter Listing id</i></small></label>
                     </form>
+>>>>>>> 2efa0f0a8933b0d25b8e6e3dc0d40530401a317c
                     <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
                 </span>
 
@@ -222,5 +323,8 @@ class Precords extends Component {
 
     }
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 2efa0f0a8933b0d25b8e6e3dc0d40530401a317c
 export default Precords;
