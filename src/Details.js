@@ -5,8 +5,8 @@ import fire from './config/fire';
 class Details extends Component {
     constructor(props) {
         super(props);
-        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax'];
-
+        this.taxTypes = ['land-tax','vehicle-tax','income-tax'];
+        this.dataObject = {};
         this.getSubcollections = this.getSubcollections.bind(this);
 
         this.state = {}
@@ -15,16 +15,29 @@ class Details extends Component {
     componentDidMount() {
         //GETS THE SUBCOLLECTIONS (added by Purak) (Code under construction)
         this.db = fire.firestore();
-        this.taxTypes.map(this.getSubcollections);
+        for (var collectionName of this.taxTypes){
+            this.getSubcollections(collectionName);
+        }
+        //this.taxTypes.forEach(this.getSubcollections);
+        //console.log("the taxlist", this.taxTypes);
     }
 
-    getSubcollections(taxlist) {
+    getSubcollections(passedCollection) {
         if (this.props.user) {
-            this.db.collection('UserBase/' + this.props.user + '/' + taxlist).get().then((subdoc) => {
+            var fullPath = 'UserBase/' + this.props.user + '/' + passedCollection
+            this.db.collection(fullPath).get().then((subdoc) => {
+                let itemNumber = 1;   
                 subdoc.forEach((sd) => {
-                    console.log("THE SUBDOCS ARE", sd.data());
+                    var itemName = passedCollection + itemNumber;
+                    //console.log("ItemName", itemName);
+                    //console.log(sd.data());
+                    this.taxTypes.passedCollection = sd.data();
+                    this.dataObject[itemName] = sd.data();
+                    itemNumber++;
                 });
+                
             });
+            console.log('Data fetched from userbase', this.dataObject);
         }
     }
 

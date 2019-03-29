@@ -23,7 +23,7 @@ class MainWindow extends Component {
                 });
                 localStorage.setItem('localInfo', JSON.stringify(doc.data()));
                 this.storedData = JSON.parse(localStorage.getItem('localInfo'));
-                console.log('Localstorage: ', this.storedData);
+                //console.log('Localstorage: ', this.storedData);
                 /*
                 this.user = {
                     uid: '',
@@ -36,7 +36,7 @@ class MainWindow extends Component {
     }
 
     render() {
-        console.log("StoredData inside render", this.storedData);
+        //console.log("StoredData inside render", this.storedData);
         var date = this.state.userInfo['Date of Birth'];
         return (
             <div>
