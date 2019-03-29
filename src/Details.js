@@ -13,7 +13,6 @@ class Details extends Component {
         this.landData = [];
         this.vehicleData = [];
         this.incomeData = [];
-        this.state = {}
     }
 
     componentDidMount() {
