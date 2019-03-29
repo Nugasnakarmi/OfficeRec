@@ -7,7 +7,7 @@ import fixDate from './FixDate';
 class Details extends Component {
     constructor(props) {
         super(props);
-        this.taxTypes = ['land-tax','vehicle-tax','income-tax'];
+        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax'];
         this.dataObject = {};
         this.getSubcollections = this.getSubcollections.bind(this);
         this.landData = [];
@@ -19,7 +19,7 @@ class Details extends Component {
     componentDidMount() {
         //GETS THE SUBCOLLECTIONS (added by Purak) (Code under construction)
         this.db = fire.firestore();
-        for (var collectionName of this.taxTypes){
+        for (var collectionName of this.taxTypes) {
             this.getSubcollections(collectionName);
         }
         //this.taxTypes.forEach(this.getSubcollections);
@@ -30,7 +30,7 @@ class Details extends Component {
         if (this.props.user) {
             var fullPath = 'UserBase/' + this.props.user + '/' + passedCollection
             this.db.collection(fullPath).get().then((subdoc) => {
-                let itemNumber = 1;   
+                let itemNumber = 1;
                 subdoc.forEach((sd) => {
                     var itemName = passedCollection + itemNumber;
                     //console.log("ItemName", itemName);
@@ -39,22 +39,29 @@ class Details extends Component {
                     this.dataObject[itemName] = sd.data();
                     itemNumber++;
                 });
-                
-            });
-            console.log('Data fetched from userbase', this.dataObject);
-            console.log(this.dataObject[1]);
-            for (let key in this.dataObject){
-                console.log("key");
-                if (key.toString.includes('land-tax')){
-                   this.landData.push(this.data.key);
+            }).then(() => {
+                //console.log('Data fetched from userbase', this.dataObject);
+                //console.log(this.dataObject["land-tax1"]);;
+
+                for (let key in this.dataObject) {
+                    //console.log("key", key);
+                    if (key.includes('land-tax')) {
+                        this.landData.push(this.dataObject.key);
+                    }
+                    else if (key.includes('vehicle-tax')) {
+                        this.vehicleData.push(this.dataObject.key);
+                    }
+                    else if (key.includes('income-tax')) {
+                        this.incomeData.push(this.dataObject.key);
+                    }
                 }
-                else if (key.toString.includes('vehicle-tax')){
-                    this.vehicleData.push(this.data.key);
-                 }
-                else if (key.toString.includes('income-tax')){
-                    this.vehicleData.push(this.data.key);
-                 }
-            }
+            }).then(() => {
+                console.log('LandData', this.landData);
+                console.log('VehicleData', this.vehicleData);
+                console.log('IncomeData', this.incomeData);
+            });
+
+
             //console.table("LandData", this.landData);
         }
     }
