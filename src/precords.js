@@ -148,7 +148,7 @@ class Precords extends Component {
         e.preventDefault();
         var landRef;
         var count = 0;
-        var fullPath = "UserBase/" + this.state.email + "/land-tax";
+        // var fullPath = "UserBase/" + this.state.email + "/land-tax";
         landRef = this.db.collection("UserBase").doc(this.state.email).collection("land-tax");
         if (this.state.email) {
             console.log("Just after if", count);
@@ -162,26 +162,30 @@ class Precords extends Component {
 
             }
 
-            ).then(()=>{landRef.doc((count+1 ).toString()).set({
-                Location: {
-                    province: this.state.province,
-                    district: this.state.district,
-                    municipality: this.state.municipality,
-                    ward: parseFloat(this.state.ward)
-                },
-                listingId: this.state.listingId
-            }, { merge: true });
-});
-            
+            ).then(() => {
+                landRef.doc((count + 1).toString()).set({
+                    Location: {
+                        province: this.state.province,
+                        district: this.state.district,
+                        municipality: this.state.municipality,
+                        ward: parseFloat(this.state.ward)
+                    },
+                    listingId: parseFloat(this.state.listingId),
+                    taxAmount: parseFloat(this.state.taxAmountLand),
+                    ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
 
-            
+                }, { merge: true });
+            });
+
+
+
 
 
         }
         else {
             window.alert("User cannot be empty");
         }
-        console.log("landhere")
+
     }
     dropChange(index) {
 
@@ -207,7 +211,7 @@ class Precords extends Component {
                     <input value={this.state.name} name="name" type="text" onChange={this.handleChange} placeholder="Name"></input>
                     <button onClick={this.writeDetails} className="btn btn-primary">Write</button>
                 </form>
-                <span className="add vehicle details">
+                <div className="add vehicle details">
                     <h3> Vehicle details here </h3>
                     <form>
 
@@ -228,7 +232,7 @@ class Precords extends Component {
                     <input value={this.state.taxAmount} id="inputTax" name="taxAmount" type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
 
                     <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
-                </span>
+                </div>
 
 
 
@@ -242,11 +246,28 @@ class Precords extends Component {
                             <input value={this.state.municipality} id="inputmuni" name="municipality" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
                             <input value={this.state.ward} id="inputward" name="ward" type="number" onChange={this.handleChange} placeholder=" Ward"></input>
                         </div>
+
                         <label htmlFor="inputLocation"><small><i>Enter Location</i></small></label>
-                        <input value={this.state.listingId} id="inputListing" name="listingId" className="form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
-                        <label htmlFor="inputListing"><small><i>Enter Listing id</i></small></label>
+                        <div>
+                            
+                            <input value={this.state.listingId} id="inputListing" name="listingId" className="form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
+                            <label htmlFor="inputListing"><small><i>Enter Listing id</i></small></label>
+                            
+                            
+                        </div>
+                        <div className =" land-add-taxdate">
+                            <label htmlFor="inputDate" position="left"> <small><i>Due date</i></small></label>
+                            <input value={this.state.dueDateLand} className ="input mini" id="inputDateLand" name="dueDateLand" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                            <label htmlFor="inputTax" position="left"> <small><i>Tax amount</i></small></label>
+                            <input value={this.state.taxAmountLand} className ="input mini" id="inputTaxLand" name="taxAmountLand" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
+                        
+
+
+
+
+                            <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
+                            </div>
                     </form>
-                    <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
                 </span>
 
 

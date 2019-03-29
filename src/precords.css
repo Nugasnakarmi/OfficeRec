@@ -4,3 +4,16 @@
     left: 25%;
     position: center;
 }
+
+.land-add-taxdate{
+    padding:10px;
+}
+
+.add vehicle details{
+    padding:100px;
+}
+
+.input mini{
+    border-radius:50%;
+    padding:10px;
+}
