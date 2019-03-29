@@ -12,12 +12,13 @@ class Precords extends Component {
 
         this.db = fire.firestore();
         
-
+        
         
         this.handleChange = this.handleChange.bind(this);
         this.dropChange = this.dropChange.bind(this);
         this.writeDetails = this.writeDetails.bind(this);
         this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
+        this.writeLandDetails = this.writeLandDetails.bind(this);
     }
    
 
@@ -43,56 +44,93 @@ class Precords extends Component {
             });
         }
 
+    // writeVehicleDetails(e){
+    //     e.preventDefault();
+    //     if(this.state.email){
+    //     var droplist = document.getElementById("drop-vehicle")
+    //     var selected = droplist.selectedIndex;
+    //     // var vehiclecount;
+    //     var vehicleRef;
+    //     console.log(selected +1);
+        
+    //     if(selected === 0){
+    //        vehicleRef= this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("2 wheeler");
+    //        vehicleRef.get().then( (doc) =>{
+    //            vehiclecount= doc.data()["count"]
+    //         });
+    //         if(vehiclecount){
+    //             vehicleRef.set({
+    //                 VRN: this.state.VRN,
+    //                 count: vehiclecount +1
+                    
+    //              }) 
+    //         }
+    //         else{
+    //             vehicleRef.set({
+    //                 VRN: this.state.VRN,
+    //                 count: 1
+                    
+    //              }) 
+    //         }
+            
+    //     }
+    //     else{
+    //         console.log("4 wheeler");
+    //        vehicleRef= this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("4 wheeler");
+    //        vehicleRef.get().then( (doc) =>{
+    //            vehiclecount= doc.data()["count"]
+    //         });
+    //         if(vehiclecount){
+    //             vehicleRef.set({
+    //                 VRN: this.state.VRN,
+    //                 count: vehiclecount +1
+                    
+    //              }) 
+    //         }
+    //         else{
+    //             vehicleRef.set({
+    //                 VRN: this.state.VRN,
+    //                 count: 1
+                    
+    //              }) 
+    //         }
+    //     }
+    // }
+    // else{
+    //            window.alert( "User cannot be empty");
+           
+    // }
+        
+    // }
     writeVehicleDetails(e){
         e.preventDefault();
         if(this.state.email){
         var droplist = document.getElementById("drop-vehicle")
         var selected = droplist.selectedIndex;
-        var vehiclecount;
-        var docRef;
+        // var vehiclecount;
+        var vehicleRef;
         console.log(selected +1);
         
         if(selected === 0){
-            docRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("2 wheeler");
-             docRef.get().then( (doc) =>{
-               vehiclecount= doc.data()["count"]
-            });
-            if(vehiclecount){
-                docRef.set({
-                    VRN: this.state.VRN,
-                    count: vehiclecount +1
-                    
-                 }) 
-            }
-            else{
-                docRef.set({
-                    VRN: this.state.VRN,
-                    count: 1
-                    
-                 }) 
-            }
+           vehicleRef= this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("2 wheeler");
+        //    vehicleRef.get().then( (doc) =>{
+        //        vehiclecount= doc.data()["count"]
+        //     });
+            vehicleRef.collection( this.state.VRN ).doc("TAX").set(
+                {
+                    amount: this.state.taxAmount,
+                    due : this.state.dueDate
+                },{merge:true}
+            )
             
         }
         else{
             console.log("4 wheeler");
-            docRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("4 wheeler");
-             docRef.get().then( (doc) =>{
-               vehiclecount= doc.data()["count"]
-            });
-            if(vehiclecount){
-                docRef.set({
-                    VRN: this.state.VRN,
-                    count: vehiclecount +1
-                    
-                 }) 
-            }
-            else{
-                docRef.set({
-                    VRN: this.state.VRN,
-                    count: 1
-                    
-                 }) 
-            }
+           vehicleRef= this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("4 wheeler");
+           vehicleRef.collection( this.state.VRN ).doc("TAX").set({
+            amount:  this.state.taxAmount.toFloat(),
+            due : this.state.dueDate.toDate()
+           },{merge :true});
         }
     }
     else{
@@ -101,7 +139,21 @@ class Precords extends Component {
     }
         
     }
+     
+    writeLandDetails(e){
+        e.preventDefault();
+        var landRef;
         
+        if(this.state.email)
+        {
+            landRef = this.db.collection("UserBase").doc(this.state.email).collection("")
+        }
+        else
+        {
+            window.alert("User cannot be empty");
+        }
+        console.log("landhere")
+    }
     dropChange( index ){
            
             console.log( index );
@@ -126,35 +178,49 @@ class Precords extends Component {
                     <input value ={ this.state.name } name ="name" type="text" onChange={this.handleChange} placeholder="Name"></input>
                     <button  onClick ={this.writeDetails} className="btn btn-primary">Write</button>
                  </form>
-            <span className="add details">
+            <span className="add vehicle details">
                 <h3> Vehicle details here </h3> 
                 <form>
 
-                    <select id ="drop-vehicle" >
-                    {/* <option value="nothing" defaultValue="selected">---</option> */}
+                    <select id ="drop-vehicle" className = "form-control" >
                     <option> two-wheeler</option>
                     <option> four-wheeler</option>
                     </select>
                     
                     
-                    <label HTMlfor = "drop-down vehicle" position = "left"> Choose type</label>
+                    <label htmlFor = "drop-vehicle" position = "left"> <small><i>Choose type</i></small></label>
                     </form>
                
-             <input value ={ this.state.VRN } className = "form-control" name = "VRN" type ="text" length="auto" onChange = {this.handleChange} placeholder =" Vehicle Registration Number Eg: BA 2 CHA 0000"></input> 
+             
+            <input value ={ this.state.VRN } className = "form-control" name = "VRN" type ="text" onChange = {this.handleChange} placeholder =" Vehicle Registration Number Eg: BA 2 CHA 0000"></input> 
+            <label htmlFor = "inputDate" position = "left"> <small><i>Due date</i></small></label>
+            <input value ={ this.state.dueDate } id ="inputDate" name = "dueDate" type ="date"  onChange = {this.handleChange} placeholder ="Eg: 12th March 2019"></input> 
+            <label htmlFor = "inputTax" position = "left"> <small><i>Tax amount</i></small></label>
+            <input value ={ this.state.taxAmount } id = "inputTax" name = "taxAmount" type ="number" min = "0"  onChange = {this.handleChange} placeholder ="Rs 1000"></input> 
+
             <button onClick ={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
             </span>
             
+            
+            
+            <span className = "add land details">
+            <h3> Land details here </h3> 
+            <form>
+                <input value = {this.state.landLocation } id = "inputLand" name="landLocation" className = "form-control" onChange={this.handleChange} placeholder="Eg: kathmandu"></input>
+                <label htmlFor="inputLand"><small><i>Enter location</i></small></label> 
+                <input value = {this.state.listingId } id ="inputListing" name="listingId" className = "form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
+                <label htmlFor="inputListing"><small><i>Enter Listing id</i></small></label>
+            </form>
+            <button onClick ={this.writeLandDetails} className="btn btn-primary">Submit</button>
+            </span>
+
             
             </div>
             
             
  )
      
-            selectlist =document.getElementById('drop-vehicle');
-           this.dropChange( selectlist.selectedIndex )
-
-
-
+            
         }
     }
 export default Precords;
