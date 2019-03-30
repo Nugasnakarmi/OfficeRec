@@ -147,35 +147,85 @@ class Precords extends Component {
     writeLandDetails(e) {
         e.preventDefault();
         var landRef;
+        var query;
         var count = 0;
+        var docCount = 0;
         // var fullPath = "UserBase/" + this.state.email + "/land-tax";
         landRef = this.db.collection("UserBase").doc(this.state.email).collection("land-tax");
+
         if (this.state.email) {
-            console.log("Just after if", count);
-            landRef.get().then((doc) => {
-                doc.forEach((sd) => {
-                    count++;
-                    console.log(sd.data());
-                    console.log(count);
+            query = landRef
+                .where("listingId", "==", parseFloat(this.state.listingId))
+                .where("Location.ward", "==", parseFloat(this.state.ward))
+                .where("Location.municipality", "==", this.state.municipality)
+                .where("Location.province", "==", this.state.province)
+                .where("Location.district","==",this.state.district     )
+                ;
+                console.log(query);
+            // 
+            query
+                .get()
+                .then(function (querySnapshot) {
+
+
+                    querySnapshot.forEach(function (doc) {
+                        docCount++;
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+                    });
+                }).then( ()=>{
+                    landRef.get().then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+        
+                            console.log(doc.id, " =>", doc.data())
+        
+                            count = doc.id;
+        
+                        })
+        
+        
+                    }
+        
+                    ).then(() => {
+                        if(docCount === 0){
+                        landRef.doc((parseFloat(count) + 1).toString()).set({
+                            Location: {
+                                province: this.state.province,
+                                district: this.state.district,
+                                municipality: this.state.municipality,
+                                ward: parseFloat(this.state.ward)
+                            },
+                            listingId: parseFloat(this.state.listingId),
+                            taxAmount: parseFloat(this.state.taxAmountLand),
+                            ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
+        
+                        }, { merge: true });
+                        window.alert("data added successfully");
+                    }
+                    else
+                    {
+                        landRef.doc(count.toString()).set({
+                            Location: {
+                                province: this.state.province,
+                                district: this.state.district,
+                                municipality: this.state.municipality,
+                                ward: parseFloat(this.state.ward)
+                            },
+                            listingId: parseFloat(this.state.listingId),
+                            taxAmount: parseFloat(this.state.taxAmountLand),
+                            ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
+        
+                        }, { merge: true });
+                        window.alert("data updated");
+                    }
+                    });
                 })
+                .catch(function (error) {
+                    console.log("Error getting documents: ", error);
+                });
 
 
-            }
-
-            ).then(() => {
-                landRef.doc((count + 1).toString()).set({
-                    Location: {
-                        province: this.state.province,
-                        district: this.state.district,
-                        municipality: this.state.municipality,
-                        ward: parseFloat(this.state.ward)
-                    },
-                    listingId: parseFloat(this.state.listingId),
-                    taxAmount: parseFloat(this.state.taxAmountLand),
-                    ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
-
-                }, { merge: true });
-            });
+            
 
 
 
@@ -249,24 +299,24 @@ class Precords extends Component {
 
                         <label htmlFor="inputLocation"><small><i>Enter Location</i></small></label>
                         <div>
-                            
+
                             <input value={this.state.listingId} id="inputListing" name="listingId" className="form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
                             <label htmlFor="inputListing"><small><i>Enter Listing id</i></small></label>
-                            
-                            
+
+
                         </div>
-                        <div className =" land-add-taxdate">
+                        <div className=" land-add-taxdate">
                             <label htmlFor="inputDate" position="left"> <small><i>Due date</i></small></label>
-                            <input value={this.state.dueDateLand} className ="input mini" id="inputDateLand" name="dueDateLand" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                            <input value={this.state.dueDateLand} className="input mini" id="inputDateLand" name="dueDateLand" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
                             <label htmlFor="inputTax" position="left"> <small><i>Tax amount</i></small></label>
-                            <input value={this.state.taxAmountLand} className ="input mini" id="inputTaxLand" name="taxAmountLand" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
-                        
+                            <input value={this.state.taxAmountLand} className="input mini" id="inputTaxLand" name="taxAmountLand" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
+
 
 
 
 
                             <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
-                            </div>
+                        </div>
                     </form>
                 </span>
 
