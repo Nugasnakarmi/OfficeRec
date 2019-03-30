@@ -12,3 +12,7 @@
     margin: none;
     padding: none;
 }
+
+.rounded-photo{
+    border-radius: 50%
+}

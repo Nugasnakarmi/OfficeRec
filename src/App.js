@@ -22,6 +22,7 @@ class App extends Component {
                 //console.log(user);
                 if (user) {
                     this.setState({ user });
+                    console.log('Appjs', user);
                     // console.log("HHHHHHHHHHHH", user.email)  //localStorage.setItem('user', user.uid);
                         
                 }
