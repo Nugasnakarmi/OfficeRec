@@ -143,6 +143,7 @@ class Precords extends Component {
         }
 
     }
+    
 
     writeLandDetails(e) {
         e.preventDefault();
@@ -150,12 +151,13 @@ class Precords extends Component {
         var query;
         var count = 0;
         var docCount = 0;
+        var updateCount;
         // var fullPath = "UserBase/" + this.state.email + "/land-tax";
         landRef = this.db.collection("UserBase").doc(this.state.email).collection("land-tax");
 
         if (this.state.email) {
             query = landRef
-                .where("listingId", "==", parseFloat(this.state.listingId))
+                .where("kittaId", "==", parseFloat(this.state.kittaId))
                 .where("Location.ward", "==", parseFloat(this.state.ward))
                 .where("Location.municipality", "==", this.state.municipality)
                 .where("Location.province", "==", this.state.province)
@@ -172,14 +174,20 @@ class Precords extends Component {
                         docCount++;
                         // doc.data() is never undefined for query doc snapshots
                         console.log(doc.id, " => ", doc.data());
+                        // if(updateCount < parseFloat(doc.id) ){
+                        //     updateCount = parseFloat(doc.id)
+                        // };
+                        updateCount =doc.id;
                     });
                 }).then( ()=>{
                     landRef.get().then((querySnapshot) => {
                         querySnapshot.forEach((doc) => {
         
                             console.log(doc.id, " =>", doc.data())
-        
-                            count = doc.id;
+                            if(count < parseFloat(doc.id) ){
+                                count = parseFloat(doc.id)
+                            };
+                            
         
                         })
         
@@ -195,7 +203,7 @@ class Precords extends Component {
                                 municipality: this.state.municipality,
                                 ward: parseFloat(this.state.ward)
                             },
-                            listingId: parseFloat(this.state.listingId),
+                            kittaId: parseFloat(this.state.kittaId),
                             taxAmount: parseFloat(this.state.taxAmountLand),
                             ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
         
@@ -204,14 +212,14 @@ class Precords extends Component {
                     }
                     else
                     {
-                        landRef.doc(count.toString()).set({
+                        landRef.doc(updateCount.toString()).set({
                             Location: {
                                 province: this.state.province,
                                 district: this.state.district,
                                 municipality: this.state.municipality,
                                 ward: parseFloat(this.state.ward)
                             },
-                            listingId: parseFloat(this.state.listingId),
+                            kittaId: parseFloat(this.state.kittaId),
                             taxAmount: parseFloat(this.state.taxAmountLand),
                             ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
         
@@ -300,8 +308,8 @@ class Precords extends Component {
                         <label htmlFor="inputLocation"><small><i>Enter Location</i></small></label>
                         <div>
 
-                            <input value={this.state.listingId} id="inputListing" name="listingId" className="form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
-                            <label htmlFor="inputListing"><small><i>Enter Listing id</i></small></label>
+                            <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
+                            <label htmlFor="inputkitta"><small><i>Kitta No.</i></small></label>
 
 
                         </div>
