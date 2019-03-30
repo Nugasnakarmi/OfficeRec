@@ -150,6 +150,7 @@ class Precords extends Component {
         var query;
         var count = 0;
         var docCount = 0;
+        var updateDoc ;
         // var fullPath = "UserBase/" + this.state.email + "/land-tax";
         landRef = this.db.collection("UserBase").doc(this.state.email).collection("land-tax");
 
@@ -172,10 +173,12 @@ class Precords extends Component {
                         docCount++;
                         // doc.data() is never undefined for query doc snapshots
                         console.log(doc.id, " => ", doc.data());
+                        updateDoc = doc.id;
+                        ;
                     });
                 }).then( ()=>{
-                    landRef.get().then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => {
+                    landRef.get().then((sd) => {
+                        sd.forEach((doc) => {
         
                             console.log(doc.id, " =>", doc.data())
         
@@ -204,7 +207,7 @@ class Precords extends Component {
                     }
                     else
                     {
-                        landRef.doc(count.toString()).set({
+                        landRef.doc(updateDoc.toString()).set({
                             Location: {
                                 province: this.state.province,
                                 district: this.state.district,
