@@ -5,8 +5,13 @@ class Vehicle extends Component {
         super(props);
         this.state = {  }
     }
+
+    componentDidMount(){
+        console.log(this.props.details);
+    }
+
     render() { 
-        return ( <div>{this.props.vehicleType}</div> );
+        return ( <div>vehicle</div> );
     }
 }
  
