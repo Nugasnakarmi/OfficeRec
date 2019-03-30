@@ -124,8 +124,8 @@ class Precords extends Component {
                         due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
                         type: "2 wheeler"
                     }, { merge: true }
-                )
-
+                ).then(()=>{window.alert("updated successfully")}).catch( (error)=>{ window.alert( error.message )});
+                    
             }
             else {
                 console.log("4 wheeler");
@@ -134,7 +134,7 @@ class Precords extends Component {
                     amount: parseFloat(this.state.taxAmount),
                     due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
                     type: "4 wheeler"
-                }, { merge: true });
+                }, { merge: true }).then(()=>{window.alert("updated successfully")}).catch( (error)=>{ window.alert( error.message )});;
             }
         }
         else {
