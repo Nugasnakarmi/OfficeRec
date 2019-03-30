@@ -180,8 +180,8 @@ class Precords extends Component {
                         updateCount =doc.id;
                     });
                 }).then( ()=>{
-                    landRef.get().then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => {
+                    landRef.get().then((sd) => {
+                        sd.forEach((doc) => {
         
                             console.log(doc.id, " =>", doc.data())
                             if(count < parseFloat(doc.id) ){
