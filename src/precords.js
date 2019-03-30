@@ -7,13 +7,10 @@ class Precords extends Component {
         this.state = {
             userInfo: '',
             email: '',
-
         };
 
         this.count = 0;
         this.db = fire.firestore();
-
-
 
         this.handleChange = this.handleChange.bind(this);
         this.dropChange = this.dropChange.bind(this);
@@ -22,13 +19,7 @@ class Precords extends Component {
         this.writeLandDetails = this.writeLandDetails.bind(this);
     }
 
-
-
-
-
-
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
-
 
     writeDetails(event) {
         event.preventDefault();
@@ -124,8 +115,8 @@ class Precords extends Component {
                         due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
                         type: "2 wheeler"
                     }, { merge: true }
-                ).then(()=>{window.alert("updated successfully")}).catch( (error)=>{ window.alert( error.message )});
-                    
+                ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
+
             }
             else {
                 console.log("4 wheeler");
@@ -134,17 +125,13 @@ class Precords extends Component {
                     amount: parseFloat(this.state.taxAmount),
                     due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
                     type: "4 wheeler"
-                }, { merge: true }).then(()=>{window.alert("updated successfully")}).catch( (error)=>{ window.alert( error.message )});;
+                }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
             }
         }
         else {
             window.alert("User cannot be empty");
-
         }
-
     }
-    
-
     writeLandDetails(e) {
         e.preventDefault();
         var landRef;
@@ -161,9 +148,9 @@ class Precords extends Component {
                 .where("Location.ward", "==", parseFloat(this.state.ward))
                 .where("Location.municipality", "==", this.state.municipality)
                 .where("Location.province", "==", this.state.province)
-                .where("Location.district","==",this.state.district     )
+                .where("Location.district", "==", this.state.district)
                 ;
-                console.log(query);
+            console.log(query);
             // 
             query
                 .get()
@@ -177,164 +164,163 @@ class Precords extends Component {
                         // if(updateCount < parseFloat(doc.id) ){
                         //     updateCount = parseFloat(doc.id)
                         // };
-                        updateCount =doc.id;
+                        updateCount = doc.id;
                     });
-                }).then( ()=>{
+                }).then(() => {
                     landRef.get().then((sd) => {
                         sd.forEach((doc) => {
-        
+
                             console.log(doc.id, " =>", doc.data())
-                            if(count < parseFloat(doc.id) ){
+                            if (count < parseFloat(doc.id)) {
                                 count = parseFloat(doc.id)
                             };
-                            
-        
-                        })
-        
-        
-                    }
-        
-                    ).then(() => {
-                        if(docCount === 0){
-                        landRef.doc((parseFloat(count) + 1).toString()).set({
-                            Location: {
-                                province: this.state.province,
-                                district: this.state.district,
-                                municipality: this.state.municipality,
-                                ward: parseFloat(this.state.ward)
-                            },
-                            kittaId: parseFloat(this.state.kittaId),
-                            taxAmount: parseFloat(this.state.taxAmountLand),
-                            ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
-        
-                        }, { merge: true });
-                        window.alert("data added successfully");
-                    }
-                    else
-                    {
-                        landRef.doc(updateCount.toString()).set({
-                            Location: {
-                                province: this.state.province,
-                                district: this.state.district,
-                                municipality: this.state.municipality,
-                                ward: parseFloat(this.state.ward)
-                            },
-                            kittaId: parseFloat(this.state.kittaId),
-                            taxAmount: parseFloat(this.state.taxAmountLand),
-                            ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
-        
-                        }, { merge: true });
-                        window.alert("data updated");
-                    }
+                        });
+                    }).then(() => {
+                        if (docCount === 0) {
+                            landRef.doc((parseFloat(count) + 1).toString()).set({
+                                Location: {
+                                    province: this.state.province,
+                                    district: this.state.district,
+                                    municipality: this.state.municipality,
+                                    ward: parseFloat(this.state.ward)
+                                },
+                                kittaId: parseFloat(this.state.kittaId),
+                                taxAmount: parseFloat(this.state.taxAmountLand),
+                                ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
+
+                            }, { merge: true });
+                            window.alert("data added successfully");
+                        }
+                        else {
+                            landRef.doc(updateCount.toString()).set({
+                                Location: {
+                                    province: this.state.province,
+                                    district: this.state.district,
+                                    municipality: this.state.municipality,
+                                    ward: parseFloat(this.state.ward)
+                                },
+                                kittaId: parseFloat(this.state.kittaId),
+                                taxAmount: parseFloat(this.state.taxAmountLand),
+                                ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
+
+                            }, { merge: true });
+                            window.alert("data updated");
+                        }
                     });
-                })
-                .catch(function (error) {
+                }).catch(function (error) {
                     console.log("Error getting documents: ", error);
                 });
-
-
-            
-
-
-
-
-
         }
         else {
             window.alert("User cannot be empty");
         }
-
     }
-    dropChange(index) {
 
+    dropChange(index) {
         console.log(index);
         // this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc()
     }
-
-
 
     render() {
         var selectlist;
 
         return (
-
-            <div className="precords">
-
-                <small><i>Please fill your details</i></small>
+            <div className="precords container">
                 <form>
-                    <input value={this.state.email} name="email" type="email" onChange={this.handleChange}
-                        className="form-control" id="Inputname1" placeholder="Enter email" />
-                    <input value={this.state.citizenship_num} name="citizenship_num" type="text" onChange={this.handleChange} placeholder="Citizenship Number"></input>
-                    <input value={this.state.dob} name="dob" type="text" onChange={this.handleChange} placeholder="Date of Birth"></input>
-                    <input value={this.state.name} name="name" type="text" onChange={this.handleChange} placeholder="Name"></input>
-                    <button onClick={this.writeDetails} className="btn btn-primary">Write</button>
-                </form>
-                <div className="add vehicle details">
-                    <h3> Vehicle details here </h3>
-                    <form>
-
-                        <select id="drop-vehicle" className="form-control" >
-                            <option> two-wheeler</option>
-                            <option> four-wheeler</option>
-                        </select>
-
-
-                        <label htmlFor="drop-vehicle" position="left"> <small><i>Choose type</i></small></label>
-                    </form>
-
-
-                    <input value={this.state.VRN} className="form-control" name="VRN" type="text" onChange={this.handleChange} placeholder=" Vehicle Registration Number Eg: BA 2 CHA 0000"></input>
-                    <label htmlFor="inputDate" position="left"> <small><i>Due date</i></small></label>
-                    <input value={this.state.dueDate} id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
-                    <label htmlFor="inputTax" position="left"> <small><i>Tax amount</i></small></label>
-                    <input value={this.state.taxAmount} id="inputTax" name="taxAmount" type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
-
-                    <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
-                </div>
-
-
-
-                <span className="add land details">
-                    <h3> Land details here </h3>
-                    <form>
-                        <div className="input-location" id="inputLocation">
-                            <input value={this.state.province} id="inputprovince" name="province" type="text" onChange={this.handleChange} placeholder=" Province "></input>
-                            {/* <label htmlFor="inputLand"><small><i>Enter location</i></small></label>  */}
-                            <input value={this.state.district} id="inputdistrict" name="district" type="text" onChange={this.handleChange} placeholder=" District "></input>
-                            <input value={this.state.municipality} id="inputmuni" name="municipality" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
-                            <input value={this.state.ward} id="inputward" name="ward" type="number" onChange={this.handleChange} placeholder=" Ward"></input>
+                    <section>
+                        <h2>Personal Details</h2>
+                        <div className="form-group">
+                            <label for="InputEmail1">Email Address</label>
+                            <input value={this.state.email} name="email" type="email" onChange={this.handleChange}
+                                className="form-control" id="InputEmail1" placeholder="Enter email" />
+                        </div>
+                        <div className="form-group">
+                            <label for="name">Name</label>
+                            <input value={this.state.name} name="name" className="form-control" type="text" id="name" onChange={this.handleChange} placeholder="Name"></input>
+                        </div>
+                        <div className="form-group">
+                            <label for="citizenship">Citizenship Number</label>
+                            <input value={this.state.citizenship_num} name="citizenship_num" className="form-control" id="citizenship" type="text" onChange={this.handleChange} placeholder="Citizenship Number"></input>
+                        </div>
+                        <div className="form-group">
+                            <label for="dateofbirth">Date of Birth</label>
+                            <input value={this.state.dob} name="dob" type="text" id="dateofbirth" onChange={this.handleChange} className="form-control" placeholder="Date in AD"></input>
                         </div>
 
-                        <label htmlFor="inputLocation"><small><i>Enter Location</i></small></label>
-                        <div>
+                        <button onClick={this.writeDetails} className='btn btn-primary'>Write</button>
+                    </section>
 
-                            <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="Eg: 1000"></input>
-                            <label htmlFor="inputkitta"><small><i>Kitta No.</i></small></label>
+                    <section>
+                        <h2> Vehicle details here </h2>
+                        <div className="form-group">
+                            <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
+                            <select id="drop-vehicle" className="custom-select">
+                                <option> two-wheeler</option>
+                                <option> four-wheeler</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label for="vrn">Vehicle Registration Number</label>
+                            <input value={this.state.VRN} className="form-control" name="VRN" type="text" id="vrn" onChange={this.handleChange} placeholder="Eg: BA 2 CHA 0000"></input>
+                        </div>
 
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="inputDate" position="left">Due date</label>
+                                <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="inputTax" position="left">Tax amount</label>
+                                <input value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
+                            </div>
+
+                            <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
 
                         </div>
-                        <div className=" land-add-taxdate">
-                            <label htmlFor="inputDate" position="left"> <small><i>Due date</i></small></label>
-                            <input value={this.state.dueDateLand} className="input mini" id="inputDateLand" name="dueDateLand" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
-                            <label htmlFor="inputTax" position="left"> <small><i>Tax amount</i></small></label>
-                            <input value={this.state.taxAmountLand} className="input mini" id="inputTaxLand" name="taxAmountLand" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
+                    </section>
+                    <section>
+                        <h3> Land details here </h3>
+                        <label htmlFor="inputLocation">Enter Location</label>
+                        <div class="form-row" id="inputLocation">
+                            <div class="col-md-3 mb-3">
+                                <input value={this.state.province} id="inputprovince" name="province" className="form-control" type="text" onChange={this.handleChange} placeholder=" Province"></input>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input value={this.state.district} id="inputdistrict" name="district" className="form-control" type="text" onChange={this.handleChange} placeholder=" District "></input>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input value={this.state.municipality} id="inputmuni" name="municipality" className="form-control" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input value={this.state.ward} id="inputward" name="ward" type="number" className="form-control" min="1" onChange={this.handleChange} placeholder=" Ward"></input>
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="inputkitta"><i>Kitta Number</i></label>
+                                <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
+                            </div>
+                            <div class="col-md-6 mb-3"> {/*Has not been implemented in database yet */}
+                                <label htmlFor="area"><i>Area</i></label>
+                                <input value={this.state.kittaId} id="area" name="area" className="form-control" onChange={this.handleChange} placeholder="Area in sq. meters"></input>                            </div>
+                        </div>
 
+                        <div className="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="inputDate" position="left">Due date</label>
+                                <input value={this.state.dueDateLand} className="form-control" id="inputDateLand" name="dueDateLand" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="inputTax" position="left">Tax amount</label>
+                                <input value={this.state.taxAmountLand} className="form-control" id="inputTaxLand" name="taxAmountLand" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
 
-
-
-
+                            </div>
                             <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
                         </div>
-                    </form>
-                </span>
-
-
+                    </section>
+                </form>
             </div>
-
-
         )
-
-
     }
 }
 export default Precords;

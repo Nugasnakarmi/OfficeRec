@@ -91,7 +91,7 @@ class Details extends Component {
             <h1>The Details Pane</h1>
             {this.landData.length ? this.landData.map((item) => (<Land details={item} />)) : ''}
             {this.vehicleData.length ? this.vehicleData.map((item) => (<Vehicle details={item} />)) : ''}
-            {this.incomeData.length ? this.incomeData.map((item) => (<Income details={item} />)) : ''}
+            {this.incomeData.length ?   this.incomeData.map((item) => (<Income details={item} />)) : ''}
             {/* {renderLand}
             {renderVehicle}
             {renderIncome} */}
