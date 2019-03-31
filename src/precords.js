@@ -301,7 +301,7 @@ class Precords extends Component {
                                 <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
                             </div>
                             <div class="col-md-6 mb-3"> {/*Has not been implemented in database yet */}
-                                <label htmlFor="area"><i>Area</i></label>
+                                <label htmlFor="area">Area</label>
                                 <input value={this.state.kittaId} id="area" name="area" className="form-control" onChange={this.handleChange} placeholder="Area in sq. meters"></input>                            </div>
                         </div>
 
