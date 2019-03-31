@@ -97,36 +97,47 @@ class Precords extends Component {
     // }
     writeVehicleDetails(e) {
         e.preventDefault();
+        var userRef;
         if (this.state.email) {
             var droplist = document.getElementById("drop-vehicle")
             var selected = droplist.selectedIndex;
             // var vehiclecount;
             var vehicleRef;
+
+            userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc) => {
+                if (doc.data()) {
+                    if (selected === 0) {
+                        vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
+                        //    vehicleRef.get().then( (doc) =>{
+                        //        vehiclecount= doc.data()["count"]
+                        //     });
+                        vehicleRef.set(
+                            {
+                                amount: parseFloat(this.state.taxAmount),
+                                due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                                type: "2 wheeler"
+                            }, { merge: true }
+                        ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
+
+                    }
+                    else {
+                        console.log("4 wheeler");
+                        vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
+                        vehicleRef.set({
+                            amount: parseFloat(this.state.taxAmount),
+                            due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                            type: "4 wheeler"
+                        }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
+                    }
+                    console.log(doc.data())
+                }
+                else{
+                   window.alert("User does not exist"); 
+                }
+            })
             console.log(selected + 1);
 
-            if (selected === 0) {
-                vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
-                //    vehicleRef.get().then( (doc) =>{
-                //        vehiclecount= doc.data()["count"]
-                //     });
-                vehicleRef.set(
-                    {
-                        amount: parseFloat(this.state.taxAmount),
-                        due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                        type: "2 wheeler"
-                    }, { merge: true }
-                ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
 
-            }
-            else {
-                console.log("4 wheeler");
-                vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
-                vehicleRef.set({
-                    amount: parseFloat(this.state.taxAmount),
-                    due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                    type: "4 wheeler"
-                }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
-            }
         }
         else {
             window.alert("User cannot be empty");
@@ -139,11 +150,14 @@ class Precords extends Component {
         var count = 0;
         var docCount = 0;
         var updateCount;
+        var userRef;
         // var fullPath = "UserBase/" + this.state.email + "/land-tax";
         landRef = this.db.collection("UserBase").doc(this.state.email).collection("land-tax");
 
         if (this.state.email) {
-            query = landRef
+            userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc)=>{
+                if(doc.data()){
+                    query = landRef
                 .where("kittaId", "==", parseFloat(this.state.kittaId))
                 .where("Location.ward", "==", parseFloat(this.state.ward))
                 .where("Location.municipality", "==", this.state.municipality)
@@ -186,7 +200,7 @@ class Precords extends Component {
                                 },
                                 kittaId: parseFloat(this.state.kittaId),
                                 taxAmount: parseFloat(this.state.taxAmountLand),
-                                area:parseFloat(this.state.area),
+                                area: parseFloat(this.state.area),
                                 ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
 
                             }, { merge: true });
@@ -202,7 +216,7 @@ class Precords extends Component {
                                 },
                                 kittaId: parseFloat(this.state.kittaId),
                                 taxAmount: parseFloat(this.state.taxAmountLand),
-                                area:parseFloat(this.state.area),
+                                area: parseFloat(this.state.area),
                                 ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
 
                             }, { merge: true });
@@ -212,6 +226,12 @@ class Precords extends Component {
                 }).catch(function (error) {
                     console.log("Error getting documents: ", error);
                 });
+                }
+                else{
+                    window.alert("User does not exist")
+                }
+            })
+            
         }
         else {
             window.alert("User cannot be empty");
