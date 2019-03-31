@@ -8,6 +8,7 @@ import Details from './Details';
 import AdminSidebar from './AdminSidebar'
 import Precords from './precords';
 import AddUser from './AddUser';
+import LoadingScreen from '../node_modules/react-loading-screen/src/index';
 
 class Home extends Component {
     constructor(props) {

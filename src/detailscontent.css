@@ -11,11 +11,11 @@ h3{
     border-style: solid;
     border-width: 2px;
     border-color: #999;
-    border-radius: 15px;
+    border-radius: 5px;
     padding: 20px;
     margin: 20px;
     box-shadow: #999 5px;
-    background-color: #8e7eec;
+    background-color:#7ab2e7;
     width: 600px;
     box-shadow: 5px 2px 5px grey;
 }
@@ -23,4 +23,13 @@ h3{
 .content-para{
     padding: 0;
     margin: 0;
+}
+
+.location{
+    margin-bottom: 2px;
+}
+
+.location-heading{
+    font-weight: bolder;
+    font-size: 1.2rem;
 }
