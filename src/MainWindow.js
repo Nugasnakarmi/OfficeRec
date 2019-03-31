@@ -39,17 +39,18 @@ class MainWindow extends Component {
         //console.log("StoredData inside render", this.storedData);
         var date = this.state.userInfo['Date of Birth'];
         return (
-            <div>
-                {/* <nav className='navbar-main'></nav> */}
+            <div className = "abc">
                 <h1 className='mainwindow-header'>Dashboard</h1>
-                <div className='dashboard-content'>
-                    <picture>
-                        <img src={this.state.imageUrl} className="rounded-photo img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200'></img>
-                    </picture>
-                    <p className='content-para'>User ID: {this.props.user}</p>
-                    <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
-                    <p className='content-para'>Citizenship Number: {this.storedData ? this.storedData['Citizenship Number'] : this.state.userInfo['Citizenship Number']}</p>
-                    <p className='content-para'>Date of Birth: {date ? fixDate(date) : 'Not Available'}</p>
+                <div className='dashboard-content row'>
+                    <div className="col-6">
+                        <p className='content-para'>User ID: {this.props.user}</p>
+                        <p className='content-para'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>
+                        <p className='content-para'>Citizenship Number: {this.storedData ? this.storedData['Citizenship Number'] : this.state.userInfo['Citizenship Number']}</p>
+                        <p className='content-para'>Date of Birth: {date ? fixDate(date) : 'Not Available'}</p>
+                    </div>
+                    <div className="col-6">
+                        {this.state.imageUrl ? <img src={this.state.imageUrl} className="rounded-photo img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200' /> : <img src="https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824147_960_720.png" className="rounded-photo img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='150' height='150' />}
+                    </div>
                 </div>
             </div>
         );

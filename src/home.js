@@ -8,14 +8,15 @@ import Details from './Details';
 import AdminSidebar from './AdminSidebar'
 import Precords from './precords';
 import AddUser from './AddUser';
-import LoadingScreen from '../node_modules/react-loading-screen/src/index';
+import { Facebook } from 'react-content-loader';
+
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.logout = this.logout.bind(this);
         this.changelink = this.changelink.bind(this);
-        this.verifyAdmin =this.verifyAdmin.bind(this);
+        this.verifyAdmin = this.verifyAdmin.bind(this);
         this.db = fire.firestore();
         this.email = this.props.user;
 
@@ -28,7 +29,7 @@ class Home extends Component {
             // state.isAdmin: this.db.collection('UserBase').doc('openTab@mail.com')
             //     .get().then((doc) => { return doc.data().state.isAdmin })
         };
-       
+
         // this.state.loaded = false;
         // this.state.isAdmin = false;
 
@@ -60,7 +61,7 @@ class Home extends Component {
         fire.auth().signOut();
     }
 
-    
+
     changelink(value) {
         this.setState({
             openTab: value
@@ -68,65 +69,60 @@ class Home extends Component {
         //console.log("Changed");
     }
 
-    verifyAdmin( User){
+    verifyAdmin(User) {
         User ? (this.db.collection('UserBase').doc(User).get()
-        .then((doc) => {
-                
+            .then((doc) => {
+
                 this.setState(
                     {
-                        isAdmin : doc.data()['isAdmin'] 
+                        isAdmin: doc.data()['isAdmin']
                     }
                 )
             })
-        .then(() =>
-            
-        this.setState({
-                        loaded: true
-         } )
-    ) ) :(console.log("user null") );
+            .then(() =>
+
+                this.setState({
+                    loaded: true
+                })
+            )) : (console.log("user null"));
     }
 
     render() {
-        
+
 
         let renderthing;
-        var user= this.props.user;
-       
+        var user = this.props.user;
+
 
         //console.log('inside render', this.props.user);
-         user = this.props.user;
-        
-        if(this.state.loaded === false){this.verifyAdmin(user);}
-        
+        user = this.props.user;
+
+        if (this.state.loaded === false) { this.verifyAdmin(user); }
+
         if (this.state.openTab === 'Dashboard') renderthing = <AdminWindow />
         else if (this.state.openTab === 'Add User') renderthing = <AddUser />
         else if (this.state.openTab === 'Edit Details') renderthing = <Precords />
-        
+
         return (
-            
             <div>
-                
-
-        {/* {this.state.isAdmin ? (console.log("this is admin")) : (console.log("this is user"))} */}
-
                 {this.state.loaded ?
                     <div>
                         <div className='sticky-top top-bar bg-dark'>
                             {this.state.isAdmin ? <AdminSidebar link={this.state.openTab} handler={this.changelink} user={user} signout={this.logout}></AdminSidebar>
                                 : <Sidebar link={this.state.openTab} handler={this.changelink} user={user} signout={this.logout}></Sidebar>}
                         </div>
-                        <div className="d-flex flex-row">
+                        <div className="content-window">
                             <div>
-                                {this.state.isAdmin ? 
-                                    renderthing : ((this.state.openTab === 'Dashboard') ? <MainWindow user={user} /> : <Details user = {user}></Details>)}
+                                {this.state.isAdmin ?
+                                    renderthing : ((this.state.openTab === 'Dashboard') ? <MainWindow user={user} /> : <Details user={user}></Details>)}
                             </div>
                         </div>
                     </div>
 
-                    : <div>Loading</div>}
+                    : <div><Facebook /></div>}
             </div>
         );
     }
 }
-    export default Home;
+export default Home;
 

@@ -24,12 +24,15 @@ class Land extends Component {
         return (<div className="item-box">
             <h3>Land at {this.props.details.Location.municipality} Kitta {this.props.details.kittaId}</h3>
             <div className="row">
-                <div className="location col-12">
+                <div className="location col-6">
                     <p className='content-para location-heading'>Location</p>
                     <p className='content-para'>Province: {this.props.details.Location.province}</p>
                     <p className='content-para'>District: {this.props.details.Location.district}</p>
                     <p className='content-para'>Municipality: {this.props.details.Location.municipality}</p>
                     <p className='content-para'>Ward Number: {this.props.details.Location.ward}</p>
+                </div>
+                <div className = "col-6">
+                    <img className = "img-responsive" src = "https://shellabears.com.au/wp-content/themes/shellabears/images/suburb-icon-sold-pin.png" height = "75" width = "75"></img>
                 </div>
                 <div className="col-6">
                     <p className='content-para'>Area: {this.props.details.area} sq. meter</p>
