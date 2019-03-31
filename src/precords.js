@@ -24,26 +24,26 @@ class Precords extends Component {
 
     writeDetails(event) {
         event.preventDefault();
-        if(this.state.email){
-        this.db.collection("UserBase").doc(this.state.email).set({
-            ['Citizenship Number']: this.state.citizenship_num,
-            ['Date of Birth']: this.state.dob,
-            Name: this.state.name,
-            isAdmin: false
-        })
-            .then(function () {
-                console.log("Document successfully written!");
+        if (this.state.email) {
+            this.db.collection("UserBase").doc(this.state.email).set({
+                ['Citizenship Number']: this.state.citizenship_num,
+                ['Date of Birth']: this.state.dob,
+                Name: this.state.name,
+                isAdmin: false
             })
-            .catch(function (error) {
-                console.error("Error writing document: ", error);
-            });
+                .then(function () {
+                    console.log("Document successfully written!");
+                })
+                .catch(function (error) {
+                    console.error("Error writing document: ", error);
+                });
         }
-        else{
+        else {
             window.alert("User cannot be empty");
         }
     }
 
-   
+
     writeVehicleDetails(e) {
         e.preventDefault();
         var userRef;
@@ -189,8 +189,33 @@ class Precords extends Component {
         }
     }
 
-    writeIncomeDetails(){
+    writeIncomeDetails(e) {
+        e.preventDefault();
+        var userRef;
+        var incomeRef;
+        if (this.state.email) {
+            userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc) => {
+                if (doc.data()) {
+                    incomeRef = this.db.collection("UserBase").doc(this.state.email).collection("income-tax");
 
+                    incomeRef.doc(this.state.bn).set({
+                        PAN:   this.state.PAN,
+                        ['business name']: this.state.bn,
+                        ['type of employment']: this.state.employType,
+                        ['annual income']: this.state.income,
+                        taxAmount: this.state.taxAmountIncome,
+                        ['due date']:this.state.dueDateIncome
+
+                    }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
+                }
+                else {
+                    window.alert("User does not exist")
+                }
+            })
+        }
+        else {
+            window.alert("User cannot be empty");
+        }
     }
     dropChange(index) {
         console.log(index);
@@ -302,13 +327,17 @@ class Precords extends Component {
                     <section>
                         <h2> Income details </h2>
                         <div className="form-row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label htmlFor="inputpan">PAN</label>
-                                <input value={this.state.PAN} id="inputpan" name="PAN" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
+                                <input value={this.state.PAN} id="inputpan" name="PAN" type ="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label htmlFor="income"> Annual Income</label>
                                 <input value={this.state.income} id="income" name="income" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="employType"> Employment type</label>
+                                <input value={this.state.employType} id="employType" name="employType" className="form-control" onChange={this.handleChange} placeholder="Eg: Business"></input>
                             </div>
                         </div>
                         <div className="form-row">
@@ -322,7 +351,7 @@ class Precords extends Component {
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label htmlFor="taxAmount"> Tax amount</label>
-                                <input value={this.state.taxAmount} id="taxAmount" name="taxAmount" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                                <input value={this.state.taxAmountIncome} id="taxAmountIncome" name="taxAmountIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
                             </div>
                             <button onClick={this.writeIncomeDetails} className="btn btn-primary">Submit</button>
                         </div>
