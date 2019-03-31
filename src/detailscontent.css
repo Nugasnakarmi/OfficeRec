@@ -3,6 +3,24 @@
     padding: 0;
 }
 
+h3{
+    color: gainsboro;
+}
+
 .item-box{
-    border: 10 px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #999;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: #999 5px;
+    background-color: #8e7eec;
+    width: 600px;
+    box-shadow: 5px 2px 5px grey;
+}
+
+.content-para{
+    padding: 0;
+    margin: 0;
 }
