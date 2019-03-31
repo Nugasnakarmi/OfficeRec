@@ -1,13 +1,13 @@
 {
-  "main.css": "/OfficeRec/static/css/main.eb38256d.chunk.css",
-  "main.js": "/OfficeRec/static/js/main.5b0e73da.chunk.js",
-  "main.js.map": "/OfficeRec/static/js/main.5b0e73da.chunk.js.map",
+  "main.css": "/OfficeRec/static/css/main.896359de.chunk.css",
+  "main.js": "/OfficeRec/static/js/main.bcbb95fe.chunk.js",
+  "main.js.map": "/OfficeRec/static/js/main.bcbb95fe.chunk.js.map",
   "runtime~main.js": "/OfficeRec/static/js/runtime~main.f8870734.js",
   "runtime~main.js.map": "/OfficeRec/static/js/runtime~main.f8870734.js.map",
-  "static/js/2.063d1ab5.chunk.js": "/OfficeRec/static/js/2.063d1ab5.chunk.js",
-  "static/js/2.063d1ab5.chunk.js.map": "/OfficeRec/static/js/2.063d1ab5.chunk.js.map",
+  "static/js/2.23225e15.chunk.js": "/OfficeRec/static/js/2.23225e15.chunk.js",
+  "static/js/2.23225e15.chunk.js.map": "/OfficeRec/static/js/2.23225e15.chunk.js.map",
   "index.html": "/OfficeRec/index.html",
-  "precache-manifest.d7d152b1e23953469c874b521d3a8d94.js": "/OfficeRec/precache-manifest.d7d152b1e23953469c874b521d3a8d94.js",
+  "precache-manifest.4661c0d135cdea2eb50adbcfe965bb43.js": "/OfficeRec/precache-manifest.4661c0d135cdea2eb50adbcfe965bb43.js",
   "service-worker.js": "/OfficeRec/service-worker.js",
-  "static/css/main.eb38256d.chunk.css.map": "/OfficeRec/static/css/main.eb38256d.chunk.css.map"
+  "static/css/main.896359de.chunk.css.map": "/OfficeRec/static/css/main.896359de.chunk.css.map"
 }
