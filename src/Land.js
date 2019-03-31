@@ -22,7 +22,7 @@ class Land extends Component {
     render() {
         console.log("RENDER");
         return (<div className="item-box">
-            <h3>Land Record</h3>
+            <h3>Land at {this.props.details.Location.municipality} Kitta {this.props.details.kittaId}</h3>
             <div>
                 <div className="location">
                     <p className='content-para'><b>Location</b></p>
@@ -31,8 +31,8 @@ class Land extends Component {
                     <p className='content-para'>Municipality: {this.props.details.Location.municipality}</p>
                     <p className='content-para'>Ward Number: {this.props.details.Location.ward}</p>
                 </div>
-                <p className='content-para'>Area: {/*this.props.details.listingId*/}</p>
-                <p className='content-para'>Listing ID: {this.props.details.listingId}</p>
+                <p className='content-para'>Area: {this.props.details.area} sq. meter</p>
+                <p className='content-para'>कित्ता: {this.props.details.kittaId}</p>
                 <p className='content-para'>Tax Amount: Rs. {this.props.details.taxAmount}</p>
                 <p className='content-para'>Due: {fixDate(this.props.details['due date'])}</p>
             </div>

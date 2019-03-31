@@ -186,6 +186,7 @@ class Precords extends Component {
                                 },
                                 kittaId: parseFloat(this.state.kittaId),
                                 taxAmount: parseFloat(this.state.taxAmountLand),
+                                area:parseFloat(this.state.area),
                                 ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
 
                             }, { merge: true });
@@ -201,6 +202,7 @@ class Precords extends Component {
                                 },
                                 kittaId: parseFloat(this.state.kittaId),
                                 taxAmount: parseFloat(this.state.taxAmountLand),
+                                area:parseFloat(this.state.area),
                                 ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
 
                             }, { merge: true });
@@ -279,7 +281,7 @@ class Precords extends Component {
                         </div>
                     </section>
                     <section>
-                        <h3> Land details here </h3>
+                        <h2>Land details</h2>
                         <label htmlFor="inputLocation">Enter Location</label>
                         <div class="form-row" id="inputLocation">
                             <div class="col-md-3 mb-3">
@@ -302,7 +304,7 @@ class Precords extends Component {
                             </div>
                             <div class="col-md-6 mb-3"> {/*Has not been implemented in database yet */}
                                 <label htmlFor="area">Area</label>
-                                <input value={this.state.kittaId} id="area" name="area" className="form-control" onChange={this.handleChange} placeholder="Area in sq. meters"></input>                            </div>
+                                <input value={this.state.area} id="area" name="area" className="form-control" onChange={this.handleChange} placeholder="Area in sq. meters"></input>                            </div>
                         </div>
 
                         <div className="form-row">
