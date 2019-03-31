@@ -17,12 +17,14 @@ class Precords extends Component {
         this.writeDetails = this.writeDetails.bind(this);
         this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
         this.writeLandDetails = this.writeLandDetails.bind(this);
+        this.writeIncomeDetails = this.writeIncomeDetails.bind(this);
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
     writeDetails(event) {
         event.preventDefault();
+        if(this.state.email){
         this.db.collection("UserBase").doc(this.state.email).set({
             ['Citizenship Number']: this.state.citizenship_num,
             ['Date of Birth']: this.state.dob,
@@ -35,66 +37,13 @@ class Precords extends Component {
             .catch(function (error) {
                 console.error("Error writing document: ", error);
             });
+        }
+        else{
+            window.alert("User cannot be empty");
+        }
     }
 
-    // writeVehicleDetails(e){
-    //     e.preventDefault();
-    //     if(this.state.email){
-    //     var droplist = document.getElementById("drop-vehicle")
-    //     var selected = droplist.selectedIndex;
-    //     // var vehiclecount;
-    //     var vehicleRef;
-    //     console.log(selected +1);
-
-    //     if(selected === 0){
-    //        vehicleRef= this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("2 wheeler");
-    //        vehicleRef.get().then( (doc) =>{
-    //            vehiclecount= doc.data()["count"]
-    //         });
-    //         if(vehiclecount){
-    //             vehicleRef.set({
-    //                 VRN: this.state.VRN,
-    //                 count: vehiclecount +1
-
-    //              }) 
-    //         }
-    //         else{
-    //             vehicleRef.set({
-    //                 VRN: this.state.VRN,
-    //                 count: 1
-
-    //              }) 
-    //         }
-
-    //     }
-    //     else{
-    //         console.log("4 wheeler");
-    //        vehicleRef= this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("4 wheeler");
-    //        vehicleRef.get().then( (doc) =>{
-    //            vehiclecount= doc.data()["count"]
-    //         });
-    //         if(vehiclecount){
-    //             vehicleRef.set({
-    //                 VRN: this.state.VRN,
-    //                 count: vehiclecount +1
-
-    //              }) 
-    //         }
-    //         else{
-    //             vehicleRef.set({
-    //                 VRN: this.state.VRN,
-    //                 count: 1
-
-    //              }) 
-    //         }
-    //     }
-    // }
-    // else{
-    //            window.alert( "User cannot be empty");
-
-    // }
-
-    // }
+   
     writeVehicleDetails(e) {
         e.preventDefault();
         var userRef;
@@ -114,7 +63,7 @@ class Precords extends Component {
                         vehicleRef.set(
                             {
                                 amount: parseFloat(this.state.taxAmount),
-                                due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                                ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
                                 type: "2 wheeler",
                                 VRN: this.state.VRN
                             }, { merge: true }
@@ -126,7 +75,7 @@ class Precords extends Component {
                         vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
                         vehicleRef.set({
                             amount: parseFloat(this.state.taxAmount),
-                            due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                            ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
                             type: "4 wheeler",
                             VRN: this.state.VRN
                         }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
@@ -240,6 +189,9 @@ class Precords extends Component {
         }
     }
 
+    writeIncomeDetails(){
+
+    }
     dropChange(index) {
         console.log(index);
         // this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc()
@@ -254,24 +206,28 @@ class Precords extends Component {
                     <section>
                         <h2>Personal Details</h2>
                         <div className="form-group">
+
                             <label for="InputEmail1">Email Address</label>
                             <input value={this.state.email} name="email" type="email" onChange={this.handleChange}
                                 className="form-control" id="InputEmail1" placeholder="Enter email" />
                         </div>
-                        <div className="form-group">
-                            <label for="name">Name</label>
-                            <input value={this.state.name} name="name" className="form-control" type="text" id="name" onChange={this.handleChange} placeholder="Name"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="citizenship">Citizenship Number</label>
-                            <input value={this.state.citizenship_num} name="citizenship_num" className="form-control" id="citizenship" type="text" onChange={this.handleChange} placeholder="Citizenship Number"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="dateofbirth">Date of Birth</label>
-                            <input value={this.state.dob} name="dob" type="text" id="dateofbirth" onChange={this.handleChange} className="form-control" placeholder="Date in AD"></input>
-                        </div>
+                        <div className="form-row">
+                            <div className="col-md-4 mb-3">
+                                <label for="name">Name</label>
+                                <input value={this.state.name} name="name" className="form-control" type="text" id="name" onChange={this.handleChange} placeholder="Name"></input>
+                            </div>
+                            <div className="col-md-4 mb-3">
+                                <label for="citizenship">Citizenship Number</label>
+                                <input value={this.state.citizenship_num} name="citizenship_num" className="form-control" id="citizenship" type="text" onChange={this.handleChange} placeholder="Citizenship Number"></input>
+                            </div>
+                            <div className="col-md-4 mb-3">
+                                <label for="dateofbirth">Date of Birth</label>
+                                <input value={this.state.dob} name="dob" type="date" id="dateofbirth" onChange={this.handleChange} className="form-control" placeholder="Date in AD"></input>
+                            </div>
 
-                        <button onClick={this.writeDetails} className='btn btn-primary'>Write</button>
+
+                            <button onClick={this.writeDetails} className='btn btn-primary'>Write</button>
+                        </div>
                     </section>
 
                     <section>
@@ -347,13 +303,28 @@ class Precords extends Component {
                         <h2> Income details </h2>
                         <div className="form-row">
                             <div class="col-md-6 mb-3">
-                                <label htmlFor="inputpan"><i>preventDefault Number</i></label>
+                                <label htmlFor="inputpan">PAN</label>
                                 <input value={this.state.PAN} id="inputpan" name="PAN" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="income"> Annual Income</label>
                                 <input value={this.state.income} id="income" name="income" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
                             </div>
+                        </div>
+                        <div className="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="inputbn">Business name</label>
+                                <input value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} placeholder="Eg: ABC trading pvt ltd."></input>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label htmlFor="dueDateIncome"> Due date</label>
+                                <input value={this.state.dueDateIncome} type="date" id="dueDateIncome" name="dueDateIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: 12th March 2020"></input>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label htmlFor="taxAmount"> Tax amount</label>
+                                <input value={this.state.taxAmount} id="taxAmount" name="taxAmount" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                            </div>
+                            <button onClick={this.writeIncomeDetails} className="btn btn-primary">Submit</button>
                         </div>
 
                     </section>
