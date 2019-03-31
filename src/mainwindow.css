@@ -9,9 +9,10 @@
     padding-top: 5px;
 }
 
-.content-para{
+.list{
     margin: none;
-    padding: none;
+    padding-left: none;
+    padding: 1px;
 }
 
 .rounded-photo{

@@ -54,7 +54,8 @@ class Login extends Component {
                             <button type="submit" onClick={this.login} className="btn btn-primary loginbutton"> Login </button>
                         </div>
                         <div className='d-flex justify-content-center'>
-                            <small id="emailHelp" className="form-text text-muted">To register, contact your administrator.</small>
+                            {/* <small id="emailHelp" className="form-text text-muted">To register, contact your administrator.</small> */}
+                            <small id="emailHelp" className="form-text text-muted">Administrator:<br></br> email: admin@automata.com, pass: admin123</small>
                         </div>
                     </form>
 

@@ -79,7 +79,7 @@ class AddUser extends Component {
 
     render() {
         return (<div>
-            <header><h1>Add a New User</h1></header>
+            {/* <header><h1>Add a New User</h1></header> */}
             <div className='container'>
                 <form>
                     <section>

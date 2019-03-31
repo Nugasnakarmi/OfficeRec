@@ -9,7 +9,7 @@ class Land extends Component {
     render() {
         console.log("RENDER");
         return (<div className="item-box">
-            <h3>Land at {this.props.details.Location.municipality} Kitta {this.props.details.kittaId}</h3>
+            <h3>House at {this.props.details.Location.municipality} House Number {this.props.details.houseno}</h3>
             <div className="row">
                 <div className="location col-6">
                     <p className='content-para location-heading'>Location</p>

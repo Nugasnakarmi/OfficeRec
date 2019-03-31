@@ -30,8 +30,8 @@ class AdminWindow extends Component {
 
     render() {
         return (
-            <div className='admin-panel' >
-                <h1>Admin Panel</h1>
+            <div className='admin-panel container' style = {{'marginTop': '60'}}>
+                <h2>Admin Panel</h2>
                 <p>Search and view User Records here</p>
                 <form >
                     <div className="form-group">
