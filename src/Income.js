@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import fixDate from './FixDate';
 import income from './res/income.png';
+import './detailscontent.css';
 
 class Income extends Component {
     constructor(props) {
@@ -24,8 +25,8 @@ class Income extends Component {
                 <p className='content-para'>Tax Amount: NRs {this.props.details['taxAmount']}</p>
                 <p className='content-para'>Due: {fixDate(this.props.details['due date'])}</p>
             </div>
-            <div className="col-6">
-                <img className="img-responsive" src={income} height="75" width="75"></img>
+            <div className="col-6 logodiv">
+                <img className="logo" src={income}></img>
             </div>
 
         </div>

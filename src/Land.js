@@ -4,14 +4,6 @@ import fixDate from './FixDate';
 import land from './res/land.png';
 
 class Land extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        };
-        this.display = '';
-    }
-
     render() {
         console.log("RENDER");
         return (<div className="item-box">
@@ -24,8 +16,8 @@ class Land extends Component {
                     <p className='content-para'>Municipality: {this.props.details.Location.municipality}</p>
                     <p className='content-para'>Ward Number: {this.props.details.Location.ward}</p>
                 </div>
-                <div className = "col-6">
-                    <img className = "img-responsive" src = {land} height = "75" width = "75"></img>
+                <div className = "col-6 logodiv">
+                    <img className = "logo" src = {land}></img>
                 </div>
                 <div className="col-6">
                     <p className='content-para'>Area: {this.props.details.area} sq. meter</p>

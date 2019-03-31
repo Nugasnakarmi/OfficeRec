@@ -3,19 +3,21 @@ import Land from './Land';
 import Vehicle from './Vehicle';
 import Income from './Income';
 import fire from './config/fire';
+import House from './House';
 //import fixDate from './FixDate';
 //import { throws } from 'assert';
 
 class Details extends Component {
     constructor(props) {
         super(props);
-        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax'];
+        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax', 'house-tax'];
         this.dataObject = {};
         this.getSubcollections = this.getSubcollections.bind(this);
         this.filterData = this.filterData.bind(this);
         this.landData = [];
         this.vehicleData = [];
         this.incomeData = [];
+        this.houseData = [];
         this.state = { loaded: false };
     }
 
@@ -54,6 +56,7 @@ class Details extends Component {
         this.landData = [];
         this.vehicleData = [];
         this.incomeData = [];
+        this.houseData = [];
         if (this.dataObject) {
 
             for (let key in this.dataObject) {
@@ -66,6 +69,9 @@ class Details extends Component {
                 }
                 else if (key.includes('income-tax')) {
                     this.incomeData.push(this.dataObject[key]);
+                }
+                else if (key.includes('house-tax')) {
+                    this.houseData.push(this.dataObject[key]);
                 }
             }
             this.setState({ loaded: !this.state.loaded });
@@ -88,10 +94,11 @@ class Details extends Component {
         // let renderIncome = (this.incomeData.length) ? <Income details={this.landData} /> : '';
         console.log('loaded?', this.state.loaded);
         return (<div className = "container">
-            <h2>The Details Pane</h2>
+            <h2 style = {{margin : '15px'}}>The Details Pane</h2>
             {this.landData.length ? this.landData.map((item) => (<Land details={item} />)) : ''}
             {this.vehicleData.length ? this.vehicleData.map((item) => (<Vehicle details={item} />)) : ''}
             {this.incomeData.length ?   this.incomeData.map((item) => (<Income details={item} />)) : ''}
+            {this.houseData.length ?   this.houseData.map((item) => (<House details={item} />)) : ''}
             {/* {renderLand}
             {renderVehicle}
             {renderIncome} */}
