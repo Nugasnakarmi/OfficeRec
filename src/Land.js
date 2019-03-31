@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './detailscontent.css';
 import fixDate from './FixDate';
+import land from './res/land.png';
 
 class Land extends Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class Land extends Component {
                     <p className='content-para'>Ward Number: {this.props.details.Location.ward}</p>
                 </div>
                 <div className = "col-6">
-                    <img className = "img-responsive" src = "https://shellabears.com.au/wp-content/themes/shellabears/images/suburb-icon-sold-pin.png" height = "75" width = "75"></img>
+                    <img className = "img-responsive" src = {land} height = "75" width = "75"></img>
                 </div>
                 <div className="col-6">
                     <p className='content-para'>Area: {this.props.details.area} sq. meter</p>
