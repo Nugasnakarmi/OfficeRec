@@ -17,84 +17,33 @@ class Precords extends Component {
         this.writeDetails = this.writeDetails.bind(this);
         this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
         this.writeLandDetails = this.writeLandDetails.bind(this);
+        this.writeIncomeDetails = this.writeIncomeDetails.bind(this);
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
     writeDetails(event) {
         event.preventDefault();
-        this.db.collection("UserBase").doc(this.state.email).set({
-            ['Citizenship Number']: this.state.citizenship_num,
-            ['Date of Birth']: this.state.dob,
-            Name: this.state.name,
-            isAdmin: false
-        })
-            .then(function () {
-                console.log("Document successfully written!");
+        if (this.state.email) {
+            this.db.collection("UserBase").doc(this.state.email).set({
+                ['Citizenship Number']: this.state.citizenship_num,
+                ['Date of Birth']: this.state.dob,
+                Name: this.state.name,
+                isAdmin: false
             })
-            .catch(function (error) {
-                console.error("Error writing document: ", error);
-            });
+                .then(function () {
+                    console.log("Document successfully written!");
+                })
+                .catch(function (error) {
+                    console.error("Error writing document: ", error);
+                });
+        }
+        else {
+            window.alert("User cannot be empty");
+        }
     }
 
-    // writeVehicleDetails(e){
-    //     e.preventDefault();
-    //     if(this.state.email){
-    //     var droplist = document.getElementById("drop-vehicle")
-    //     var selected = droplist.selectedIndex;
-    //     // var vehiclecount;
-    //     var vehicleRef;
-    //     console.log(selected +1);
 
-    //     if(selected === 0){
-    //        vehicleRef= this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("2 wheeler");
-    //        vehicleRef.get().then( (doc) =>{
-    //            vehiclecount= doc.data()["count"]
-    //         });
-    //         if(vehiclecount){
-    //             vehicleRef.set({
-    //                 VRN: this.state.VRN,
-    //                 count: vehiclecount +1
-
-    //              }) 
-    //         }
-    //         else{
-    //             vehicleRef.set({
-    //                 VRN: this.state.VRN,
-    //                 count: 1
-
-    //              }) 
-    //         }
-
-    //     }
-    //     else{
-    //         console.log("4 wheeler");
-    //        vehicleRef= this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc("4 wheeler");
-    //        vehicleRef.get().then( (doc) =>{
-    //            vehiclecount= doc.data()["count"]
-    //         });
-    //         if(vehiclecount){
-    //             vehicleRef.set({
-    //                 VRN: this.state.VRN,
-    //                 count: vehiclecount +1
-
-    //              }) 
-    //         }
-    //         else{
-    //             vehicleRef.set({
-    //                 VRN: this.state.VRN,
-    //                 count: 1
-
-    //              }) 
-    //         }
-    //     }
-    // }
-    // else{
-    //            window.alert( "User cannot be empty");
-
-    // }
-
-    // }
     writeVehicleDetails(e) {
         e.preventDefault();
         var userRef;
@@ -114,8 +63,9 @@ class Precords extends Component {
                         vehicleRef.set(
                             {
                                 amount: parseFloat(this.state.taxAmount),
-                                due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                                type: "2 wheeler"
+                                ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                                type: "2 wheeler",
+                                VRN: this.state.VRN
                             }, { merge: true }
                         ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
 
@@ -125,14 +75,15 @@ class Precords extends Component {
                         vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
                         vehicleRef.set({
                             amount: parseFloat(this.state.taxAmount),
-                            due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                            type: "4 wheeler"
+                            ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                            type: "4 wheeler",
+                            VRN: this.state.VRN
                         }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
                     }
                     console.log(doc.data())
                 }
-                else{
-                   window.alert("User does not exist"); 
+                else {
+                    window.alert("User does not exist");
                 }
             })
             console.log(selected + 1);
@@ -155,89 +106,117 @@ class Precords extends Component {
         landRef = this.db.collection("UserBase").doc(this.state.email).collection("land-tax");
 
         if (this.state.email) {
-            userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc)=>{
-                if(doc.data()){
+            userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc) => {
+                if (doc.data()) {
                     query = landRef
-                .where("kittaId", "==", parseFloat(this.state.kittaId))
-                .where("Location.ward", "==", parseFloat(this.state.ward))
-                .where("Location.municipality", "==", this.state.municipality)
-                .where("Location.province", "==", this.state.province)
-                .where("Location.district", "==", this.state.district)
-                ;
-            console.log(query);
-            // 
-            query
-                .get()
-                .then(function (querySnapshot) {
+                        .where("kittaId", "==", parseFloat(this.state.kittaId))
+                        .where("Location.ward", "==", parseFloat(this.state.ward))
+                        .where("Location.municipality", "==", this.state.municipality)
+                        .where("Location.province", "==", this.state.province)
+                        .where("Location.district", "==", this.state.district)
+                        ;
+                    console.log(query);
+                    // 
+                    query
+                        .get()
+                        .then(function (querySnapshot) {
 
 
-                    querySnapshot.forEach(function (doc) {
-                        docCount++;
-                        // doc.data() is never undefined for query doc snapshots
-                        console.log(doc.id, " => ", doc.data());
-                        // if(updateCount < parseFloat(doc.id) ){
-                        //     updateCount = parseFloat(doc.id)
-                        // };
-                        updateCount = doc.id;
-                    });
-                }).then(() => {
-                    landRef.get().then((sd) => {
-                        sd.forEach((doc) => {
+                            querySnapshot.forEach(function (doc) {
+                                docCount++;
+                                // doc.data() is never undefined for query doc snapshots
+                                console.log(doc.id, " => ", doc.data());
+                                // if(updateCount < parseFloat(doc.id) ){
+                                //     updateCount = parseFloat(doc.id)
+                                // };
+                                updateCount = doc.id;
+                            });
+                        }).then(() => {
+                            landRef.get().then((sd) => {
+                                sd.forEach((doc) => {
 
-                            console.log(doc.id, " =>", doc.data())
-                            if (count < parseFloat(doc.id)) {
-                                count = parseFloat(doc.id)
-                            };
+                                    console.log(doc.id, " =>", doc.data())
+                                    if (count < parseFloat(doc.id)) {
+                                        count = parseFloat(doc.id)
+                                    };
+                                });
+                            }).then(() => {
+                                if (docCount === 0) {
+                                    landRef.doc((parseFloat(count) + 1).toString()).set({
+                                        Location: {
+                                            province: this.state.province,
+                                            district: this.state.district,
+                                            municipality: this.state.municipality,
+                                            ward: parseFloat(this.state.ward)
+                                        },
+                                        kittaId: parseFloat(this.state.kittaId),
+                                        taxAmount: parseFloat(this.state.taxAmountLand),
+                                        area: parseFloat(this.state.area),
+                                        ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
+
+                                    }, { merge: true });
+                                    window.alert("data added successfully");
+                                }
+                                else {
+                                    landRef.doc(updateCount.toString()).set({
+                                        Location: {
+                                            province: this.state.province,
+                                            district: this.state.district,
+                                            municipality: this.state.municipality,
+                                            ward: parseFloat(this.state.ward)
+                                        },
+                                        kittaId: parseFloat(this.state.kittaId),
+                                        taxAmount: parseFloat(this.state.taxAmountLand),
+                                        area: parseFloat(this.state.area),
+                                        ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
+
+                                    }, { merge: true });
+                                    window.alert("data updated");
+                                }
+                            });
+                        }).catch(function (error) {
+                            console.log("Error getting documents: ", error);
                         });
-                    }).then(() => {
-                        if (docCount === 0) {
-                            landRef.doc((parseFloat(count) + 1).toString()).set({
-                                Location: {
-                                    province: this.state.province,
-                                    district: this.state.district,
-                                    municipality: this.state.municipality,
-                                    ward: parseFloat(this.state.ward)
-                                },
-                                kittaId: parseFloat(this.state.kittaId),
-                                taxAmount: parseFloat(this.state.taxAmountLand),
-                                area: parseFloat(this.state.area),
-                                ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
-
-                            }, { merge: true });
-                            window.alert("data added successfully");
-                        }
-                        else {
-                            landRef.doc(updateCount.toString()).set({
-                                Location: {
-                                    province: this.state.province,
-                                    district: this.state.district,
-                                    municipality: this.state.municipality,
-                                    ward: parseFloat(this.state.ward)
-                                },
-                                kittaId: parseFloat(this.state.kittaId),
-                                taxAmount: parseFloat(this.state.taxAmountLand),
-                                area: parseFloat(this.state.area),
-                                ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
-
-                            }, { merge: true });
-                            window.alert("data updated");
-                        }
-                    });
-                }).catch(function (error) {
-                    console.log("Error getting documents: ", error);
-                });
                 }
-                else{
+                else {
                     window.alert("User does not exist")
                 }
             })
-            
+
         }
         else {
             window.alert("User cannot be empty");
         }
     }
 
+    writeIncomeDetails(e) {
+        e.preventDefault();
+        var userRef;
+        var incomeRef;
+        if (this.state.email) {
+            userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc) => {
+                if (doc.data()) {
+                    incomeRef = this.db.collection("UserBase").doc(this.state.email).collection("income-tax");
+
+                    incomeRef.doc(this.state.bn).set({
+                        PAN:   this.state.PAN,
+                        ['business name']: this.state.bn,
+                        ['type of employment']: this.state.employType,
+                        ['annual income']: this.state.income,
+                        taxAmount: this.state.taxAmountIncome,
+                        ['due date']:this.state.dueDateIncome
+
+                    }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
+                }
+                else {
+                    window.alert("User does not exist")
+                }
+            })
+        }
+        else {
+            window.alert("User cannot be empty");
+        }
+    }
     dropChange(index) {
         console.log(index);
         // this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc()
@@ -252,24 +231,28 @@ class Precords extends Component {
                     <section>
                         <h2>Personal Details</h2>
                         <div className="form-group">
+
                             <label for="InputEmail1">Email Address</label>
                             <input value={this.state.email} name="email" type="email" onChange={this.handleChange}
                                 className="form-control" id="InputEmail1" placeholder="Enter email" />
                         </div>
-                        <div className="form-group">
-                            <label for="name">Name</label>
-                            <input value={this.state.name} name="name" className="form-control" type="text" id="name" onChange={this.handleChange} placeholder="Name"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="citizenship">Citizenship Number</label>
-                            <input value={this.state.citizenship_num} name="citizenship_num" className="form-control" id="citizenship" type="text" onChange={this.handleChange} placeholder="Citizenship Number"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="dateofbirth">Date of Birth</label>
-                            <input value={this.state.dob} name="dob" type="text" id="dateofbirth" onChange={this.handleChange} className="form-control" placeholder="Date in AD"></input>
-                        </div>
+                        <div className="form-row">
+                            <div className="col-md-4 mb-3">
+                                <label for="name">Name</label>
+                                <input value={this.state.name} name="name" className="form-control" type="text" id="name" onChange={this.handleChange} placeholder="Name"></input>
+                            </div>
+                            <div className="col-md-4 mb-3">
+                                <label for="citizenship">Citizenship Number</label>
+                                <input value={this.state.citizenship_num} name="citizenship_num" className="form-control" id="citizenship" type="text" onChange={this.handleChange} placeholder="Citizenship Number"></input>
+                            </div>
+                            <div className="col-md-4 mb-3">
+                                <label for="dateofbirth">Date of Birth</label>
+                                <input value={this.state.dob} name="dob" type="date" id="dateofbirth" onChange={this.handleChange} className="form-control" placeholder="Date in AD"></input>
+                            </div>
 
-                        <button onClick={this.writeDetails} className='btn btn-primary'>Write</button>
+
+                            <button onClick={this.writeDetails} className='btn btn-primary'>Write</button>
+                        </div>
                     </section>
 
                     <section>
@@ -322,7 +305,7 @@ class Precords extends Component {
                                 <label htmlFor="inputkitta"><i>Kitta Number</i></label>
                                 <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
                             </div>
-                            <div class="col-md-6 mb-3"> {/*Has not been implemented in database yet */}
+                            <div class="col-md-6 mb-3">
                                 <label htmlFor="area">Area</label>
                                 <input value={this.state.area} id="area" name="area" className="form-control" onChange={this.handleChange} placeholder="Area in sq. meters"></input>                            </div>
                         </div>
@@ -339,6 +322,40 @@ class Precords extends Component {
                             </div>
                             <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
                         </div>
+                    </section>
+
+                    <section>
+                        <h2> Income details </h2>
+                        <div className="form-row">
+                            <div class="col-md-3 mb-3">
+                                <label htmlFor="inputpan">PAN</label>
+                                <input value={this.state.PAN} id="inputpan" name="PAN" type ="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label htmlFor="income"> Annual Income</label>
+                                <input value={this.state.income} id="income" name="income" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="employType"> Employment type</label>
+                                <input value={this.state.employType} id="employType" name="employType" className="form-control" onChange={this.handleChange} placeholder="Eg: Business"></input>
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="inputbn">Business name</label>
+                                <input value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} placeholder="Eg: ABC trading pvt ltd."></input>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label htmlFor="dueDateIncome"> Due date</label>
+                                <input value={this.state.dueDateIncome} type="date" id="dueDateIncome" name="dueDateIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: 12th March 2020"></input>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label htmlFor="taxAmount"> Tax amount</label>
+                                <input value={this.state.taxAmountIncome} id="taxAmountIncome" name="taxAmountIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                            </div>
+                            <button onClick={this.writeIncomeDetails} className="btn btn-primary">Submit</button>
+                        </div>
+
                     </section>
                 </form>
             </div>
