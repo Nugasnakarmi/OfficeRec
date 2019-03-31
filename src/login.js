@@ -33,8 +33,8 @@ class Login extends Component {
 
         return (
             <div className='row pad'>
-                <div className='col-3'></div>
-                <div className="col-6 jumbotron shadow">
+                <div className='col-lg-3 col-md-2 col-sm-2 col-xl-3'></div>
+                <div className="col-lg-6 col-md-8 col-sm-8 col-xs-12 col-xl-6 container-fluid shadow login-box">
                 <h2 align = 'center'>AUTOMATA</h2>
                     <form>
                         <div className="form-group">
@@ -61,7 +61,7 @@ class Login extends Component {
                     </form>
 
                 </div>
-                <div className='col-3'></div>
+                <div className='col-lg-3 col-md-2 col-sm-2 col-xl-3'></div>
             </div>
         );
     }
