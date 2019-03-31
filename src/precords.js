@@ -251,7 +251,7 @@ class Precords extends Component {
                     </section>
 
                     <section>
-                        <h2> Vehicle here </h2>
+                        <h2> Vehicle details here </h2>
                         <div className="form-group">
                             <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
                             <select id="drop-vehicle" className="custom-select">
