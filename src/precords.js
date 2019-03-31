@@ -115,7 +115,8 @@ class Precords extends Component {
                             {
                                 amount: parseFloat(this.state.taxAmount),
                                 due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                                type: "2 wheeler"
+                                type: "2 wheeler",
+                                VRN: this.state.VRN
                             }, { merge: true }
                         ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
 
@@ -126,13 +127,14 @@ class Precords extends Component {
                         vehicleRef.set({
                             amount: parseFloat(this.state.taxAmount),
                             due: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                            type: "4 wheeler"
+                            type: "4 wheeler",
+                            VRN: this.state.VRN
                         }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
                     }
                     console.log(doc.data())
                 }
-                else{
-                   window.alert("User does not exist"); 
+                else {
+                    window.alert("User does not exist");
                 }
             })
             console.log(selected + 1);
@@ -155,83 +157,83 @@ class Precords extends Component {
         landRef = this.db.collection("UserBase").doc(this.state.email).collection("land-tax");
 
         if (this.state.email) {
-            userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc)=>{
-                if(doc.data()){
+            userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc) => {
+                if (doc.data()) {
                     query = landRef
-                .where("kittaId", "==", parseFloat(this.state.kittaId))
-                .where("Location.ward", "==", parseFloat(this.state.ward))
-                .where("Location.municipality", "==", this.state.municipality)
-                .where("Location.province", "==", this.state.province)
-                .where("Location.district", "==", this.state.district)
-                ;
-            console.log(query);
-            // 
-            query
-                .get()
-                .then(function (querySnapshot) {
+                        .where("kittaId", "==", parseFloat(this.state.kittaId))
+                        .where("Location.ward", "==", parseFloat(this.state.ward))
+                        .where("Location.municipality", "==", this.state.municipality)
+                        .where("Location.province", "==", this.state.province)
+                        .where("Location.district", "==", this.state.district)
+                        ;
+                    console.log(query);
+                    // 
+                    query
+                        .get()
+                        .then(function (querySnapshot) {
 
 
-                    querySnapshot.forEach(function (doc) {
-                        docCount++;
-                        // doc.data() is never undefined for query doc snapshots
-                        console.log(doc.id, " => ", doc.data());
-                        // if(updateCount < parseFloat(doc.id) ){
-                        //     updateCount = parseFloat(doc.id)
-                        // };
-                        updateCount = doc.id;
-                    });
-                }).then(() => {
-                    landRef.get().then((sd) => {
-                        sd.forEach((doc) => {
+                            querySnapshot.forEach(function (doc) {
+                                docCount++;
+                                // doc.data() is never undefined for query doc snapshots
+                                console.log(doc.id, " => ", doc.data());
+                                // if(updateCount < parseFloat(doc.id) ){
+                                //     updateCount = parseFloat(doc.id)
+                                // };
+                                updateCount = doc.id;
+                            });
+                        }).then(() => {
+                            landRef.get().then((sd) => {
+                                sd.forEach((doc) => {
 
-                            console.log(doc.id, " =>", doc.data())
-                            if (count < parseFloat(doc.id)) {
-                                count = parseFloat(doc.id)
-                            };
+                                    console.log(doc.id, " =>", doc.data())
+                                    if (count < parseFloat(doc.id)) {
+                                        count = parseFloat(doc.id)
+                                    };
+                                });
+                            }).then(() => {
+                                if (docCount === 0) {
+                                    landRef.doc((parseFloat(count) + 1).toString()).set({
+                                        Location: {
+                                            province: this.state.province,
+                                            district: this.state.district,
+                                            municipality: this.state.municipality,
+                                            ward: parseFloat(this.state.ward)
+                                        },
+                                        kittaId: parseFloat(this.state.kittaId),
+                                        taxAmount: parseFloat(this.state.taxAmountLand),
+                                        area: parseFloat(this.state.area),
+                                        ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
+
+                                    }, { merge: true });
+                                    window.alert("data added successfully");
+                                }
+                                else {
+                                    landRef.doc(updateCount.toString()).set({
+                                        Location: {
+                                            province: this.state.province,
+                                            district: this.state.district,
+                                            municipality: this.state.municipality,
+                                            ward: parseFloat(this.state.ward)
+                                        },
+                                        kittaId: parseFloat(this.state.kittaId),
+                                        taxAmount: parseFloat(this.state.taxAmountLand),
+                                        area: parseFloat(this.state.area),
+                                        ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
+
+                                    }, { merge: true });
+                                    window.alert("data updated");
+                                }
+                            });
+                        }).catch(function (error) {
+                            console.log("Error getting documents: ", error);
                         });
-                    }).then(() => {
-                        if (docCount === 0) {
-                            landRef.doc((parseFloat(count) + 1).toString()).set({
-                                Location: {
-                                    province: this.state.province,
-                                    district: this.state.district,
-                                    municipality: this.state.municipality,
-                                    ward: parseFloat(this.state.ward)
-                                },
-                                kittaId: parseFloat(this.state.kittaId),
-                                taxAmount: parseFloat(this.state.taxAmountLand),
-                                area: parseFloat(this.state.area),
-                                ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
-
-                            }, { merge: true });
-                            window.alert("data added successfully");
-                        }
-                        else {
-                            landRef.doc(updateCount.toString()).set({
-                                Location: {
-                                    province: this.state.province,
-                                    district: this.state.district,
-                                    municipality: this.state.municipality,
-                                    ward: parseFloat(this.state.ward)
-                                },
-                                kittaId: parseFloat(this.state.kittaId),
-                                taxAmount: parseFloat(this.state.taxAmountLand),
-                                area: parseFloat(this.state.area),
-                                ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
-
-                            }, { merge: true });
-                            window.alert("data updated");
-                        }
-                    });
-                }).catch(function (error) {
-                    console.log("Error getting documents: ", error);
-                });
                 }
-                else{
+                else {
                     window.alert("User does not exist")
                 }
             })
-            
+
         }
         else {
             window.alert("User cannot be empty");
@@ -322,7 +324,7 @@ class Precords extends Component {
                                 <label htmlFor="inputkitta"><i>Kitta Number</i></label>
                                 <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
                             </div>
-                            <div class="col-md-6 mb-3"> {/*Has not been implemented in database yet */}
+                            <div class="col-md-6 mb-3">
                                 <label htmlFor="area">Area</label>
                                 <input value={this.state.area} id="area" name="area" className="form-control" onChange={this.handleChange} placeholder="Area in sq. meters"></input>                            </div>
                         </div>
@@ -339,6 +341,21 @@ class Precords extends Component {
                             </div>
                             <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
                         </div>
+                    </section>
+
+                    <section>
+                        <h2> Income details </h2>
+                        <div className="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="inputpan"><i>preventDefault Number</i></label>
+                                <input value={this.state.PAN} id="inputpan" name="PAN" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label htmlFor="income"> Annual Income</label>
+                                <input value={this.state.income} id="income" name="income" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                            </div>
+                        </div>
+
                     </section>
                 </form>
             </div>
