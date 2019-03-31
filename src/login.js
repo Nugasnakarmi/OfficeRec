@@ -35,6 +35,7 @@ class Login extends Component {
             <div className='row pad'>
                 <div className='col-3'></div>
                 <div className="col-6 jumbotron shadow">
+                <h2 align = 'center'>AUTOMATA</h2>
                     <form>
                         <div className="form-group">
                             <label for="InputEmail1"> Email Address</label>

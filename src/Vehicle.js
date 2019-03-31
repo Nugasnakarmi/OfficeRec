@@ -13,7 +13,7 @@ class Vehicle extends Component {
             <div className="row">
                 <div className="location col-6">
                     <p className='content-para'>Registration Number: {this.props.details.VRN}</p>
-                    <p className='content-para'>Vehicle Type: NRs. {this.props.details.type}</p>
+                    <p className='content-para'>Vehicle Type: {this.props.details.type}</p>
                     <p className='content-para'>Tax Amount: NRs. {this.props.details.amount}</p>
                     <p className='content-para'>Due: {fixDate(this.props.details['due date'])}</p>
                 </div>
