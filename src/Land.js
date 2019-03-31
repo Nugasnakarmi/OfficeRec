@@ -11,14 +11,6 @@ class Land extends Component {
         this.display = '';
     }
 
-    componentDidMount() {
-        console.log("received props", this.props.details);
-        // for (let item in this.props.details){
-        //     this.displayobject();
-        // }
-        console.log("CDM");
-    }
-
     render() {
         console.log("RENDER");
         return (<div className="item-box">
