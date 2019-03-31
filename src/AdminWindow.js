@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
-import fixDate from './FixDate';
+import Details from './Details';
+//import fixDate from './FixDate';
 
 class AdminWindow extends Component {
     constructor(props) {
@@ -40,7 +41,7 @@ class AdminWindow extends Component {
     }
 
     render() {
-        var date = this.state.userInfo['Date of Birth'];
+       // var date = this.state.userInfo['Date of Birth'];
        return (
             <div className='admin-panel' >
                 <h1>Admin Panel</h1>
@@ -60,13 +61,7 @@ class AdminWindow extends Component {
 
                 <button onClick={this.handleClick} className="btn btn-primary">Search</button>
 
-                {this.state.searched ? (<div className="precords-content">
-                    <p className='content-para'>User Email: {this.state.email}</p>
-                    {console.log("displaying")}
-                    <p className='content-para'>Name: {this.state.userInfo['Name']}</p>
-                    <p className='content-para'>Citizenship Number: {this.state.userInfo['Citizenship Number']}</p>
-                    <p className='content-para'>Date of Birth: {date ? fixDate(date) : 'Not Available'}</p>
-                </div>
+                {this.state.searched ? (<Details user={this.state.email}></Details>
                 )
                     :
                     (
