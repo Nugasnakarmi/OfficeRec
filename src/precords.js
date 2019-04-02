@@ -7,13 +7,15 @@ class Precords extends Component {
         this.state = {
             userInfo: '',
             email: '',
+            VRN : ''
         };
 
         this.count = 0;
         this.db = fire.firestore();
 
         this.handleChange = this.handleChange.bind(this);
-        this.dropChange = this.dropChange.bind(this);
+        this.handleChangeVRN = this.handleChangeVRN.bind(this);
+        // this.handleKeyUp= this.handleKeyUp.bind(this);
         this.writeDetails = this.writeDetails.bind(this);
         this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
         this.writeLandDetails = this.writeLandDetails.bind(this);
@@ -22,15 +24,31 @@ class Precords extends Component {
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
+   
+    handleChangeVRN(e){
+        
+        const input = e.target;
+  
+  var start = input.selectionStart;
+  var end = input.selectionEnd;
+ 
+   
+        this.setState(
+          {[e.target.name] : e.target.value.toUpperCase()},
+         () => input.setSelectionRange(start, end) );
+        }
+       
+    
 
-    writeDetails(event) {
+
+    writeDetails(event){
         event.preventDefault();
         if (this.state.email) {
             this.db.collection("UserBase").doc(this.state.email).set({
-                ['Citizenship Number']: this.state.citizenship_num,
+                ['Citizenship Number']: this.state.citizenship_num ,
                 ['Date of Birth']: this.state.dob,
-                Name: this.state.name,
-                isAdmin: false
+                Name: this.state.name
+                
             })
                 .then(function () {
                     console.log("Document successfully written!");
@@ -256,11 +274,7 @@ class Precords extends Component {
             window.alert("User cannot be empty");
         }
     }
-    dropChange(index) {
-        console.log(index);
-        // this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc()
-    }
-
+   
     render() {
         var selectlist;
 
@@ -305,7 +319,7 @@ class Precords extends Component {
                         </div>
                         <div className="form-group">
                             <label for="vrn">Vehicle Registration Number</label>
-                            <input value={this.state.VRN} className="form-control" name="VRN" type="text" id="vrn" onChange={this.handleChange} placeholder="Eg: BA 2 CHA 0000"></input>
+                            <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn"  onChange={this.handleChangeVRN}  placeholder="Eg: BA 2 CHA 0000"></input>
                         </div>
 
                         <div class="form-row">
