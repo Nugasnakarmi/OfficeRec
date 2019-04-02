@@ -51,7 +51,7 @@ class Precords extends Component {
                 
             })
                 .then(function () {
-                    console.log("Document successfully written!");
+                   window.alert("successfully written!");
                 })
                 .catch(function (error) {
                     console.error("Error writing document: ", error);
