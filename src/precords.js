@@ -46,7 +46,7 @@ class Precords extends Component {
         if (this.state.email) {
             this.db.collection("UserBase").doc(this.state.email).set({
                 ['Citizenship Number']: this.state.citizenship_num ,
-                ['Date of Birth']: this.state.dob,
+                ['Date of Birth']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dob)),
                 Name: this.state.name
                 
             })
