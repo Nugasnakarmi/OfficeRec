@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
+
 class Precords extends Component {
     constructor(props) {
         super(props);
         this.state = {
             userInfo: '',
             email: '',
-            VRN : ''
+            VRN: '',
+            exampleVRN: 'BA 2 PA 0000'
         };
 
         this.count = 0;
@@ -15,43 +17,71 @@ class Precords extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeVRN = this.handleChangeVRN.bind(this);
-        // this.handleKeyUp= this.handleKeyUp.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
         this.writeDetails = this.writeDetails.bind(this);
         this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
         this.writeLandDetails = this.writeLandDetails.bind(this);
         this.writeIncomeDetails = this.writeIncomeDetails.bind(this);
-        this.writeHouseDetails= this.writeHouseDetails.bind(this);
+        this.writeHouseDetails = this.writeHouseDetails.bind(this);
+        
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
-   
-    handleChangeVRN(e){
-        
+
+    handleChangeVRN(e) {
+
         const input = e.target;
-  
-  var start = input.selectionStart;
-  var end = input.selectionEnd;
- 
-   
-        this.setState(
-          {[e.target.name] : e.target.value.toUpperCase()},
-         () => input.setSelectionRange(start, end) );
-        }
        
-    
+
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        // var re = /^[a-z]{2} [1-9]{1,2} [a-z]{2,3} [0-9]{1,4}$/i;
+        // if( !re.test( input.value) ){
+        //     e.returnValue = false
+        // }
+        this.setState(
+            { [input.name]: input.value.toUpperCase() },
+            () => input.setSelectionRange(start, end))
+        //  re.test( input.value) ?(  )
+        //     :
+        //     ( 
+        //         window.alert( "0no spaces")
+        //     );
+
+    }
+
+    handleSelectChange(e) {
+        var droplist = document.getElementById("drop-vehicle")
+        var selected = droplist.selectedIndex;
+        selected ? (this.setState(
+            {
+                exampleVRN: "BA 3 CHA 1234"
+            }
+        )
+        )
+            :
+            (this.setState(
+                {
+                    exampleVRN: "ME 2 PA 1231"
+                })
+
+            )
+    }
 
 
-    writeDetails(event){
+
+    writeDetails(event) {
+
         event.preventDefault();
         if (this.state.email) {
             this.db.collection("UserBase").doc(this.state.email).set({
-                ['Citizenship Number']: this.state.citizenship_num ,
+                ['Citizenship Number']: this.state.citizenship_num,
                 ['Date of Birth']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dob)),
                 Name: this.state.name
-                
+
             })
                 .then(function () {
-                   window.alert("successfully written!");
+                    window.alert("successfully written!");
                 })
                 .catch(function (error) {
                     console.error("Error writing document: ", error);
@@ -208,20 +238,20 @@ class Precords extends Component {
         }
     }
 
-    writeHouseDetails(e){
+    writeHouseDetails(e) {
         e.preventDefault();
         var userRef;
         var houseRef;
         var droplist = document.getElementById("drop-house")
-            var selected = droplist.options[droplist.selectedIndex].value;
-            console.log(selected);
+        var selected = droplist.options[droplist.selectedIndex].value;
+        console.log(selected);
         if (this.state.email) {
             userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc) => {
                 if (doc.data()) {
                     houseRef = this.db.collection("UserBase").doc(this.state.email).collection("house-tax");
-                    
+
                     houseRef.doc(this.state.houseno).set({
-                        houseno : parseFloat(this.state.houseno),
+                        houseno: parseFloat(this.state.houseno),
                         Location: {
                             province: this.state.hprovince,
                             district: this.state.hdistrict,
@@ -229,10 +259,10 @@ class Precords extends Component {
                             ward: parseFloat(this.state.hward)
 
                         },
-                        nostoreys: parseFloat( this.state.storey),
-                        type : selected,
+                        nostoreys: parseFloat(this.state.storey),
+                        type: selected,
                         ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateHouse)),
-                        taxAmount : parseFloat(this.state.taxAmountHouse)
+                        taxAmount: parseFloat(this.state.taxAmountHouse)
 
                     }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
                 }
@@ -244,7 +274,7 @@ class Precords extends Component {
         else {
             window.alert("User cannot be empty");
         }
-                    
+
     }
     writeIncomeDetails(e) {
         e.preventDefault();
@@ -256,12 +286,12 @@ class Precords extends Component {
                     incomeRef = this.db.collection("UserBase").doc(this.state.email).collection("income-tax");
 
                     incomeRef.doc(this.state.bn).set({
-                        PAN:   parseFloat(this.state.PAN),
+                        PAN: parseFloat(this.state.PAN),
                         ['business name']: this.state.bn,
                         ['type of employment']: this.state.employType,
                         ['annual income']: parseFloat(this.state.income),
                         taxAmount: parseFloat(this.state.taxAmountIncome),
-                        ['due date']:firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateIncome))
+                        ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateIncome))
 
                     }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
                 }
@@ -274,10 +304,11 @@ class Precords extends Component {
             window.alert("User cannot be empty");
         }
     }
-   
+
     render() {
         var selectlist;
 
+       
         return (
             <div className="precords container">
                 <form>
@@ -312,14 +343,14 @@ class Precords extends Component {
                         <h2> Vehicle details here </h2>
                         <div className="form-group">
                             <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
-                            <select id="drop-vehicle" className="custom-select">
+                            <select id="drop-vehicle" onChange={this.handleSelectChange} className="custom-select">
                                 <option> two-wheeler</option>
                                 <option> four-wheeler</option>
                             </select>
                         </div>
                         <div className="form-group">
                             <label for="vrn">Vehicle Registration Number</label>
-                            <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn"  onChange={this.handleChangeVRN}  placeholder="Eg: BA 2 CHA 0000"></input>
+                            <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder={this.state.exampleVRN}></input>
                         </div>
 
                         <div class="form-row">
@@ -381,10 +412,10 @@ class Precords extends Component {
                         <div className="form-row">
                             <div className="col-md-12 mb-3">
                                 <label htmlFor="houseno">House number</label>
-                                <input value={this.state.houseno} id="houseno" name="houseno" type ="number" className="form-control" onChange={this.handleChange} placeholder="Eg: house number"></input>
-                           
-                           </div>
-                           
+                                <input value={this.state.houseno} id="houseno" name="houseno" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: house number"></input>
+
+                            </div>
+
                         </div>
                         <label htmlFor="inputHouseLocation">Enter Location</label>
                         <div class="form-row" id="inputHouseLocation">
@@ -402,19 +433,19 @@ class Precords extends Component {
                             </div>
                         </div>
                         <div className="form-row">
-                            
+
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="storey">Number of Storeys</label>
                                 <input value={this.state.storey} id="storey" name="storey" className="form-control" onChange={this.handleChange} placeholder="Eg: 4"></input>                            </div>
 
-                                <div class="col-md-6 mb-3">  
+                            <div class="col-md-6 mb-3">
                                 <label htmlFor="drop-house">Type of residence</label>
                                 <select id="drop-house" className="custom-select">
-                                <option>Residential</option>
-                                <option>Rented</option>
-                            </select> 
-                                </div> 
-                        
+                                    <option>Residential</option>
+                                    <option>Rented</option>
+                                </select>
+                            </div>
+
                         </div>
 
                         <div className="form-row">
@@ -437,11 +468,11 @@ class Precords extends Component {
                         <div className="form-row">
                             <div class="col-md-3 mb-3">
                                 <label htmlFor="inputpan">PAN</label>
-                                <input value={this.state.PAN} id="inputpan" name="PAN" type ="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
+                                <input value={this.state.PAN} id="inputpan" name="PAN" type="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label htmlFor="income"> Annual Income</label>
-                                <input value={this.state.income} id="income" name="income" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                                <input value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="employType"> Employment type</label>
