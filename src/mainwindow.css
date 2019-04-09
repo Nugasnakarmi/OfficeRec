@@ -1,6 +1,7 @@
 .mainwindow-header{
     padding-left: 40px;
     padding-top: 20px;
+    /* background: red;     */
 }
 
 .dashboard-content{
@@ -8,9 +9,10 @@
     padding-top: 5px;
 }
 
-.content-para{
+.list{
     margin: none;
-    padding: none;
+    padding-left: none;
+    padding: 1px;
 }
 
 .rounded-photo{

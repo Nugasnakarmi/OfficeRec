@@ -79,7 +79,7 @@ class AddUser extends Component {
 
     render() {
         return (<div>
-            <header><h1>Add a New User</h1></header>
+            {/* <header><h1>Add a New User</h1></header> */}
             <div className='container'>
                 <form>
                     <section>
@@ -91,7 +91,6 @@ class AddUser extends Component {
                                 placeholder="Enter email" />
                             <small id="emailHelp" className="form-text text-muted"> We will never share your email with anyone else.</small>
                         </div>
-
                         <div className="form-group">
                             <label for="InputPassword1">Password</label>
                             <input value={this.state.password} onChange={this.handleChange} type='password'

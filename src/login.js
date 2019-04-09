@@ -33,8 +33,9 @@ class Login extends Component {
 
         return (
             <div className='row pad'>
-                <div className='col-3'></div>
-                <div className="col-6 jumbotron shadow">
+                <div className='col-lg-3 col-md-2 col-sm-2 col-xl-3'></div>
+                <div className="col-lg-6 col-md-8 col-sm-8 col-xs-12 col-xl-6 container-fluid shadow login-box">
+                    <h2 align='center'>AUTOMATA</h2>
                     <form>
                         <div className="form-group">
                             <label for="InputEmail1"> Email Address</label>
@@ -54,12 +55,16 @@ class Login extends Component {
                             <button type="submit" onClick={this.login} className="btn btn-primary loginbutton"> Login </button>
                         </div>
                         <div className='d-flex justify-content-center'>
-                            <small id="emailHelp" className="form-text text-muted">To register, contact your administrator.</small>
+                            {/* <small id="emailHelp" className="form-text text-muted">To register, contact your administrator.</small> */}
+                            <small id="emailHelp" className="form-text text-muted"><b>Administrator:</b> email: admin@automata.com, pass: admin123</small>
+                        </div>
+                        <div className='d-flex justify-content-center'>
+                            <small id="emailHelp" className="form-text text-muted"><b>User:</b> email: hari@gmail.com, pass: hari123</small>
                         </div>
                     </form>
 
                 </div>
-                <div className='col-3'></div>
+                <div className='col-lg-3 col-md-2 col-sm-2 col-xl-3'></div>
             </div>
         );
     }
