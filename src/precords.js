@@ -9,7 +9,9 @@ class Precords extends Component {
             userInfo: '',
             email: '',
             VRN: '',
+            citizenship_num: '',
             exampleVRN: 'BA 2 PA 0000'
+
         };
 
         this.count = 0;
@@ -24,6 +26,8 @@ class Precords extends Component {
         this.writeIncomeDetails = this.writeIncomeDetails.bind(this);
         this.writeHouseDetails = this.writeHouseDetails.bind(this);
 
+        this.handleCitizenship = this.handleCitizenship.bind(this);
+
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -31,22 +35,49 @@ class Precords extends Component {
     handleChangeVRN(e) {
 
         const input = e.target;
-
+        
 
         var start = input.selectionStart;
         var end = input.selectionEnd;
-        // var re = /^[a-z]{2} [1-9]{1,2} [a-z]{2,3} [0-9]{1,4}$/i;
-        // if( !re.test( input.value) ){
-        //     e.returnValue = false
+        
+        var length = input.value.length;
+        var asc = input.value.toUpperCase().charCodeAt( length-1  ) ;
+        console.log(asc);
+       if( ( asc >=65 && asc <= 90 ) || ( asc >= 48 && asc <= 57 ) || (asc === 32)){ this.setState(
+        { [input.name]: input.value.toUpperCase() },
+        () => input.setSelectionRange(start, end))}
+       
+      
+    }
+
+
+    handleCitizenship(e) {
+        const allowed = ['', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/', '-'];
+
+        // const allowedNum = ['','0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        // const allowedSym = [ '/', '-'];
+        // console.log("Substring", e.target.value.substr(-1));
+        // if (allowedNum.includes(e.target.value) && e.target.value.length === 1){
+        //      this.setState({ [e.target.name]: e.target.value });
         // }
-        this.setState(
-            { [input.name]: input.value.toUpperCase() },
-            () => input.setSelectionRange(start, end))
-        //  re.test( input.value) ?(  )
-        //     :
-        //     ( 
-        //         window.alert( "0no spaces")
-        //     );
+        // else{
+        //     if ((allowedNum.includes(e.target.value) || allowedSym.includes(e.target.value)) && e.target.value.length > 1){
+        //         if (!allowedSym.includes(e.target.value.substr(-2))){
+        //             this.setState({ [e.target.name]: e.target.value });
+        //         }
+        //         else{
+        //             if (!allowedSym.includes(e.target.value.substr(-1))){
+        //                 this.setState({ [e.target.name]: e.target.value });
+        //             }
+        //         }
+        //     } 
+        // }
+
+        if (allowed.includes(e.target.value.substr(-1))) {
+
+            this.setState({ [e.target.name]: e.target.value });
+        }
+
 
     }
 
@@ -91,7 +122,6 @@ class Precords extends Component {
             window.alert("User cannot be empty");
         }
     }
-
 
     writeVehicleDetails(e) {
         e.preventDefault();
@@ -338,7 +368,7 @@ class Precords extends Component {
                             </div>
                             <div className="col-md-4 mb-3">
                                 <label for="citizenship">Citizenship Number</label>
-                                <input value={this.state.citizenship_num} name="citizenship_num" className="form-control" id="citizenship" type="text" onChange={this.handleChange} placeholder="Citizenship Number"></input>
+                                <input value={this.state.citizenship_num} name="citizenship_num" className="form-control" id="citizenship" type="text" onChange={this.handleCitizenship} placeholder="Citizenship Number"></input>
                             </div>
                             <div className="col-md-4 mb-3">
                                 <label for="dateofbirth">Date of Birth</label>

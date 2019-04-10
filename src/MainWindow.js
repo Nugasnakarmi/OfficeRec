@@ -50,7 +50,7 @@ class MainWindow extends Component {
                         <p className='list'>Date of Birth: {date ? fixDate(date) : 'Not Available'}</p>
                     </div>
                     <div className="col-6">
-                        {this.state.imageUrl ? <img src={this.state.imageUrl} className="rounded-photo img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200' /> : <img src={profile} width='150' height='150' />}
+                        {this.state.imageUrl ? <img src={this.state.imageUrl} className="rounded-photo img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200' /> : <img src={profile} className="rounded-photo img-fluid img-thumbnail rounded float-right" alt="Profile Picture" width='200' height='200' />}
                     </div>
                 </div>
             </div>
