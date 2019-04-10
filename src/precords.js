@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
+
 class Precords extends Component {
     constructor(props) {
         super(props);
         this.state = {
             userInfo: '',
             email: '',
-            VRN: ''
+            VRN: '',
+            exampleVRN: 'BA 2 PA 0000'
         };
 
         this.count = 0;
@@ -15,12 +17,13 @@ class Precords extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeVRN = this.handleChangeVRN.bind(this);
-        // this.handleKeyUp= this.handleKeyUp.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
         this.writeDetails = this.writeDetails.bind(this);
         this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
         this.writeLandDetails = this.writeLandDetails.bind(this);
         this.writeIncomeDetails = this.writeIncomeDetails.bind(this);
         this.writeHouseDetails = this.writeHouseDetails.bind(this);
+        
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -28,20 +31,47 @@ class Precords extends Component {
     handleChangeVRN(e) {
 
         const input = e.target;
+       
 
         var start = input.selectionStart;
         var end = input.selectionEnd;
-
-
+        // var re = /^[a-z]{2} [1-9]{1,2} [a-z]{2,3} [0-9]{1,4}$/i;
+        // if( !re.test( input.value) ){
+        //     e.returnValue = false
+        // }
         this.setState(
-            { [e.target.name]: e.target.value.toUpperCase() },
-            () => input.setSelectionRange(start, end));
+            { [input.name]: input.value.toUpperCase() },
+            () => input.setSelectionRange(start, end))
+        //  re.test( input.value) ?(  )
+        //     :
+        //     ( 
+        //         window.alert( "0no spaces")
+        //     );
+
+    }
+
+    handleSelectChange(e) {
+        var droplist = document.getElementById("drop-vehicle")
+        var selected = droplist.selectedIndex;
+        selected ? (this.setState(
+            {
+                exampleVRN: "BA 3 CHA 1234"
+            }
+        )
+        )
+            :
+            (this.setState(
+                {
+                    exampleVRN: "ME 2 PA 1231"
+                })
+
+            )
     }
 
 
 
-
     writeDetails(event) {
+
         event.preventDefault();
         if (this.state.email) {
             this.db.collection("UserBase").doc(this.state.email).set({
@@ -277,6 +307,7 @@ class Precords extends Component {
     render() {
         var selectlist;
 
+       
         return (
             <div className="precords container">
                 <form>
@@ -311,14 +342,14 @@ class Precords extends Component {
                         <h2> Vehicle details here </h2>
                         <div className="form-group">
                             <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
-                            <select id="drop-vehicle" className="custom-select">
+                            <select id="drop-vehicle" onChange={this.handleSelectChange} className="custom-select">
                                 <option> two-wheeler</option>
                                 <option> four-wheeler</option>
                             </select>
                         </div>
                         <div className="form-group">
                             <label for="vrn">Vehicle Registration Number</label>
-                            <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="Eg: BA 2 CHA 0000"></input>
+                            <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder={this.state.exampleVRN}></input>
                         </div>
 
                         <div class="form-row">
@@ -440,7 +471,7 @@ class Precords extends Component {
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label htmlFor="income"> Annual Income</label>
-                                <input value={this.state.income} id="income" name="income" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                                <input value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="employType"> Employment type</label>
