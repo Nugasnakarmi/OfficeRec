@@ -41,9 +41,10 @@ class Precords extends Component {
         var end = input.selectionEnd;
         
         var length = input.value.length;
+        console.log( length);
         var asc = input.value.toUpperCase().charCodeAt( length-1  ) ;
         console.log(asc);
-       if( ( asc >=65 && asc <= 90 ) || ( asc >= 48 && asc <= 57 ) || (asc === 32)){ this.setState(
+       if( ( asc >= 65 && asc <= 90 ) || ( asc >= 48 && asc <= 57 ) || ( asc === 32 ) || ( length === 0)  ){ this.setState(
         { [input.name]: input.value.toUpperCase() },
         () => input.setSelectionRange(start, end))}
        
