@@ -23,7 +23,7 @@ class Precords extends Component {
         this.writeLandDetails = this.writeLandDetails.bind(this);
         this.writeIncomeDetails = this.writeIncomeDetails.bind(this);
         this.writeHouseDetails = this.writeHouseDetails.bind(this);
-        
+
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -31,7 +31,7 @@ class Precords extends Component {
     handleChangeVRN(e) {
 
         const input = e.target;
-       
+
 
         var start = input.selectionStart;
         var end = input.selectionEnd;
@@ -101,35 +101,46 @@ class Precords extends Component {
             var selected = droplist.selectedIndex;
             // var vehiclecount;
             var vehicleRef;
-
+            var re = /^[a-z]{2} [1-9]{1,2} [a-z]{2,3} [0-9]{1,4}$/i;
+            var test = re.test(this.state.VRN);
+            console.log( test );
             userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc) => {
                 if (doc.data()) {
-                    if (selected === 0) {
-                        vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
-                        //    vehicleRef.get().then( (doc) =>{
-                        //        vehiclecount= doc.data()["count"]
-                        //     });
-                        vehicleRef.set(
-                            {
+                    if (test) {
+                        if (selected === 0) {
+                            vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
+                            //    vehicleRef.get().then( (doc) =>{
+                            //        vehiclecount= doc.data()["count"]
+                            //     });
+                            vehicleRef.set(
+                                {
+                                    amount: parseFloat(this.state.taxAmount),
+                                    ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
+                                    type: "2 wheeler",
+                                    VRN: this.state.VRN
+                                }, { merge: true }
+                            ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
+
+                        }
+                        else {
+                            console.log("4 wheeler");
+                            vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
+                            vehicleRef.set({
                                 amount: parseFloat(this.state.taxAmount),
                                 ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                                type: "2 wheeler",
+                                type: "4 wheeler",
                                 VRN: this.state.VRN
-                            }, { merge: true }
-                        ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
-
+                            }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
+                        }
+                        console.log(doc.data())
                     }
                     else {
-                        console.log("4 wheeler");
-                        vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
-                        vehicleRef.set({
-                            amount: parseFloat(this.state.taxAmount),
-                            ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                            type: "4 wheeler",
-                            VRN: this.state.VRN
-                        }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
+                        document.getElementById("vrnDown").innerHTML = "Please correct format for VRN";
+                        // window.alert("Please put spaces as specified for VRN ")
                     }
-                    console.log(doc.data())
+
+
+
                 }
                 else {
                     window.alert("User does not exist");
@@ -308,7 +319,7 @@ class Precords extends Component {
     render() {
         var selectlist;
 
-       
+
         return (
             <div className="precords container">
                 <form>
@@ -348,24 +359,29 @@ class Precords extends Component {
                                 <option> four-wheeler</option>
                             </select>
                         </div>
-                        <div className="form-group">
-                            <label for="vrn">Vehicle Registration Number</label>
-                            <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder={this.state.exampleVRN}></input>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="inputDate" position="left">Due date</label>
-                                <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label htmlFor="inputTax" position="left">Tax amount</label>
-                                <input value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
+                        <form>
+                            <div className="form-group">
+                               <span> <label htmlFor="vrn" id="vrnUp">Vehicle Registration Number</label> 
+                               <i><label className ="hidden" htmlFor="vrn" id="vrnDown" ></label> </i> </span>
+                                <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder={this.state.exampleVRN}></input>
+                               
                             </div>
 
-                            <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label htmlFor="inputDate" position="left">Due date</label>
+                                    <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label htmlFor="inputTax" position="left">Tax amount</label>
+                                    <input value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
+                                </div>
 
-                        </div>
+                                <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
+
+
+                            </div>
+                        </form>
                     </section>
                     <section>
                         <h2>Land details</h2>

@@ -16,21 +16,23 @@ class AdminWindow extends Component {
         this.db = fire.firestore();
         this.handleClick = this.handleClick.bind(this);
     }
- 
-    handleChange = e => {this.setState({ [e.target.name]: e.target.value });
-        this.setState({loaded:false})}
+
+    handleChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ loaded: false })
+    }
 
     handleClick(e) {
         e.preventDefault();
         (this.state.email !== '') ? (this.setState({
-            loaded:true,
+            loaded: true,
             searched: true
         })) : (window.alert("enter email please"));
     }
 
     render() {
         return (
-            <div className='admin-panel container' style = {{'marginTop': '60'}}>
+            <div className='admin-panel container' style={{ 'marginTop': '60' }}>
                 <h2>Admin Panel</h2>
                 <p>Search and view User Records here</p>
                 <form >
@@ -40,14 +42,15 @@ class AdminWindow extends Component {
                         <label htmlFor="Inputemail1"><small>email of user </small> </label>
                     </div>
                 </form>
-                <button onClick={this.handleClick} className="btn btn-primary">Search</button>
-                {(this.state.searched && this.state.loaded ? (<Details user={this.state.email}></Details>) :
-                    <div>
-                        <small> <i> Please search for user</i></small>
-                    </div>)}
+             
+                        <button onClick={this.handleClick} className="btn btn-primary">Search</button>
+                        {(this.state.searched && this.state.loaded ? (<Details user={this.state.email}></Details>) :
+                            <div>
+                                <small> <i> Please search for user</i></small>
+                            </div>)}
             </div>
-        );
-    }
-}
-
+                    );
+                }
+            }
+            
 export default AdminWindow;

@@ -21,3 +21,7 @@
 .upper{
     text-transform: uppercase;
 }
+
+.hidden{
+    color:red;
+}
