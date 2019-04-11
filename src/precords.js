@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
+import './precords.css';
 
 class Precords extends Component {
     constructor(props) {
@@ -10,8 +11,8 @@ class Precords extends Component {
             email: '',
             VRN: '',
             citizenship_num: '',
-            exampleVRN: 'BA 2 PA 0000'
-
+            exampleVRN: 'BA 2 PA 0000',
+            warningStatus: 'inactive'
         };
 
         this.count = 0;
@@ -166,7 +167,10 @@ class Precords extends Component {
                         console.log(doc.data())
                     }
                     else {
-                        document.getElementById("vrnDown").innerHTML = "Please correct format for VRN";
+                        //document.getElementById("vrnDown").innerHTML = "Please correct format for VRN";
+                        this.setState({
+                            warningStatus: 'active'
+                        });
                         // window.alert("Please put spaces as specified for VRN ")
                     }
 
@@ -349,7 +353,7 @@ class Precords extends Component {
 
     render() {
         var selectlist;
-
+        console.log("warningStatus", this.state.warningStatus);
 
         return (
             <div className="precords container">
@@ -393,7 +397,7 @@ class Precords extends Component {
                         <form>
                             <div className="form-group">
                                <span> <label htmlFor="vrn" id="vrnUp">Vehicle Registration Number</label> 
-                               <i><label className ="hidden" htmlFor="vrn" id="vrnDown" ></label> </i> </span>
+                               <i><label className ="hidden" htmlFor="vrn" id="vrnDown" status = {this.state.warningStatus}>Please enter as in the format specified.</label> </i> </span>
                                 <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder={this.state.exampleVRN}></input>
                                
                             </div>

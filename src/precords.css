@@ -22,6 +22,11 @@
     text-transform: uppercase;
 }
 
-.hidden{
-    color:red;
+.hidden[status = 'inactive']{
+    display: none;
+}
+
+.hidden[status = 'active']{
+    display: block;
+    color: red;
 }
