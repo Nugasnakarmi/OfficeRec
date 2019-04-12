@@ -16,10 +16,6 @@ class Precords extends Component {
 
             email: '',
             emailVerified: false,
-
-
-
-            warningStatus: 'inactive'
         };
 
         this.count = 0;
@@ -46,9 +42,9 @@ class Precords extends Component {
                 }
             })
         }
-        else{
+        else {
             this.setState({
-                emailVerified : false
+                emailVerified: false
             })
         }
     }
@@ -66,15 +62,15 @@ class Precords extends Component {
             <div className="precords container">
                 <form>
                     <section>
-                    <div className="form-group">
+                        <div className="form-group">
 
-                        <label for="InputEmail1">Email Address</label>
-                        <input value={this.state.email} name="email" type="email" onChange={this.handleChangeEmail}
-                            className="form-control" id="InputEmail1" placeholder="Enter email" />
-                    </div>
+                            <label for="InputEmail1">Email Address</label>
+                            <input value={this.state.email} name="email" type="email" onChange={this.handleChangeEmail}
+                                className="form-control" id="InputEmail1" placeholder="Enter email" />
+                        </div>
                     </section>
-                    
-                    {this.state.emailVerified ? (<EditDetails user={this.state.email} />) : ( <i> Please type in your email </i> )}
+
+                    {this.state.emailVerified ? (<EditDetails user={this.state.email} />) : (<i> Please type in your email </i>)}
                     {this.state.emailVerified ? (<EditVehicle user={this.state.email} />) : ''}
                     {this.state.emailVerified ? (<EditLand user={this.state.email} />) : ''}
                     {this.state.emailVerified ? (<EditHouse user={this.state.email} />) : ''}
