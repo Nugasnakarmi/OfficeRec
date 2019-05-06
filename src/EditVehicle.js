@@ -10,7 +10,7 @@ class EditVehicle extends Component {
 
             email: '',
             VRN: '',
-
+            type: 'two-wheeler',
             exampleVRN: 'BA 2 PA 0000',
             warningStatus: 'inactive'
         };
@@ -46,21 +46,24 @@ class EditVehicle extends Component {
     }
 
     handleSelectChange(e) {
-        var droplist = document.getElementById("drop-vehicle")
-        var selected = droplist.selectedIndex;
-        selected ? (this.setState(
-            {
-                exampleVRN: "BA 3 CHA 1234"
-            }
-        )
-        )
-            :
-            (this.setState(
-                {
-                    exampleVRN: "ME 2 PA 1231"
-                })
+        // var droplist = document.getElementById("drop-vehicle")
+        // var selected = droplist.selectedIndex;
+        // selected ? (this.setState(
+        //     {
+        //         exampleVRN: "BA 3 CHA 1234"
+        //     }
+        // )
+        // )
+        //     :
+        //     (this.setState(
+        //         {
+        //             exampleVRN: "ME 2 PA 1231"
+        //         })
 
-            )
+        //     )
+
+        this.setState({ [e.target.name]: e.target.value });
+        console.log("Vehicle type chosen", this.state.type);
     }
     writeVehicleDetails(e) {
         e.preventDefault();
@@ -77,31 +80,16 @@ class EditVehicle extends Component {
                 if (doc.data()) {
                     if (test) {
                         this.setState({ warningStatus: "inactive" })
-                        if (selected === 0) {
-                            vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
-                            //    vehicleRef.get().then( (doc) =>{
-                            //        vehiclecount= doc.data()["count"]
-                            //     });
-                            vehicleRef.set(
-                                {
-                                    amount: parseFloat(this.state.taxAmount),
-                                    ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                                    type: "2 wheeler",
-                                    VRN: this.state.VRN
-                                }, { merge: true }
-                            ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
-
-                        }
-                        else {
-                            console.log("4 wheeler");
-                            vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
-                            vehicleRef.set({
+                        vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
+                        vehicleRef.set(
+                            {
                                 amount: parseFloat(this.state.taxAmount),
+                                ['registered date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.regDate)),
                                 ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                                type: "4 wheeler",
+                                type: this.state.type,
                                 VRN: this.state.VRN
-                            }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
-                        }
+                            }, { merge: true }
+                        ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
                         console.log(doc.data())
                     }
                     else {
@@ -128,10 +116,9 @@ class EditVehicle extends Component {
         }
     }
     render() {
-        if( !this.state.email )
-        {
+        if (!this.state.email) {
             this.setState({
-                email : this.props.user
+                email: this.props.user
             })
         }
         return (
@@ -140,10 +127,33 @@ class EditVehicle extends Component {
                 <h2> Vehicle details here </h2>
                 <div className="form-group">
                     <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
-                    <select id="drop-vehicle" onChange={this.handleSelectChange} className="custom-select">
-                        <option> two-wheeler</option>
-                        <option> four-wheeler</option>
+                    <select id="drop-vehicle" onChange={this.handleSelectChange} name='type' value={this.state.type} className="custom-select">
+                        <optgroup label='Category I'>
+                            <option value='two-wheeler'>two-wheeler</option>
+                            <option value='four-wheelyyy'>four-wheeler</option>
+                            <option value='Motorcycle'>Motorcycle</option>
+                            <option value='Minitruck/Minibus'>Minitruck/Minibus</option>
+                            <option value='Truck/Bus'>Truck/Bus</option>
+                            <option value='Car'>Car</option>
+                            <option value='Jeep'>Jeep</option>
+                            <option value='Van'>Van</option>
+                            <option value='Microbus'>Microbus</option>
+                        </optgroup>
+                        <optgroup label='Category II'>
+                            <option value='Dozer'>Dozer</option>
+                            <option value='Excavator'>Excavator</option>
+                            <option value='Loader'>Loader</option>
+                            <option value='Roller'>Roller</option>
+                            <option value='Tripper'>Tripper</option>
+                            <option value='Crane'>Crane</option>
+                            <option value='Mini-tripper'>Mini-tripper</option>
+                        </optgroup>
+                        <optgroup label='Category III'>
+                            <option value='Tractor'>Tractor</option>
+                            <option value='Power Tiller'>Power Tiller</option>
+                        </optgroup>
                     </select>
+                    <h3>{this.state.type}</h3>
                 </div>
                 <form>
                     <div className="form-group">
@@ -154,11 +164,15 @@ class EditVehicle extends Component {
                     </div>
 
                     <div class="form-row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
+                            <label htmlFor="regDate" position="left">Date of Registration</label>
+                            <input value={this.state.regDate} className="form-control" id="regDate" name="registerDate" type="date" onChange={this.handleChange} placeholder="Eg: 7th March 2010"></input>
+                        </div>
+                        <div class="col-md-4 mb-3">
                             <label htmlFor="inputDate" position="left">Due date</label>
                             <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label htmlFor="inputTax" position="left">Tax amount</label>
                             <input value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
                         </div>
