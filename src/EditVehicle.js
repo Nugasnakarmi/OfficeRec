@@ -206,11 +206,11 @@ class EditVehicle extends Component {
                         </div>
                         <div class="col-md-3  mb-3">
                             <label htmlFor="ChassisNo" position="left">Chassis No</label>
-                            <input value={this.state.ChassisNo} className="form-control" id="ChassisNo" name="ChassisNo" type="text" onChange={this.handleChange} placeholder="Eg: MDS236A9942P32099"></input>
+                            <input value={this.state.ChassisNo} className="form-control" id="ChassisNo" name="ChassisNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: MDS236A9942P32099"></input>
                         </div>
                         <div class="col-md-3  mb-3">
                             <label htmlFor="EngineNo" position="left">Engine No</label>
-                            <input value={this.state.EngineNo} className="form-control" id="EngineNo" name="EngineNo" type="text" onChange={this.handleChange} placeholder="Eg: 6R9D42030456"></input>
+                            <input value={this.state.EngineNo} className="form-control" id="EngineNo" name="EngineNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: 6R9D42030456"></input>
                         </div>
                         <div class="col-md-3  mb-3">
                             <label htmlFor="drop-PD" position="left">Petrol/Diesel</label>

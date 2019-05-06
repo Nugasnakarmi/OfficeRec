@@ -9,7 +9,7 @@ class EditIncome extends Component {
         this.state = {
 
             email: '',
-           warningStatus: 'inactive'
+            warningStatus: 'inactive'
         };
         this.db = fire.firestore();
 
@@ -48,48 +48,54 @@ class EditIncome extends Component {
         }
     }
 
-   
-    
+
+
     render() {
         if (!this.state.email) {
             this.setState({
                 email: this.props.user
             })
         }
+        var adbs = require("ad-bs-converter");
+
+        let nepdate= adbs.ad2bs("1990/8/10");
+        console.log(nepdate);
+        let engdate = adbs.bs2ad("2047/4/26");
+        console.log(engdate['month']);
         return (
             <section>
-            <h2> Income details </h2>
-            <div className="form-row">
-                <div class="col-md-3 mb-3">
-                    <label htmlFor="inputpan">PAN</label>
-                    <input value={this.state.PAN} id="inputpan" name="PAN" type="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
+                <h2> Income details </h2>
+                <div className="form-row">
+                    <div class="col-md-3 mb-3">
+                        <label htmlFor="inputpan">PAN</label>
+                        <input value={this.state.PAN} id="inputpan" name="PAN" type="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label htmlFor="income"> Annual Income</label>
+                        <input value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label htmlFor="employType"> Employment type</label>
+                        <input value={this.state.employType} id="employType" name="employType" className="form-control" onChange={this.handleChange} placeholder="Eg: Business-person"></input>
+                    </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <label htmlFor="income"> Annual Income</label>
-                    <input value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                <div className="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label htmlFor="inputbn">Business name</label>
+                        <input value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} placeholder="Eg: ABC trading pvt ltd."></input>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label htmlFor="dueDateIncome"> Due date</label>
+                        <input value={this.state.dueDateIncome} type="date" id="dueDateIncome" name="dueDateIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: 12th March 2020"></input>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label htmlFor="taxAmount"> Tax amount</label>
+                        <input value={this.state.taxAmountIncome} id="taxAmountIncome" name="taxAmountIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                    </div>
+                    <button onClick={this.writeIncomeDetails} className="btn btn-primary">Submit</button>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label htmlFor="employType"> Employment type</label>
-                    <input value={this.state.employType} id="employType" name="employType" className="form-control" onChange={this.handleChange} placeholder="Eg: Business-person"></input>
-                </div>
-            </div>
-            <div className="form-row">
-                <div class="col-md-6 mb-3">
-                    <label htmlFor="inputbn">Business name</label>
-                    <input value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} placeholder="Eg: ABC trading pvt ltd."></input>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label htmlFor="dueDateIncome"> Due date</label>
-                    <input value={this.state.dueDateIncome} type="date" id="dueDateIncome" name="dueDateIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: 12th March 2020"></input>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label htmlFor="taxAmount"> Tax amount</label>
-                    <input value={this.state.taxAmountIncome} id="taxAmountIncome" name="taxAmountIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
-                </div>
-                <button onClick={this.writeIncomeDetails} className="btn btn-primary">Submit</button>
-            </div>
 
-        </section> 
+            </section>
 
         )
     }
