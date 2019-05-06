@@ -9,21 +9,9 @@ class EditVehicle extends Component {
         this.state = {
 
             email: '',
-<<<<<<< HEAD
-
-            example2wheeler: {
-                Company: 'TVS',
-                Model: 'Apache',
-                VRN: 'BA 2 PA 0000'
-
-            },
-
-            // exampleVRN2: 'BA 2 PA 0000',
-=======
             VRN: '',
             type: 'two-wheeler',
             exampleVRN: 'BA 2 PA 0000',
->>>>>>> a0bbf73f546186aa46fef8beff125011333b4e91
             warningStatus: 'inactive'
         };
         this.db = fire.firestore();
@@ -58,28 +46,6 @@ class EditVehicle extends Component {
     }
 
     handleSelectChange(e) {
-<<<<<<< HEAD
-        var droplist = document.getElementById("drop-vehicle")
-        var selected = droplist.selectedIndex;
-        let ex2w = Object.assign({}, this.state.example2wheeler);
-
-        if (selected) {
-            ex2w.VRN = 'BA 3 CHA 2312';
-            ex2w.Model = 'Hylux';
-            ex2w.Company = 'Toyota'
-           
-        }
-        else {
-            ex2w.VRN = 'Me 5 PA 9000';
-            ex2w.Model = 'Apache';
-            ex2w.Company = 'TVS'
-            
-
-        }
-        this.setState({
-            example2wheeler : ex2w
-         })
-=======
         // var droplist = document.getElementById("drop-vehicle")
         // var selected = droplist.selectedIndex;
         // selected ? (this.setState(
@@ -98,7 +64,6 @@ class EditVehicle extends Component {
 
         this.setState({ [e.target.name]: e.target.value });
         console.log("Vehicle type chosen", this.state.type);
->>>>>>> a0bbf73f546186aa46fef8beff125011333b4e91
     }
     writeVehicleDetails(e) {
         e.preventDefault();
@@ -160,26 +125,6 @@ class EditVehicle extends Component {
 
             <section>
                 <h2> Vehicle details here </h2>
-<<<<<<< HEAD
-                <div className="form-row">
-                    <div class="col-md-4 mb-3">
-                        <label htmlFor="drop-vehicle" position="left">Company Name</label>
-                        <input value={this.state.company} className="form-control upper" name="company" type="text" id="company" onChange={this.handleChange} placeholder={this.state.example2wheeler.Company}></input>
-
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
-                        <select id="drop-vehicle" onChange={this.handleSelectChange} className="custom-select">
-                            <option> two-wheeler</option>
-                            <option> four-wheeler</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label htmlFor="model" position="left">Vehicle Model</label>
-                        <input value={this.state.model} className="form-control upper" name="model" type="text" id="model" onChange={this.handleChange} placeholder= {this.state.example2wheeler.Model}></input>
-
-                    </div>
-=======
                 <div className="form-group">
                     <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
                     <select id="drop-vehicle" onChange={this.handleSelectChange} name='type' value={this.state.type} className="custom-select">
@@ -209,7 +154,6 @@ class EditVehicle extends Component {
                         </optgroup>
                     </select>
                     <h3>{this.state.type}</h3>
->>>>>>> a0bbf73f546186aa46fef8beff125011333b4e91
                 </div>
                 <form>
                     <div className="form-group">
@@ -220,25 +164,11 @@ class EditVehicle extends Component {
                     </div>
 
                     <div class="form-row">
-<<<<<<< HEAD
-                        <div class="col-md-6 mb-3">
-                            <label htmlFor="inputChassis" position="left">Chassis No.</label>
-                            <input value={this.state.ChasNo} className="form-control" id="inputChassis" name="ChasNo" type="text" onChange={this.handleChange} placeholder="Eg: MDS369942P32099"></input>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label htmlFor="inputEngine" position="left">Engine No.</label>
-                            <input value={this.state.EngNo} className="form-control" id="inputEngine" name="EngineNo" type="text" onChange={this.handleChange} placeholder="Eg: 6R9D42030546"></input>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6 mb-3">
-=======
                         <div class="col-md-4 mb-3">
                             <label htmlFor="regDate" position="left">Date of Registration</label>
                             <input value={this.state.regDate} className="form-control" id="regDate" name="registerDate" type="date" onChange={this.handleChange} placeholder="Eg: 7th March 2010"></input>
                         </div>
                         <div class="col-md-4 mb-3">
->>>>>>> a0bbf73f546186aa46fef8beff125011333b4e91
                             <label htmlFor="inputDate" position="left">Due date</label>
                             <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
                         </div>
