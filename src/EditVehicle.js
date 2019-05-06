@@ -9,6 +9,7 @@ class EditVehicle extends Component {
         this.state = {
 
             email: '',
+<<<<<<< HEAD
 
             example2wheeler: {
                 Company: 'TVS',
@@ -18,6 +19,11 @@ class EditVehicle extends Component {
             },
 
             // exampleVRN2: 'BA 2 PA 0000',
+=======
+            VRN: '',
+            type: 'two-wheeler',
+            exampleVRN: 'BA 2 PA 0000',
+>>>>>>> a0bbf73f546186aa46fef8beff125011333b4e91
             warningStatus: 'inactive'
         };
         this.db = fire.firestore();
@@ -52,6 +58,7 @@ class EditVehicle extends Component {
     }
 
     handleSelectChange(e) {
+<<<<<<< HEAD
         var droplist = document.getElementById("drop-vehicle")
         var selected = droplist.selectedIndex;
         let ex2w = Object.assign({}, this.state.example2wheeler);
@@ -72,6 +79,26 @@ class EditVehicle extends Component {
         this.setState({
             example2wheeler : ex2w
          })
+=======
+        // var droplist = document.getElementById("drop-vehicle")
+        // var selected = droplist.selectedIndex;
+        // selected ? (this.setState(
+        //     {
+        //         exampleVRN: "BA 3 CHA 1234"
+        //     }
+        // )
+        // )
+        //     :
+        //     (this.setState(
+        //         {
+        //             exampleVRN: "ME 2 PA 1231"
+        //         })
+
+        //     )
+
+        this.setState({ [e.target.name]: e.target.value });
+        console.log("Vehicle type chosen", this.state.type);
+>>>>>>> a0bbf73f546186aa46fef8beff125011333b4e91
     }
     writeVehicleDetails(e) {
         e.preventDefault();
@@ -88,31 +115,16 @@ class EditVehicle extends Component {
                 if (doc.data()) {
                     if (test) {
                         this.setState({ warningStatus: "inactive" })
-                        if (selected === 0) {
-                            vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
-                            //    vehicleRef.get().then( (doc) =>{
-                            //        vehiclecount= doc.data()["count"]
-                            //     });
-                            vehicleRef.set(
-                                {
-                                    amount: parseFloat(this.state.taxAmount),
-                                    ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                                    type: "2 wheeler",
-                                    VRN: this.state.VRN
-                                }, { merge: true }
-                            ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
-
-                        }
-                        else {
-                            console.log("4 wheeler");
-                            vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
-                            vehicleRef.set({
+                        vehicleRef = this.db.collection("UserBase").doc(this.state.email).collection("vehicle-tax").doc(this.state.VRN);
+                        vehicleRef.set(
+                            {
                                 amount: parseFloat(this.state.taxAmount),
+                                ['registered date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.regDate)),
                                 ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDate)),
-                                type: "4 wheeler",
+                                type: this.state.type,
                                 VRN: this.state.VRN
-                            }, { merge: true }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });;
-                        }
+                            }, { merge: true }
+                        ).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
                         console.log(doc.data())
                     }
                     else {
@@ -148,6 +160,7 @@ class EditVehicle extends Component {
 
             <section>
                 <h2> Vehicle details here </h2>
+<<<<<<< HEAD
                 <div className="form-row">
                     <div class="col-md-4 mb-3">
                         <label htmlFor="drop-vehicle" position="left">Company Name</label>
@@ -166,6 +179,37 @@ class EditVehicle extends Component {
                         <input value={this.state.model} className="form-control upper" name="model" type="text" id="model" onChange={this.handleChange} placeholder= {this.state.example2wheeler.Model}></input>
 
                     </div>
+=======
+                <div className="form-group">
+                    <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
+                    <select id="drop-vehicle" onChange={this.handleSelectChange} name='type' value={this.state.type} className="custom-select">
+                        <optgroup label='Category I'>
+                            <option value='two-wheeler'>two-wheeler</option>
+                            <option value='four-wheelyyy'>four-wheeler</option>
+                            <option value='Motorcycle'>Motorcycle</option>
+                            <option value='Minitruck/Minibus'>Minitruck/Minibus</option>
+                            <option value='Truck/Bus'>Truck/Bus</option>
+                            <option value='Car'>Car</option>
+                            <option value='Jeep'>Jeep</option>
+                            <option value='Van'>Van</option>
+                            <option value='Microbus'>Microbus</option>
+                        </optgroup>
+                        <optgroup label='Category II'>
+                            <option value='Dozer'>Dozer</option>
+                            <option value='Excavator'>Excavator</option>
+                            <option value='Loader'>Loader</option>
+                            <option value='Roller'>Roller</option>
+                            <option value='Tripper'>Tripper</option>
+                            <option value='Crane'>Crane</option>
+                            <option value='Mini-tripper'>Mini-tripper</option>
+                        </optgroup>
+                        <optgroup label='Category III'>
+                            <option value='Tractor'>Tractor</option>
+                            <option value='Power Tiller'>Power Tiller</option>
+                        </optgroup>
+                    </select>
+                    <h3>{this.state.type}</h3>
+>>>>>>> a0bbf73f546186aa46fef8beff125011333b4e91
                 </div>
                 <form>
                     <div className="form-group">
@@ -176,6 +220,7 @@ class EditVehicle extends Component {
                     </div>
 
                     <div class="form-row">
+<<<<<<< HEAD
                         <div class="col-md-6 mb-3">
                             <label htmlFor="inputChassis" position="left">Chassis No.</label>
                             <input value={this.state.ChasNo} className="form-control" id="inputChassis" name="ChasNo" type="text" onChange={this.handleChange} placeholder="Eg: MDS369942P32099"></input>
@@ -187,10 +232,17 @@ class EditVehicle extends Component {
                     </div>
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
+=======
+                        <div class="col-md-4 mb-3">
+                            <label htmlFor="regDate" position="left">Date of Registration</label>
+                            <input value={this.state.regDate} className="form-control" id="regDate" name="registerDate" type="date" onChange={this.handleChange} placeholder="Eg: 7th March 2010"></input>
+                        </div>
+                        <div class="col-md-4 mb-3">
+>>>>>>> a0bbf73f546186aa46fef8beff125011333b4e91
                             <label htmlFor="inputDate" position="left">Due date</label>
                             <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label htmlFor="inputTax" position="left">Tax amount</label>
                             <input value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
                         </div>

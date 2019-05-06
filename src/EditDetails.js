@@ -7,10 +7,8 @@ class EditDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
-            email: '',
-          
-            warningStatus: 'inactive'
+            citizenship_num: '',
+            email: ''
         };
         this.db = fire.firestore();
 
@@ -25,7 +23,7 @@ class EditDetails extends Component {
 
     handleCitizenship(e) {
         const allowed = ['', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/', '-'];
-
+        // console.log(e.target.value.substr(-1));
         if (allowed.includes(e.target.value.substr(-1))) {
 
             this.setState({ [e.target.name]: e.target.value });
