@@ -8,9 +8,11 @@
     "bootstrap": "^4.3.1",
     "firebase": "^5.9.0",
     "gh-pages": "^2.0.1",
+    "moment": "^2.24.0",
     "react": "^16.8.4",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-content-loader": "^4.2.1",
+    "react-datepicker-nepali": "^1.0.1",
     "react-dom": "^16.8.4",
     "react-router-dom": "^4.4.0",
     "react-scripts": "2.1.8"

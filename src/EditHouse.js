@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
-
+import DatePicker from 'react-datepicker-nepali';
 
 class EditHouse extends Component {
     constructor(props) {
@@ -19,6 +19,8 @@ class EditHouse extends Component {
 
     }
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
+
+    handleChangeDate = e => this.setState({ [e.target.name]: e.target.date });
 
     writeHouseDetails(e) {
         e.preventDefault();
@@ -110,6 +112,8 @@ class EditHouse extends Component {
                     <div class="col-md-6 mb-3">
                         <label htmlFor="inputDate" position="left">Due date</label>
                         <input value={this.state.dueDateHouse} className="form-control" id="inputDateHouse" name="dueDateHouse" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                        <DatePicker date={this.state.date} onChange={this.handleChangeDate} name = 'date' />
+                        <h3>{this.state.date}</h3>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label htmlFor="inputTax" position="left">Tax amount</label>
