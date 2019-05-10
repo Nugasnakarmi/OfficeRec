@@ -9,3 +9,8 @@
     width: auto;
     height: fit-content;
 }
+
+.Table{
+    background-color: blue;
+    text: white;
+}
