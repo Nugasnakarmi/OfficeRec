@@ -39,10 +39,14 @@ class AdminWindow extends Component {
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
-                let valueObject = {id: doc.id, name: doc.data().Name};
+                if( doc.data().isAdmin !== true){
+                    let valueObject = {id: doc.id, name: doc.data().Name, czn :doc.data()['Citizenship Number']};
                 //console.log(this.recordLabel);
                 this.recordLabel.push(valueObject);
-               console.log("ValueObject", valueObject); 
+                console.log("ValueObject", valueObject); 
+                }
+                
+              
             });
             console.log("List of data => ", this.recordLabel);
         })

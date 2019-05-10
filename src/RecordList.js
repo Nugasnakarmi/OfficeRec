@@ -8,11 +8,12 @@ class RecordList extends Component {
     render() { 
         console.log(this.props.data);
         return ( 
-            <div onClick={}>
+            <div >
                 <p>
                     {this.props.data.id}
 
                     {this.props.data.name}
+                    {this.props.data.czn}
                     
                 </p>
             </div>
