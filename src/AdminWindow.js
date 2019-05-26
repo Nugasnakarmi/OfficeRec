@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import Details from './Details';
 import RecordList from './RecordList';
+import Popup from './Popup';
+import './AdminWindow.css';
+
 //import fixDate from './FixDate';
 
 class AdminWindow extends Component {
@@ -11,11 +14,16 @@ class AdminWindow extends Component {
             userInfo: '',
             email: '',
             searched: false,
-            loaded: false
+            loaded: false,
+            listed: false,
+            popupActive:false,
+            activeUser:''
         };
         //let recordLabel = [];
         this.db = fire.firestore();
         this.handleClick = this.handleClick.bind(this);
+        this.togglePopup = this.togglePopup.bind(this);
+        this.closePopup = this.closePopup.bind(this);
         this.recordLabel = [];
     }
 
@@ -39,7 +47,7 @@ class AdminWindow extends Component {
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
-                let valueObject = {id: doc.id, name: doc.data().Name};
+                let valueObject = {id: doc.id, name: doc.data().Name, czn: doc.data()['Citizenship Number']};
                 //console.log(this.recordLabel);
                 this.recordLabel.push(valueObject);
                console.log("ValueObject", valueObject); 
@@ -53,9 +61,25 @@ class AdminWindow extends Component {
         }); //attach a promise here that sets state to reload
     }
 
+    togglePopup(email){
+        console.log(`you clicked on ${email}`);
+        this.setState({
+            activeUser: email,
+            popupActive: !this.popupActive
+        });
+    }
+
+    closePopup(){
+        console.log("THE POPUP CLOSED");
+        this.setState({
+            activeUser: '',
+            popupActive: false
+        })
+    }
+
     render() {
         return (
-            <div className='admin-panel container' style={{ 'marginTop': '60' }}>
+            <div className='admin-panel' style={{ 'marginTop': '60' }}>
                 {/* <h2>Admin Panel</h2>
                 <p>Search and view User Records here</p>
                 <form >
@@ -74,7 +98,8 @@ class AdminWindow extends Component {
                 <div className = 'record'> */}
 
                 {/* </div> */}
-                {this.recordLabel.map((item) => (<RecordList data = {item}></RecordList>))}
+                {this.state.listed ? this.recordLabel.map((item, index) => (<RecordList data = {item} index = {index} pop = {this.togglePopup} ></RecordList>)) : <div>Loading</div>}
+                {this.state.popupActive === true ? <Popup id = {this.state.activeUser} close = {this.closePopup}></Popup> : null}
             </div>
         );
     }

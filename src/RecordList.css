@@ -1,0 +1,45 @@
+.main{
+    margin: 5px;
+    line-height: 50px;
+    height: 50px;
+    padding-left: 30px;
+    cursor: pointer;
+    /* border: 2px solid black; */
+}
+
+.main:hover{
+    -moz-box-shadow: 1px 1px 5px #999;
+    -webkit-box-shadow: 1px 1px 5px #999;
+    box-shadow: 1px 1px 5px #999;
+}
+
+.main[status = 'even']{
+    background: #2D93AD;
+    color: aliceblue;
+}
+
+.main[status = 'odd']{
+    background: whitesmoke;
+}
+
+/* .inner-element{
+    padding: 10 px;
+    margin-right: 50px;
+} */
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+.inner-element {
+    float: left;
+    display: block;
+    width: 200px;
+}
+
+#sn{
+    width: 50px;
+}
