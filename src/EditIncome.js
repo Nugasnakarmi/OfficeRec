@@ -56,12 +56,12 @@ class EditIncome extends Component {
                 email: this.props.user
             })
         }
-        var adbs = require("ad-bs-converter");
+        // var adbs = require("ad-bs-converter");
 
-        let nepdate= adbs.ad2bs("1990/8/10");
-        console.log(nepdate);
-        let engdate = adbs.bs2ad("2047/4/26");
-        console.log(engdate['month']);
+        // let nepdate= adbs.ad2bs("1990/8/10");
+        // console.log(nepdate);
+        // let engdate = adbs.bs2ad("2047/4/26");
+        // console.log(engdate['month']);
         return (
             <section>
                 <h2> Income details </h2>

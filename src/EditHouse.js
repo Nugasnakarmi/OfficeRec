@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
 
-
 class EditHouse extends Component {
     constructor(props) {
         super(props);
