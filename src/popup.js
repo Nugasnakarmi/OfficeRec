@@ -26,6 +26,11 @@ class Popup extends Component {
         this.db.collection('UserBase').doc(this.props.id).get().then((doc) => {
             console.clear();
             console.log("the data is", doc.data());
+            this.setState({
+                name: doc.data().Name,
+                czn: doc.data()['Citizenship Number'],
+                dob: doc.data()['Date of Birth']
+            })
         });
     }
 

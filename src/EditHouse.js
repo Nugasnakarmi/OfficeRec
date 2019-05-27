@@ -9,13 +9,13 @@ class EditHouse extends Component {
 
             email: '',
             warningStatus: 'inactive',
-            category: 0,
+            category: '0',
             sqft: 0,
             storey: 0,
             currentYear: "75-76",
             houseVal: 0,
             propTax: 0,
-            valuated : false
+            valuated: false
         };
         this.db = fire.firestore();
 
@@ -24,6 +24,7 @@ class EditHouse extends Component {
         this.handleChangelandVal = this.handleChangelandVal.bind(this);
 
 
+        this.implementCategory = this.implementCategory.bind(this);
         this.handleSelectCategoryChange = this.handleSelectCategoryChange.bind(this);
         this.writeHouseDetails = this.writeHouseDetails.bind(this);
         this.getPropertyTax = this.getPropertyTax.bind(this);
@@ -37,19 +38,28 @@ class EditHouse extends Component {
     }
     handleChangelandVal = e => {
         this.setState({ [e.target.name]: e.target.value });
-  
+
         this.getPropertyTax();
     }
 
 
 
     handleChangeDate = e => this.setState({ [e.target.name]: e.target.date });
-    handleSelectCategoryChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-            this.getValuation();
-            // this.getPropertyTax();
+    
+    implementCategory = e => {
+        return new Promise((resolve, reject) => {
+            this.setState({ category: e.target.value });
+            resolve(this.state.category);
+        });
         
+        //this.getValuation();
+        // this.getPropertyTax();
+
     }
+
+    handleSelectCategoryChange(e){
+        this.implementCategory(e).then(this.getValuation);
+        }
 
     getValuation() {
         var valuation, multiplier, category;
@@ -57,29 +67,29 @@ class EditHouse extends Component {
         //     category = 1;
         // }
         // else {{
-          
-            // if(this.state.category)
-            // {
-            //     category = this.state.category;
 
-            // }
-            // else
-            // {
-            //     category = 0;
-            // }
-            category = this.state.category;
-        console.log( category )
+        // if(this.state.category)
+        // {
+        //     category = this.state.category;
+
+        // }
+        // else
+        // {
+        //     category = 0;
+        // }
+        category = this.state.category;
+        console.log("The category is", category)
         // }
         this.db.collection("TaxRate").doc(this.state.currentYear).collection("PropertyValuation").doc("HouseVal").get().then((doc) => {
             if (doc.data()) {
                 multiplier = doc.data()[category];
                 valuation = multiplier * this.state.sqft * this.state.storey;
-               
+
                 this.setState(
                     {
                         houseVal: valuation,
-                        valuated :true
-                        }
+                        valuated: true
+                    }
                 )
 
             }
@@ -96,13 +106,13 @@ class EditHouse extends Component {
             PropValArr = doc.data();
             if (PropValArr) {
                 for (x in PropValArr) {
-                    console.log("step:", x, PropValArr[x] ,"cal:", cal )
-                    console.log( propertyTax)
+                    console.log("step:", x, PropValArr[x], "cal:", cal)
+                    console.log(propertyTax)
                     if (x > 6) {
                         if ((cal <= 2 * crore) || (x == 11)) {
                             propertyTax += PropValArr[x] * percent * cal
                             cal -= cal;
-                            console.log( "x 11 here");
+                            console.log("x 11 here");
                         }
 
                         else {
@@ -110,21 +120,21 @@ class EditHouse extends Component {
                             cal -= 2 * crore;
                         }
                     }
-                       else if (cal <= crore) {
-                            propertyTax += PropValArr[x] * percent * cal
-                            break;
-                        }
-                         
+                    else if (cal <= crore) {
+                        propertyTax += PropValArr[x] * percent * cal
+                        break;
+                    }
 
 
-                        else {
 
-                            propertyTax += PropValArr[x] * percent * crore
-                            cal -= crore;
+                    else {
 
-                        }
+                        propertyTax += PropValArr[x] * percent * crore
+                        cal -= crore;
 
-                        
+                    }
+
+
                 }
             }
 
@@ -185,6 +195,7 @@ class EditHouse extends Component {
             this.setState({
                 email: this.props.user
             })
+            console.log("INSIDE RENDER, CATEGORY", this.state.category);
         }
         return (
             <section>
@@ -231,7 +242,7 @@ class EditHouse extends Component {
                     <div class="col-md-12 mb-3">
 
                         <label htmlFor="drop-cat">Category of House</label>
-                        <select value={this.state.category}  id="drop-cat" className="custom-select" name="category" type ='number' onChange={this.handleSelectCategoryChange}>
+                        <select value={this.state.category} id="drop-cat" className="custom-select" name="category" type='number' onChange={this.handleSelectCategoryChange}>
                             <option value="0">कः भित्र काँचो बाहिर पाको इट्टामा माटोको जोडाई भएको भवन र काठबाट बनेको भवन </option>
                             <option value="1">खः  भित्रबाहिर पाको इट्टा वा ढुंगा र माटोको जोडाई भएको सबै किसिमको भवन </option>
                             <option value="2">ग :  प्रिफायब भवन, गोदाम भवन </option>
@@ -265,7 +276,7 @@ class EditHouse extends Component {
                     <b>Total Valuation</b> : Nrs. {this.state.houseVal + parseFloat(this.state.landVal)}
 
                 </div>
-                { this.getPropertyTax() }
+                {this.getPropertyTax()}
                 {/* <b>Property Tax</b> : Nrs. {this.state.propTax} */}
 
                 <div className="form-row">

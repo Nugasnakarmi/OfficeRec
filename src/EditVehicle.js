@@ -33,6 +33,7 @@ class EditVehicle extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeVRN = this.handleChangeVRN.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.setVehicleType = this.setVehicleType.bind(this);
         this.recordPayment = this.recordPayment.bind(this);
         this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
     }
@@ -57,10 +58,18 @@ class EditVehicle extends Component {
         }
     }
 
-    handleSelectChange(e) {
-
-        this.setState({ [e.target.name]: e.target.value });
+    setVehicleType(e) {
+        return new Promise((resolve, reject) => {
+            this.setState({ [e.target.name]: e.target.value });
+            resolve(this.state.type);
+        });
         // console.log("Vehicle type chosen", this.state.type);
+    }
+
+    handleSelectChange(e){
+        this.setVehicleType(e).then(() => {
+            console.log("TYPE OF VEHICLE", this.state.type);
+        }).catch((error) => console.log(error));
     }
 
     // calculateTax(){
