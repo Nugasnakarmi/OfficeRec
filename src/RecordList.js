@@ -19,14 +19,13 @@ class RecordList extends Component {
     render() { 
         //console.log(this.props.data);
         return ( 
-            <div >
-                <p>
-                    {this.props.data.id}
-
-                    {this.props.data.name}
-                    {this.props.data.czn}
-                    
-                </p>
+            <div onClick = {this.popup} className = 'main' status = {this.sequence}>
+                <ul>
+                <li className = 'inner-element' id = 'sn'>{this.props.index + 1}</li>
+                <li className = 'inner-element'>{this.props.data.name}</li>
+                <li className = 'inner-element'>{this.props.data.czn}</li>
+                <li className = 'inner-element'>{this.props.data.id}</li>
+                </ul>
             </div>
          );
     }

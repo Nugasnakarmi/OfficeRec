@@ -5,6 +5,8 @@ import RecordList from './RecordList';
 import Popup from './Popup';
 import './AdminWindow.css';
 
+//import fixDate from './FixDate';
+
 class AdminWindow extends Component {
     constructor(props) {
         super(props);
@@ -14,18 +16,9 @@ class AdminWindow extends Component {
             rowemail: '',
             searched: false,
             loaded: false,
-            fixedHeader: true,
-            fixedFooter: true,
-            stripedRows: true,
-            showRowHover: true,
-            selectable: true,
-            multiSelectable: false,
-            enableSelectAll: false,
-            deselectOnClickaway: true,
-            showCheckboxes: false,
-            height: '300px',
-            showPopup: false
-
+            listed: false,
+            popupActive:false,
+            activeUser:''
         };
         //let recordLabel = [];
         this.db = fire.firestore();
@@ -63,14 +56,10 @@ class AdminWindow extends Component {
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
-                if (doc.data().isAdmin !== true) {
-                    let valueObject = { email: doc.id, name: doc.data().Name, czn: doc.data()['Citizenship Number'] };
-                    //console.log(this.recordLabel);
-                    this.recordLabel.push(valueObject);
-                    console.log("ValueObject", valueObject);
-                }
-
-
+                let valueObject = {id: doc.id, name: doc.data().Name, czn: doc.data()['Citizenship Number']};
+                //console.log(this.recordLabel);
+                this.recordLabel.push(valueObject);
+               console.log("ValueObject", valueObject); 
             });
             console.log("List of data => ", this.recordLabel);
         })
@@ -100,7 +89,6 @@ class AdminWindow extends Component {
     render() {
        
         return (
-
             <div className='admin-panel' style={{ 'marginTop': '60' }}>
                 {/* <h2>Admin Panel</h2>
                 <p>Search and view User Records here</p>
@@ -124,9 +112,6 @@ class AdminWindow extends Component {
                 {this.state.popupActive === true ? <Popup id = {this.state.activeUser} close = {this.closePopup}></Popup> : null}
             </div>
         );
-
-            
-            
     }
 }
 

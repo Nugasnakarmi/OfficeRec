@@ -272,7 +272,6 @@ class EditHouse extends Component {
                     <div class="col-md-6 mb-3">
                         <label htmlFor="inputDate" position="left">Due date</label>
                         <input value={this.state.dueDateHouse} className="form-control" id="inputDateHouse" name="dueDateHouse" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
-
                         <h3>{this.state.date}</h3>
                     </div>
                     <div class="col-md-6 mb-3">
