@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
-<<<<<<< HEAD
-=======
-
->>>>>>> 7db32f14060c794ce06871497a9154e786c09c26
 
 class EditHouse extends Component {
     constructor(props) {
@@ -115,10 +111,6 @@ class EditHouse extends Component {
                     <div class="col-md-6 mb-3">
                         <label htmlFor="inputDate" position="left">Due date</label>
                         <input value={this.state.dueDateHouse} className="form-control" id="inputDateHouse" name="dueDateHouse" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
-<<<<<<< HEAD
-=======
-                        
->>>>>>> 7db32f14060c794ce06871497a9154e786c09c26
                         <h3>{this.state.date}</h3>
                     </div>
                     <div class="col-md-6 mb-3">
