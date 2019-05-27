@@ -9,19 +9,140 @@ class EditHouse extends Component {
         this.state = {
 
             email: '',
-            warningStatus: 'inactive'
+            warningStatus: 'inactive',
+            category: 0,
+            sqft: 0,
+            storey: 0,
+            currentYear: "75-76",
+            houseVal: 0,
+            propTax: 0,
+            valuated : false
         };
         this.db = fire.firestore();
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeVal = this.handleChangeVal.bind(this);
+        this.handleChangelandVal = this.handleChangelandVal.bind(this);
+
+
+        this.handleSelectCategoryChange = this.handleSelectCategoryChange.bind(this);
         this.writeHouseDetails = this.writeHouseDetails.bind(this);
-
-
+        this.getPropertyTax = this.getPropertyTax.bind(this);
+        this.getValuation = this.getValuation.bind(this);
     }
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
+    handleChangeVal = e => {
+        this.setState({ [e.target.name]: e.target.value });
+        this.getValuation();
+        // this.getPropertyTax();
+    }
+    handleChangelandVal = e => {
+        this.setState({ [e.target.name]: e.target.value });
+  
+        this.getPropertyTax();
+    }
+
+
 
     handleChangeDate = e => this.setState({ [e.target.name]: e.target.date });
+    handleSelectCategoryChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+            this.getValuation();
+            // this.getPropertyTax();
+        
+    }
 
+    getValuation() {
+        var valuation, multiplier, category;
+        // if (notvaluated) {
+        //     category = 1;
+        // }
+        // else {{
+          
+            // if(this.state.category)
+            // {
+            //     category = this.state.category;
+
+            // }
+            // else
+            // {
+            //     category = 0;
+            // }
+            category = this.state.category;
+        console.log( category )
+        // }
+        this.db.collection("TaxRate").doc(this.state.currentYear).collection("PropertyValuation").doc("HouseVal").get().then((doc) => {
+            if (doc.data()) {
+                multiplier = doc.data()[category];
+                valuation = multiplier * this.state.sqft * this.state.storey;
+               
+                this.setState(
+                    {
+                        houseVal: valuation,
+                        valuated :true
+                        }
+                )
+
+            }
+        })
+
+    }
+
+    getPropertyTax() {
+        var totalVal = this.state.houseVal + parseFloat(this.state.landVal);
+        var propertyTax = 0, x, crore = 10000000, percent = 0.01, multiplier = 1;
+        this.db.collection("TaxRate").doc(this.state.currentYear).collection("PropertyTax").doc("totalVal").get().then((doc) => {
+            var PropValArr = new Array();
+            var cal = totalVal;
+            PropValArr = doc.data();
+            if (PropValArr) {
+                for (x in PropValArr) {
+                    console.log("step:", x, PropValArr[x] ,"cal:", cal )
+                    console.log( propertyTax)
+                    if (x > 6) {
+                        if ((cal <= 2 * crore) || (x == 11)) {
+                            propertyTax += PropValArr[x] * percent * cal
+                            cal -= cal;
+                            console.log( "x 11 here");
+                        }
+
+                        else {
+                            propertyTax += PropValArr[x] * percent * 2 * crore;
+                            cal -= 2 * crore;
+                        }
+                    }
+                       else if (cal <= crore) {
+                            propertyTax += PropValArr[x] * percent * cal
+                            break;
+                        }
+                         
+
+
+                        else {
+
+                            propertyTax += PropValArr[x] * percent * crore
+                            cal -= crore;
+
+                        }
+
+                        
+                }
+            }
+
+
+            console.log("tax :", propertyTax)
+            // this.setState(
+            //     {
+            //         propTax: propertyTax,
+
+            //     }
+            // )
+        }
+
+
+        )
+
+    }
     writeHouseDetails(e) {
         e.preventDefault();
         var userRef;
@@ -68,7 +189,7 @@ class EditHouse extends Component {
         }
         return (
             <section>
-                <h2> House details </h2>
+                <h2> Property details </h2>
                 <div className="form-row">
                     <div className="col-md-12 mb-3">
                         <label htmlFor="houseno">House number</label>
@@ -96,23 +217,63 @@ class EditHouse extends Component {
 
                     <div class="col-md-6 mb-3">
                         <label htmlFor="storey">Number of Storeys</label>
-                        <input value={this.state.storey} id="storey" name="storey" className="form-control" onChange={this.handleChange} placeholder="Eg: 4"></input>                            </div>
+                        <input value={this.state.storey} id="storey" name="storey" className="form-control" onChange={this.handleChangeVal} type="number" placeholder="Eg: 4"></input>
+                    </div>
 
                     <div class="col-md-6 mb-3">
+                        <label htmlFor="drop-house">No. of Square feets</label>
+                        <input value={this.state.sqft} id="sqft" name="sqft" type="number" className="form-control" onChange={this.handleChangeVal} placeholder="Eg: 600 "></input>
+                    </div>
+
+
+
+                </div>
+                <div className="form-row">
+                    <div class="col-md-12 mb-3">
+
+                        <label htmlFor="drop-cat">Category of House</label>
+                        <select value={this.state.category}  id="drop-cat" className="custom-select" name="category" type ='number' onChange={this.handleSelectCategoryChange}>
+                            <option value="0">कः भित्र काँचो बाहिर पाको इट्टामा माटोको जोडाई भएको भवन र काठबाट बनेको भवन </option>
+                            <option value="1">खः  भित्रबाहिर पाको इट्टा वा ढुंगा र माटोको जोडाई भएको सबै किसिमको भवन </option>
+                            <option value="2">ग :  प्रिफायब भवन, गोदाम भवन </option>
+                            <option value="3">घ :  भित्र बाहिर पाको इट्टा र सिमेन्टको जोडाई भएको भवन </option>
+                            <option value="4">ङ :  स्टील स्ट्रक्चर (ट्रस) भवन </option>
+                            <option value="5">च :  आर.सी.सी फ्रेम स्ट्रक्चर भवन </option>
+
+
+
+
+                        </select>
+                    </div>
+                </div>
+                {/* {this.state.valuated ? null : this.getValuation()} */}
+                <b>House Valuation</b> : Nrs. {this.state.houseVal}
+
+
+                <div className="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label htmlFor="landval-house">Land cartilaged by house valuation</label>
+                        <input value={this.state.landVal} id="landval-house" name="landVal" type="number" min="0" onChange={this.handleChangelandVal}></input>
+                    </div>
+                    {/* <div class="col-md-6 mb-3">
                         <label htmlFor="drop-house">Type of residence</label>
                         <select id="drop-house" className="custom-select">
                             <option>Residential</option>
                             <option>Rented</option>
                         </select>
-                    </div>
+                    </div> */}
+
+                    <b>Total Valuation</b> : Nrs. {this.state.houseVal + parseFloat(this.state.landVal)}
 
                 </div>
+                { this.getPropertyTax() }
+                {/* <b>Property Tax</b> : Nrs. {this.state.propTax} */}
 
                 <div className="form-row">
                     <div class="col-md-6 mb-3">
                         <label htmlFor="inputDate" position="left">Due date</label>
                         <input value={this.state.dueDateHouse} className="form-control" id="inputDateHouse" name="dueDateHouse" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
-                        
+
                         <h3>{this.state.date}</h3>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -125,7 +286,7 @@ class EditHouse extends Component {
                         <div class="col-md-12">
                             <label htmlFor="coowner">Co-owner</label>
                             <input value={this.state.coowner} id="coowner" name="coowner" className="form-control" onChange={this.handleChange} placeholder="Hira Kaji Shrestha"></input>                            </div>
-                        
+
                         {/* <button onClick={} className="btn btn-primary">Search co-owner</button> */}
 
                     </div>

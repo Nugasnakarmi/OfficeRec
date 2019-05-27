@@ -12,20 +12,22 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-import { red100 } from 'material-ui/styles/colors';
+import './AdminWindow.css'
+// import Popup from './popup'
+// import TextField from 'material-ui/TextField';
+// import Toggle from 'material-ui/Toggle';
+// import { red100 } from 'material-ui/styles/colors';
 
-const styles = {
-    propContainer: {
-        width: 200,
-        overflow: 'hidden',
-        margin: '20px auto 0',
-    },
-    propToggleHeader: {
-        margin: '20px auto 10px',
-    },
-};
+// const styles = {
+//     propContainer: {
+//         width: 200,
+//         overflow: 'hidden',
+//         margin: '20px auto 0',
+//     },
+//     propToggleHeader: {
+//         margin: '20px auto 10px',
+//     },
+// };
 
 class AdminWindow extends Component {
     constructor(props) {
@@ -33,11 +35,12 @@ class AdminWindow extends Component {
         this.state = {
             userInfo: '',
             email: '',
+            rowemail: '',
             searched: false,
             loaded: false,
             fixedHeader: true,
             fixedFooter: true,
-            stripedRows: false,
+            stripedRows: true,
             showRowHover: true,
             selectable: true,
             multiSelectable: false,
@@ -45,15 +48,23 @@ class AdminWindow extends Component {
             deselectOnClickaway: true,
             showCheckboxes: false,
             height: '300px',
-            
+            showPopup: false
 
         };
         //let recordLabel = [];
         this.db = fire.firestore();
         this.handleClick = this.handleClick.bind(this);
+        this.rowUpdate = this.rowUpdate.bind(this);
         this.recordLabel = [];
     }
 
+    togglePopup() {
+        this.setState(
+            {
+                showPopup: !this.state.showPopup
+            }
+        )
+    }
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value });
         this.setState({ loaded: false })
@@ -76,7 +87,7 @@ class AdminWindow extends Component {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
                 if (doc.data().isAdmin !== true) {
-                    let valueObject = { id: doc.id, name: doc.data().Name, czn: doc.data()['Citizenship Number'] };
+                    let valueObject = { email: doc.id, name: doc.data().Name, czn: doc.data()['Citizenship Number'] };
                     //console.log(this.recordLabel);
                     this.recordLabel.push(valueObject);
                     console.log("ValueObject", valueObject);
@@ -93,7 +104,20 @@ class AdminWindow extends Component {
             }); //attach a promise here that sets state to reload
     }
 
+    rowUpdate(email1) {
+      
+            this.setState(
+                {
+                    rowemail: email1,
+                    showPopup: !this.state.showPopup
+                }
+            )
+        }
+
+    
+    
     render() {
+       
         return (
             // <div className='admin-panel container' style={{ 'marginTop': '60' }}>
             // <h2>Admin Panel</h2>
@@ -119,56 +143,73 @@ class AdminWindow extends Component {
 
             <div>
                 <MuiThemeProvider>
-            <Table
-                height={this.state.height}
-                fixedHeader={this.state.fixedHeader}
-                fixedFooter={this.state.fixedFooter}
-                selectable={this.state.selectable}
-                multiSelectable={this.state.multiSelectable}
-               
-            >
-                <TableHeader
-                    displaySelectAll={this.state.showCheckboxes}
-                    adjustForCheckbox={this.state.showCheckboxes}
-                    enableSelectAll={this.state.enableSelectAll}>
-                    <TableRow>
-                        <TableHeaderColumn colSpan="4" tooltip="Super Header" style={{ textAlign: 'center' }}>
-                            
-                        </TableHeaderColumn>
-                    </TableRow>
-                    <TableRow>
-                        <TableHeaderColumn tooltip="The ID">ID</TableHeaderColumn>
-                        <TableHeaderColumn tooltip="The Name">Name</TableHeaderColumn>
-                        <TableHeaderColumn tooltip="The Email">Email</TableHeaderColumn>
-                        <TableHeaderColumn tooltip="The Czn">Citizenship Number</TableHeaderColumn>
+                    <Table onRowSelection={this.togglePopup.bind(this)}
+                        
+                        height={this.state.height}
+                        fixedHeader={this.state.fixedHeader}
+                        fixedFooter={this.state.fixedFooter}
+                        selectable={this.state.selectable}
+                        multiSelectable={this.state.multiSelectable}
+                        style={{backgroundColor: '#FFFFFF' }}
+                    >
+                        <TableHeader
+                            displaySelectAll={this.state.showCheckboxes}
+                            adjustForCheckbox={this.state.showCheckboxes}
+                            enableSelectAll={this.state.enableSelectAll}>
+                            <TableRow>
+                                <TableHeaderColumn colSpan="4" tooltip="Super Header" style={{ textAlign: 'center' }}>
 
-                    </TableRow>
-                </TableHeader>
+                                </TableHeaderColumn>
+                            </TableRow>
+                            <TableRow>
+                                <TableHeaderColumn tooltip="The ID">ID</TableHeaderColumn>
+                                <TableHeaderColumn tooltip="The Name">Name</TableHeaderColumn>
+                                <TableHeaderColumn tooltip="The Email">Email</TableHeaderColumn>
+                                <TableHeaderColumn tooltip="The Czn">Citizenship Number</TableHeaderColumn>
+                                
 
-                <TableBody
-                    displayRowCheckbox={this.state.showCheckboxes}
-                    deselectOnClickaway={this.state.deselectOnClickaway}
-                    showRowHover={this.state.showRowHover}
-                    stripedRows={this.state.stripedRows}>
-                    {this.recordLabel.map((row, index) => (
-                         index %2 ? (
-                            <TableRow style={{backgroundColor: '#4B9130' }} key={index}>
-                        <TableRowColumn>{index + 1}</TableRowColumn>
-                        <TableRowColumn>{row.name}</TableRowColumn>
-                        <TableRowColumn>{row.id}</TableRowColumn>
-                        <TableRowColumn>{row.czn}</TableRowColumn>
-                    </TableRow>)
-                    : (
-                    <TableRow style={{backgroundColor: '#FFFFFF' }} key={index}>
-                    <TableRowColumn>{index + 1}</TableRowColumn>
-                    <TableRowColumn>{row.name}</TableRowColumn>
-                    <TableRowColumn>{row.id}</TableRowColumn>
-                    <TableRowColumn>{row.czn}</TableRowColumn>
-                </TableRow>)
-                    ))
-                }
-                </TableBody>
-{/* 
+                            </TableRow>
+                        </TableHeader>
+
+                        <TableBody 
+                            displayRowCheckbox={this.state.showCheckboxes}
+                            deselectOnClickaway={this.state.deselectOnClickaway}
+                            showRowHover={this.state.showRowHover}
+                            stripedRows={this.state.stripedRows}>
+                            {this.recordLabel.map((row, index) => (
+                                //          index %2 ? (
+                                //             <TableRow style={{backgroundColor: '#A5FF33' }} key={index}>
+                                //         <TableRowColumn>{index + 1}</TableRowColumn>
+                                //         <TableRowColumn>{row.name}</TableRowColumn>
+                                //         <TableRowColumn>{row.id}</TableRowColumn>
+                                //         <TableRowColumn>{row.czn}</TableRowColumn>
+                                //     </TableRow>)
+                                //     : (
+                                //     <TableRow style={{backgroundColor: '#FFFFFF' }} key={index}>
+                                //     <TableRowColumn>{index + 1}</TableRowColumn>
+                                //     <TableRowColumn>{row.name}</TableRowColumn>
+                                //     <TableRowColumn>{row.id}</TableRowColumn>
+                                //     <TableRowColumn>{row.czn}</TableRowColumn>
+                                // </TableRow>)
+                                <TableRow  key={index} >
+                                    <TableRowColumn>{index + 1}</TableRowColumn>
+                                    <TableRowColumn  >{row.name}</TableRowColumn>
+                                    <TableRowColumn>{row.email}</TableRowColumn>
+                                    <TableRowColumn>{row.czn}</TableRowColumn>
+                                   
+
+                                
+
+                             
+                                
+                                </TableRow>
+                                
+                            ))
+                           
+                            }
+                         
+                        </TableBody>
+                        {/* 
                 <TableFooter
                     adjustForCheckbox={this.state.showCheckboxes}>
                     <TableRow>
@@ -183,9 +224,21 @@ class AdminWindow extends Component {
                     </TableRow>
                 </TableFooter> */}
 
-            </Table>
-            </MuiThemeProvider>
-    </div>);
+                    </Table>
+                </MuiThemeProvider>
+
+                {this.state.showPopup ?
+
+                    <div className='popup'>
+                        <div className='popup_inner'>
+                            <h1>{this.state.rowemail}</h1>
+                            <button onClick={this.togglePopup.bind(this)}>close me</button>
+                        </div>
+                    </div>
+
+                    : null
+                }
+            </div>);
     }
 }
 

@@ -55,6 +55,7 @@ class EditVehicle extends Component {
         var userRef;
         if (this.state.email) {
             var droplist = document.getElementById("drop-vehicle")
+            
             var selected = droplist.selectedIndex;
             // var vehiclecount;
             var vehicleRef;
