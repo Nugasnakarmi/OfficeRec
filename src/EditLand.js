@@ -10,21 +10,31 @@ class EditLand extends Component {
 
             email: '',
             warningStatus: 'inactive',
-            landCat : 1,
+            landCat: 1,
             currentYear: "75-76",
-            area:0
+            area: 0,
+            taxVisible: false,
+            taxAmountLand: 0,
+            Aana : 31.79,
+            taxRate : 0
         };
         this.db = fire.firestore();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.writeLandDetails = this.writeLandDetails.bind(this);
-        // this.implementCategory = this.implementCategory.bind(this);
+        this.implementCategory = this.implementCategory.bind(this);
         this.getlandTax = this.getlandTax.bind(this);
+        this.handleAreaChange = this.handleAreaChange.bind(this);
+        this.showLandTax = this.showLandTax.bind(this);
 
 
     }
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
+    handleAreaChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    
+    }
 
     implementCategory = e => {
         return new Promise((resolve, reject) => {
@@ -44,19 +54,43 @@ class EditLand extends Component {
     //     this.setState({ [e.target.name]: e.target.value });
     // }
 
-    getlandTax(){
-        let landTax=0, Aana = 31.79, category; // 1 Aana = 31.79 sq m
+    getlandTax() {
+        // e.preventDefault();
+      var landTax = 0, taxRate= 0, category; // 1 Aana = 31.79 sq m
 
         category = this.state.landCat;
-        console.log( "land category :" , category)
+        console.log("land category :", category)
+
+        var rateArr = new Array();
+
         this.db.collection("TaxRate").doc(this.state.currentYear).collection("LandTax").doc("CategoryTax").get().then((doc) => {
             if (doc.data()) {
-                console.log( "rate",doc.data() )
-                landTax = doc.data()["landRate"].category * parseFloat(this.state.area) / Aana
+                rateArr = doc.data();
+                taxRate = rateArr["landRate"][category]
+                // rateArr is an array of arrays!!!!! SO BE WARY
+                console.log("rate", rateArr["landRate"])
+                landTax = (taxRate  * this.state.area / this.state.Aana).toFixed(2);
+                console.log("Tax amount for land", landTax)
+                this.setState(
+                    {
+                        taxAmountLand: landTax,
+                        taxRate : taxRate 
+                    }
+                );
             }
-            console.log( "Tax amount for land", landTax )
+          
         });
 
+        
+
+    }
+
+    showLandTax(e)
+    {
+        e.preventDefault();
+        this.getlandTax();
+        this.setState({ taxVisible : true})
+       
     }
 
     writeLandDetails(e) {
@@ -188,31 +222,45 @@ class EditLand extends Component {
                     <div class="col-md-3 mb-3">
                         <label htmlFor="landCat"><i>जग्गा वर्ग</i></label>
                         <select value={this.state.landCat} id="landCat" name="landCat" className="custom-select" type="number" onChange={this.handleSelectChange} >
-                            <option value = "1"> क</option>
-                            <option value = "2"> ख</option>
-                            <option value = "3"> ग</option>
-                            <option value = "4"> घ</option>
-                            <option value = "5"> ङ</option>
-                            <option value = "6"> च</option>
-                            <option value = "7"> वर्ग नखुलेको</option>
+                            <option value="1"> क</option>
+                            <option value="2"> ख</option>
+                            <option value="3"> ग</option>
+                            <option value="4"> घ</option>
+                            <option value="5"> ङ</option>
+                            <option value="6"> च</option>
+                            <option value="7"> वर्ग नखुलेको</option>
 
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label htmlFor="area">Area</label>
-                        <input value={this.state.area} id="area" name="area" className="form-control" onChange={this.handleChange} placeholder="Area in sq. meters"></input>                            </div>
+                        <input value={this.state.area} id="area" name="area" className="form-control" onChange={this.handleAreaChange} placeholder="Area in sq. meters"></input>                            </div>
                 </div>
-
+                <button onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
                 <div className="form-row">
+                    {console.log(this.state.taxAmountLand)}
+                   
+                    {this.state.taxVisible ? <div class="col-md-12 mb-3"> 
+                    <p> 
+                       <b> भुमी कर</b> : Nrs. {this.state.taxAmountLand}<br/>
+                       <b>  No. of Aanas </b> : {(this.state.area / this.state.Aana).toFixed(2)}<br/>
+                       <b>  Rate per आना </b> : Nrs. {this.state.taxRate} 
+                    
+                    
+                    </p> </div>: null}
+                    
+                    
                     <div class="col-md-6 mb-3">
                         <label htmlFor="inputDate" position="left">Due date</label>
                         <input value={this.state.dueDateLand} className="form-control" id="inputDateLand" name="dueDateLand" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    {/* <div class="col-md-6 mb-3">
                         <label htmlFor="inputTax" position="left">Tax amount</label>
                         <input value={this.state.taxAmountLand} className="form-control" id="inputTaxLand" name="taxAmountLand" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
 
-                    </div>
+                    </div> */}
+                    {// ABOVE SECTION IS REMOVED AS TAX IS AUTOMATICALLY CALCULATED ON THE BASIS OF CATEGORY
+                    }
                     <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
                 </div>
             </section>

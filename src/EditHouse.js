@@ -37,7 +37,10 @@ class EditHouse extends Component {
         this.getValuation = this.getValuation.bind(this);
         this.getValuationPrompt = this.getValuationPrompt.bind(this);
         this.getTaxPrompt = this.getTaxPrompt.bind(this);
+        this.handleYearChange= this.handleYearChange.bind(this);
+        this.implementYear =  this.implementYear.bind(this);
     }
+    
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
     handleChangeVal = e => {
         this.setState({ [e.target.name]: e.target.value });
@@ -63,6 +66,20 @@ class EditHouse extends Component {
         //this.getValuation();
         // this.getPropertyTax();
 
+    }
+    implementYear = e => {
+        return new Promise((resolve, reject) => {
+            this.setState({ builtYear: e.target.value });
+            resolve(this.state.builtYear);
+        });
+
+        //this.getValuation();
+        // this.getPropertyTax();
+
+    } 
+
+    handleYearChange(e) {
+        this.implementYear(e).then(this.getValuation);
     }
 
     handleSelectCategoryChange(e) {
@@ -143,10 +160,10 @@ class EditHouse extends Component {
             var cal = totalVal;
             PropValArr = doc.data();
             if (PropValArr) {
-                for (x in PropValArr) {
+                for (x in PropValArr) {// ALGORITHM FOR CALCULATING TAX FROM PROPERTY VALUATION
                     // console.log("step:", x, PropValArr[x], "cal:", cal)
                     // console.log(propertyTax)
-                    if (x > 6) {
+                    if (x > 6) { // FROM 6 CRORES THE LEVEL IS 2 CRORES , FROM 10 CR0RES THERE IS NO LEVEL
                         if ((cal <= 2 * crore) || (x == 11)) {
                             propertyTax += PropValArr[x] * percent * cal
                             cal -= cal;
@@ -274,7 +291,7 @@ class EditHouse extends Component {
                     </div>
                     <div class="col-md-4 mb-3">
                         <label htmlFor="builtYear">Year built</label>
-                        <input value={this.state.builtYear} id="builtYear" name="builtYear" className="form-control" onChange={this.handleChangeVal} type="number" min="1900" placeholder="Eg: 2050"></input>
+                        <input value={this.state.builtYear} id="builtYear" name="builtYear" className="form-control" onChange={this.handleYearChange} type="number" min="1900" placeholder="Eg: 2050"></input>
                     </div>
 
 
