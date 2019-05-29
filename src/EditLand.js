@@ -9,16 +9,56 @@ class EditLand extends Component {
         this.state = {
 
             email: '',
-            warningStatus: 'inactive'
+            warningStatus: 'inactive',
+            landCat : 1,
+            currentYear: "75-76",
+            area:0
         };
         this.db = fire.firestore();
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
         this.writeLandDetails = this.writeLandDetails.bind(this);
+        // this.implementCategory = this.implementCategory.bind(this);
+        this.getlandTax = this.getlandTax.bind(this);
 
 
     }
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
+
+    implementCategory = e => {
+        return new Promise((resolve, reject) => {
+            this.setState({ landCat: e.target.value });
+            resolve(this.state.landCat);
+        });
+
+        //this.getValuation();
+        // this.getPropertyTax();
+
+    }
+
+    handleSelectChange(e) {
+        this.implementCategory(e).then(this.getlandTax);
+    }
+    // handleSelectChange(e) {
+    //     this.setState({ [e.target.name]: e.target.value });
+    // }
+
+    getlandTax(){
+        let landTax=0, Aana = 31.79, category; // 1 Aana = 31.79 sq m
+
+        category = this.state.landCat;
+        console.log( "land category :" , category)
+        this.db.collection("TaxRate").doc(this.state.currentYear).collection("LandTax").doc("CategoryTax").get().then((doc) => {
+            if (doc.data()) {
+                console.log( "rate",doc.data() )
+                landTax = doc.data()["landRate"].category * parseFloat(this.state.area) / Aana
+            }
+            console.log( "Tax amount for land", landTax )
+        });
+
+    }
+
     writeLandDetails(e) {
         e.preventDefault();
         var landRef;
@@ -75,6 +115,7 @@ class EditLand extends Component {
                                             ward: parseFloat(this.state.ward)
                                         },
                                         kittaId: parseFloat(this.state.kittaId),
+                                        category: parseFloat(this.state.landCat),
                                         taxAmount: parseFloat(this.state.taxAmountLand),
                                         area: parseFloat(this.state.area),
                                         ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
@@ -91,6 +132,7 @@ class EditLand extends Component {
                                             ward: parseFloat(this.state.ward)
                                         },
                                         kittaId: parseFloat(this.state.kittaId),
+                                        category: parseFloat(this.state.landCat),
                                         taxAmount: parseFloat(this.state.taxAmountLand),
                                         area: parseFloat(this.state.area),
                                         ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateLand))
@@ -139,9 +181,22 @@ class EditLand extends Component {
                     </div>
                 </div>
                 <div className="form-row">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-3 mb-3">
                         <label htmlFor="inputkitta"><i>Kitta Number</i></label>
                         <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label htmlFor="landCat"><i>जग्गा वर्ग</i></label>
+                        <select value={this.state.landCat} id="landCat" name="landCat" className="custom-select" type="number" onChange={this.handleSelectChange} >
+                            <option value = "1"> क</option>
+                            <option value = "2"> ख</option>
+                            <option value = "3"> ग</option>
+                            <option value = "4"> घ</option>
+                            <option value = "5"> ङ</option>
+                            <option value = "6"> च</option>
+                            <option value = "7"> वर्ग नखुलेको</option>
+
+                        </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label htmlFor="area">Area</label>
