@@ -35,7 +35,7 @@ class Details extends Component {
     getSubcollections(passedCollection) {
         if (this.props.user) {
             console.log('GetSubCollection runs for', passedCollection);
-            var fullPath = 'UserBase/' + this.props.user + '/' + passedCollection
+            var fullPath = 'UserBase/' + this.props.user + '/' + passedCollection;
             this.db.collection(fullPath).get().then((subdoc) => {
                 let itemNumber = 1;
                 subdoc.forEach((sd) => {
@@ -93,12 +93,12 @@ class Details extends Component {
         // let renderVehicle = (this.vehicleData.length) ? <Vehicle details={this.vehicleData} /> : '';
         // let renderIncome = (this.incomeData.length) ? <Income details={this.landData} /> : '';
         console.log('loaded?', this.state.loaded);
-        return (<div className = "container" style = {{'margin-top': '70px'}}>
+        return (<div className="container" style={{ 'margin-top': '70px' }}>
             {/* <h2 style = {{margin : '15px'}}>The Details Pane</h2> */}
             {this.landData.length ? this.landData.map((item) => (<Land details={item} />)) : ''}
             {this.vehicleData.length ? this.vehicleData.map((item) => (<Vehicle details={item} />)) : ''}
-            {this.incomeData.length ?   this.incomeData.map((item) => (<Income details={item} />)) : ''}
-            {this.houseData.length ?   this.houseData.map((item) => (<House details={item} />)) : ''}
+            {this.incomeData.length ? this.incomeData.map((item) => (<Income details={item} />)) : ''}
+            {this.houseData.length ? this.houseData.map((item) => (<House details={item} />)) : ''}
             {/* {renderLand}
             {renderVehicle}
             {renderIncome} */}
