@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Popup.css';
 import fire from './config/fire';
+import MainWindow from './MainWindow';
 
 class Popup extends Component {
     constructor(props) {
@@ -12,16 +13,16 @@ class Popup extends Component {
         this.db = fire.firestore();
     }
 
-    close(e){
+    close(e) {
         e.preventDefault();
         this.props.close();
     }
 
-    donotClose(e){
+    donotClose(e) {
         e.stopPropagation();
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.db = fire.firestore();
         this.db.collection('UserBase').doc(this.props.id).get().then((doc) => {
             console.clear();
@@ -36,12 +37,12 @@ class Popup extends Component {
 
     render() {
         return (
-            <div className='popup' onClick = {this.close}>
-                <div className='popup-inner' onClick = {this.donotClose}>
-                    {this.props.id}
+            <div className='popup' onClick={this.close}>
+                <div className='popup-inner' onClick={this.donotClose}>
+                    <MainWindow user={this.props.id}></MainWindow>
                     <button onClick = {this.close}>Close</button>
-                </div>
             </div>
+            </div >
         );
     }
 }
