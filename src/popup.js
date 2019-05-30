@@ -6,11 +6,82 @@ import MainWindow from './MainWindow';
 class Popup extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+
         this.close = this.close.bind(this);
         this.donotClose = this.donotClose.bind(this);
+        this.getSubcollections = this.getSubcollections.bind(this);
+        this.filterData = this.filterData.bind(this);
 
         this.db = fire.firestore();
+
+        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax', 'house-tax'];
+        this.dataObject = {};
+        this.landData = [];
+        this.vehicleData = [];
+        this.incomeData = [];
+        this.houseData = [];
+        this.state = { loaded: false };
+    }
+
+    UNSAFE_componentWillMount() {
+        //GETS THE SUBCOLLECTIONS (added by Purak) (Code under construction)
+        this.db = fire.firestore();
+        for (var collectionName of this.taxTypes) {
+            this.getSubcollections(collectionName);
+        }
+        console.log("All collections names passed");
+        //this.taxTypes.forEach(this.getSubcollections);
+        //console.log("the taxlist", this.taxTypes);
+    }
+
+    getSubcollections(passedCollection) {
+        if (this.props.id) {
+            console.log('GetSubCollection runs for', passedCollection);
+            var fullPath = 'UserBase/' + this.props.id + '/' + passedCollection;
+            this.db.collection(fullPath).get().then((subdoc) => {
+                let itemNumber = 1;
+                subdoc.forEach((sd) => {
+                    var itemName = passedCollection + itemNumber;
+                    //console.log("ItemName", itemName);
+                    //console.log(sd.data());
+                    //this.taxTypes.passedCollection = sd.data();
+                    this.dataObject[itemName] = sd.data();
+                    itemNumber++;
+                });
+            }).then(this.filterData);
+        }
+    }
+
+    filterData() {
+        //console.log('Data fetched from userbase', this.dataObject);
+        console.log('Data fetched from userbase', this.dataObject);
+        this.landData = [];
+        this.vehicleData = [];
+        this.incomeData = [];
+        this.houseData = [];
+        if (this.dataObject) {
+
+            for (let key in this.dataObject) {
+                console.log("key", key);
+                if (key.includes('land-tax')) {
+                    this.landData.push(this.dataObject[key]);
+                }
+                else if (key.includes('vehicle-tax')) {
+                    this.vehicleData.push(this.dataObject[key]);
+                }
+                else if (key.includes('income-tax')) {
+                    this.incomeData.push(this.dataObject[key]);
+                }
+                else if (key.includes('house-tax')) {
+                    this.houseData.push(this.dataObject[key]);
+                }
+            }
+            this.setState({ loaded: !this.state.loaded });
+            console.log('LandData', this.landData);
+            console.log('VehicleData', this.vehicleData);
+            console.log('HouseData', this.houseData);
+            console.table("LandData", this.landData);
+        }
     }
 
     close(e) {
@@ -22,25 +93,9 @@ class Popup extends Component {
         e.stopPropagation();
     }
 
-    componentDidMount() {
-        // this.db = fire.firestore();
-        // this.db.collection('UserBase').doc(this.props.id).get().then((doc) => {
-        //     console.clear();
-        //     console.log("the data is", doc.data());
-        //     this.setState({
-        //         name: doc.data().Name,
-        //         czn: doc.data()['Citizenship Number'],
-        //         dob: doc.data()['Date of Birth']
-        //     })
-        // });
-
-        // var fullPath = 'UserBase/' + this.props.id;
-        //     this.db.collection(fullPath).get().then((subdoc) => {
-        //         subdoc.forEach((sd) => {
-        //             console.log(sd.data());
-        //         });
-        //     })
-    }
+    // componentDidMount(){
+    //     console.log("Length", this.landData.length);
+    // }
 
     render() {
         return (
@@ -50,15 +105,26 @@ class Popup extends Component {
                         <li class="nav-item">
                             <a class="nav-link active" href="#">Personal</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Disabled</a>
-                        </li>
+                        {this.landData.length
+                            ? (<li class="nav-item">
+                                <a class="nav-link" href="#">Land</a>
+                            </li>)
+                            : null}
+                        {this.vehicleData.length
+                            ? (<li class="nav-item">
+                                <a class="nav-link" href="#">Vehicle</a>
+                            </li>)
+                            : null}
+                        {this.houseData.length
+                            ? (<li class="nav-item">
+                                <a class="nav-link" href="#">Property</a>
+                            </li>)
+                            : null}
+                        {this.incomeData.length
+                            ? (<li class="nav-item">
+                                <a class="nav-link" href="#">income</a>
+                            </li>)
+                            : null}
                     </ul>
                     <MainWindow user={this.props.id}></MainWindow>
                     <button onClick={this.close} style={{ 'margin-lef`t': '100px' }}>Close</button>

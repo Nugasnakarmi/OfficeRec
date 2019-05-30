@@ -1,9 +1,11 @@
-const taxTypes = ['land-tax', 'vehicle-tax', 'income-tax', 'house-tax'];
+import fire from './config/fire';
 
-function getSubcollections(passedCollection) {
+const db = fire.firestore();
+
+export function getSubcollections(passedCollection) {
     console.log('GetSubCollection runs for', passedCollection);
     var fullPath = 'UserBase/' + this.props.user + '/' + passedCollection;
-    this.db.collection(fullPath).get().then((subdoc) => {
+    db.collection(fullPath).get().then((subdoc) => {
         let itemNumber = 1;
         subdoc.forEach((sd) => {
             var itemName = passedCollection + itemNumber;
@@ -13,7 +15,7 @@ function getSubcollections(passedCollection) {
             this.dataObject[itemName] = sd.data();
             itemNumber++;
         });
-    }).then(this.filterData);
+    }).then(filterData);
 }
 
 function filterData() {
