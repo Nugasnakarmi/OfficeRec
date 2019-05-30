@@ -9,8 +9,10 @@ class Popup extends Component {
 
         this.close = this.close.bind(this);
         this.donotClose = this.donotClose.bind(this);
+        this.handleEsc = this.handleEsc.bind(this);
         this.getSubcollections = this.getSubcollections.bind(this);
         this.filterData = this.filterData.bind(this);
+        this.changeTab = this.changeTab.bind(this);
 
         this.db = fire.firestore();
 
@@ -20,7 +22,10 @@ class Popup extends Component {
         this.vehicleData = [];
         this.incomeData = [];
         this.houseData = [];
-        this.state = { loaded: false };
+        this.state = {
+            loaded: false,
+            activeTab: 'personal'
+        };
     }
 
     UNSAFE_componentWillMount() {
@@ -84,6 +89,14 @@ class Popup extends Component {
         }
     }
 
+    changeTab(heading) {
+        this.setState({
+            activeTab: heading
+        });
+        console.clear();
+        console.log("ACTIVE TAB IS", this.state.activeTab);
+    }
+
     close(e) {
         e.preventDefault();
         this.props.close();
@@ -93,40 +106,46 @@ class Popup extends Component {
         e.stopPropagation();
     }
 
-    // componentDidMount(){
-    //     console.log("Length", this.landData.length);
-    // }
+    handleEsc(e){
+        // if (e.key === 'Escape'){
+            console.log("ESC Press");
+            this.close(e);
+        // }
+    }
 
     render() {
         return (
-            <div className='popup' onClick={this.close}>
-                <div className='popup-inner' onClick={this.donotClose}>
-                    <ul class="nav nav-pills">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Personal</a>
+            <div className='popup' onClick={this.close} >
+                <div className='popup-inner' onClick={this.donotClose} autofocus onKeyPress = {this.handleEsc}>
+                    <ul className="nav nav-tabs">
+                        <li className="nav-item" onClick={() => { this.changeTab('personal') }}>
+                            <a className="nav-link active" href="#">Personal</a>
                         </li>
                         {this.landData.length
-                            ? (<li class="nav-item">
-                                <a class="nav-link" href="#">Land</a>
-                            </li>)
-                            : null}
-                        {this.vehicleData.length
-                            ? (<li class="nav-item">
-                                <a class="nav-link" href="#">Vehicle</a>
+                            ? (<li className="nav-item" onClick={() => { this.changeTab('land') }}>
+                                <a className="nav-link" href="#">Land</a>
                             </li>)
                             : null}
                         {this.houseData.length
-                            ? (<li class="nav-item">
-                                <a class="nav-link" href="#">Property</a>
+                            ? (<li className="nav-item" onClick={() => { this.changeTab('property') }}>
+                                <a className="nav-link" href="#">Property</a>
+                            </li>)
+                            : null}
+                        {this.vehicleData.length
+                            ? (<li className="nav-item" onClick={() => { this.changeTab('vehicle') }}>
+                                <a className="nav-link" href="#">Vehicle</a>
                             </li>)
                             : null}
                         {this.incomeData.length
-                            ? (<li class="nav-item">
-                                <a class="nav-link" href="#">income</a>
+                            ? (<li className="nav-item" onClick={() => { this.changeTab('income') }}>
+                                <a className="nav-link" href="#">Income</a>
                             </li>)
                             : null}
                     </ul>
-                    <MainWindow user={this.props.id}></MainWindow>
+                    {this.state.activeTab}
+                    <div className='scrollable-content'>
+                        <MainWindow user={this.props.id}></MainWindow>
+                    </div>
                     <button onClick={this.close} style={{ 'margin-lef`t': '100px' }}>Close</button>
                 </div>
             </div >
