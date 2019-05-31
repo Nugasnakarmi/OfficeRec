@@ -58,9 +58,8 @@ class AdminWindow extends Component {
     handleChange = e => {
         this.searchedData = [];
         this.registerQuery(e).then(this.filterData).catch(error => {
-            console.log(error).then(() => {this.setState({
-                filtered: !this.state.filtered
-            })});
+            console.log(error)}).then(() => {this.setState({
+                filtered: !this.state.filtered});
         });
     }
 
@@ -122,7 +121,7 @@ class AdminWindow extends Component {
     render() {
         if (this.state.listed) {
             this.displayedData = this.state.searchParameter ? this.searchedData : this.recordLabel;
-            console.log("displau", this.displayedData);
+            // console.log("displau", this.displayedData);
         }
         return (
             <div className='admin-panel' style={{ 'marginTop': '60' }}>
@@ -139,7 +138,7 @@ class AdminWindow extends Component {
                 {/* <button onClick={this.handleClick} className="btn btn-primary">Search</button> */}
 
                 {this.state.listed ? this.displayedData.map((item, index) => (<RecordList data={item} index={index} pop={this.togglePopup} ></RecordList>)) : <div>Loading</div>}
-                {console.log(this.displayedData, this.state.listed)}
+                {/* {console.log(this.displayedData, this.state.listed)} */}
                 {this.state.popupActive === true ? <Popup id={this.state.activeUser} close={this.closePopup}></Popup> : null}
             </div>
         );
