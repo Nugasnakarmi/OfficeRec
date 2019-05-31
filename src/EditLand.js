@@ -12,6 +12,7 @@ class EditLand extends Component {
             warningStatus: 'inactive',
             landCat: 1,
             currentYear: "75-76",
+            
             area: 0,
             taxVisible: false,
             taxAmountLand: 0,
