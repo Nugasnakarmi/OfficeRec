@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import './popup.css';
+import './Popup.css';
 import fire from './config/fire';
 import MainWindow from './MainWindow';
+import EditLand from './EditLand';
+import EditHouse from './EditHouse';
+import EditVehicle from './EditVehicle';
+import EditIncome from './EditIncome';
 
 class Popup extends Component {
     constructor(props) {
@@ -9,7 +13,7 @@ class Popup extends Component {
 
         this.close = this.close.bind(this);
         this.donotClose = this.donotClose.bind(this);
-        this.handleEsc = this.handleEsc.bind(this);
+        // this.handleEsc = this.handleEsc.bind(this);
         this.getSubcollections = this.getSubcollections.bind(this);
         this.filterData = this.filterData.bind(this);
         this.changeTab = this.changeTab.bind(this);
@@ -22,6 +26,13 @@ class Popup extends Component {
         this.vehicleData = [];
         this.incomeData = [];
         this.houseData = [];
+        this.tabData = {
+            'personal': <MainWindow user={this.props.id} />,
+            'land':<EditLand user={this.props.id}></EditLand>,
+            'property': <EditHouse user={this.props.id}></EditHouse>,
+            'vehicle': <EditVehicle user={this.props.id}></EditVehicle>,
+            'income': <EditIncome user={this.props.id}></EditIncome>
+        };
         this.state = {
             loaded: false,
             activeTab: 'personal'
@@ -106,17 +117,17 @@ class Popup extends Component {
         e.stopPropagation();
     }
 
-    handleEsc(e){
-        // if (e.key === 'Escape'){
-            console.log("ESC Press");
-            this.close(e);
-        // }
-    }
+    // handleEsc(e){
+    //     if (e.key === 'Escape'){
+    //         console.log("ESC Press");
+    //         this.close(e);
+    //     }
+    // }
 
     render() {
         return (
             <div className='popup' onClick={this.close} >
-                <div className='popup-inner' onClick={this.donotClose} autofocus onKeyPress = {this.handleEsc}>
+                <div className='popup-inner' onClick={this.donotClose}>
                     <ul className="nav nav-tabs">
                         <li className="nav-item" onClick={() => { this.changeTab('personal') }}>
                             <a className="nav-link active" href="#">Personal</a>
@@ -142,9 +153,8 @@ class Popup extends Component {
                             </li>)
                             : null}
                     </ul>
-                    {this.state.activeTab}
                     <div className='scrollable-content'>
-                        <MainWindow user={this.props.id}></MainWindow>
+                        {this.tabData[this.state.activeTab]}
                     </div>
                     <button onClick={this.close} style={{ 'margin-lef`t': '100px' }}>Close</button>
                 </div>
