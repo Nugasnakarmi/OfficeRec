@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
 import './adduser.css';
+import {
+    Card, Button, CardHeader, CardFooter, CardBody,
+    CardTitle, CardText
+} from 'reactstrap';
+
 class AddUser extends Component {
     constructor(props) {
         super(props);
@@ -36,7 +41,7 @@ class AddUser extends Component {
             storageRef.put(photo);
             console.log('Photo PUT!!');
         }
-        else{
+        else {
             window.alert("Enter an e-mail ID")
         }
     }
@@ -78,74 +83,122 @@ class AddUser extends Component {
     }
 
     render() {
-        return (<div>
-            {/* <header><h1>Add a New User</h1></header> */}
-            <div className='container'>
-                <form>
-                    <section>
-                        <h2>Login Details</h2>
-                        <div className="form-group">
-                            <label for="InputEmail1"> Email Address</label>
-                            <input value={this.state.email} onChange={this.handleChange} required="required" type="email" name="email"
-                                className="form-control" id="InputEmail1" aria-describedby="emailHelp"
-                                placeholder="Enter email" />
-                            <small id="emailHelp" className="form-text text-muted"> We will never share your email with anyone else.</small>
-                        </div>
-                        <div className="form-group">
-                            <label for="InputPassword1">Password</label>
-                            <input value={this.state.password} onChange={this.handleChange} type='password'
-                                required="required" name='password' className="form-control" id="InputPassword1"
-                                placeholder="Enter password" />
-                        </div>
-                        <div className="form-group">
-                            <label for="InputPassword2">Confirm Password</label>
-                            <input value={this.state.confirm_password} onChange={this.handleChange} type='password'
-                                required="required" name='confirm_password' className="form-control" id="InputPassword2"
-                                placeholder="Confirm password" />
-                        </div>
-                    </section>
+        return (
+            <div className="main-div" align="center" >
 
-                    <section>
-                        <h2>User Details</h2>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="isAdmin" id="user" onChange={() => this.handleRadioButton(1)} checked={this.state.value === 1} />
-                            <label class="form-check-label" for="user">
-                                User
+                <Card className="cardbox">
+                    <CardHeader tag="h4"> Login Details</CardHeader>
+
+
+                    <CardBody>
+                        <form className='form-inline'>
+                            <section>
+
+                                <div className="form-group row">
+                                    <div className='col-5'>
+                                        <label className="sr-only" for="InputEmail1"> Email Address</label>
+                                        <input value={this.state.email} onChange={this.handleChange} required="required" type="email" name="email"
+                                            className="form-control input-email" size="35" id="InputEmail1" aria-describedby="emailHelp"
+                                            placeholder="Enter email" />
+                                    </div>
+                                    <div className='col-3'>
+                                        <label className="sr-only" for="InputPassword1">Password</label>
+                                        <input value={this.state.password} onChange={this.handleChange} type='password'
+                                            required="required" name='password' className="form-control" id="InputPassword1"
+                                            placeholder="Enter password" />
+                                    </div>
+                                    <div className=" col-4  ">
+                                        <label className="sr-only" for="InputPassword2">Confirm Password</label>
+                                        <input value={this.state.confirm_password} onChange={this.handleChange} type='password'
+                                            required="required" name='confirm_password' className="form-control" id="InputPassword2"
+                                            placeholder="Confirm password" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <small id="emailHelp" className="form-text text-muted"> We will never share your email with anyone else.</small>
+                                </div>
+                            </section>
+                        </form>
+                    </CardBody>
+                </Card>
+
+                <Card className="cardbox2" >
+                    <CardHeader tag="h4"> User Details</CardHeader>
+
+
+                    <CardBody>
+
+                        <section>
+                            <form className='form-inline'>
+
+                                <div className=" form-check-inline col-1">
+
+                                    <input class="form-check-input" type="radio" name="isAdmin" id="user" onChange={() => this.handleRadioButton(1)} checked={this.state.value === 1} />
+                                    <label class="form-check-label" for="user">
+                                        User
                             </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="isAdmin" id="admin" onChange={() => this.handleRadioButton(2)} checked={this.state.value === 2} />
-                            <label class="form-check-label" for="admin">
-                                Admin
+
+                                </div>
+                                <div className="form-check-inline col-1">
+
+                                    <input class="form-check-input" type="radio" name="isAdmin" id="admin" onChange={() => this.handleRadioButton(2)} checked={this.state.value === 2} />
+                                    <label class="form-check-label" for="admin">
+                                        Admin
                             </label>
-                        </div>
-                        <div className="form-group">
-                            <label for='name'>Name</label>
-                            <input value={this.state.name} name="name" type="text" required="required" onChange={this.handleChange} className="form-control" id='name' />
-                        </div>
-                        <div className="form-group">
-                            <label for='citizenship'>Citizenship Number</label>
-                            <input value={this.state.citizenship_num} name="citizenship_num" type="text" required="required" onChange={this.handleChange} className="form-control" id='citizenship' />
-                        </div>
-                        <div className="form-group">
-                            <label for='dob'>Date of Birth</label>
-                            <input value={this.state.dob} name="dob" type="date" required="required" onChange={this.handleChange} placeholder="Date in AD" className="form-control" id='dob' />
-                        </div>
-                        <label for='photo'>Photo</label>
-                        <div className="input-group mb-3">
-                            {/* <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                            </div> */}
-                            <div className="custom-file photo-box" style = {{border: '1px solid #ced4da', 'border-radius': '0.25rem'}}>
-                                <input className = "my-input" name="photoLocation" onChange={this.handlePhoto} required="required" accept='image/*' type="file" id="photo" aria-describedby="inputGroupFileAddon01" />
-                            </div>
-                        </div>
-                        {/* <input type='file' onChange={this.handlePhoto} required="required" accept='image/*'></input> */}
-                    </section>
-                    <button onClick={this.signupAndWriteDetails} style={{ marginLeft: '25px' }} className='btn btn-success'>Create User</button>
-                </form>
+
+
+                                </div>
+
+                            </form>
+                            <form className="form-inline">
+                                <div className="form-group row">
+
+                                    <div className=" col-5">
+                                        <label className="sr-only" for='name'>Name</label>
+                                        <input value={this.state.name} name="name" size="35" type="text" required="required" onChange={this.handleChange} className="form-control" id='name' placeholder="Name" />
+                                    </div>
+                                    <div className=" col-3  ">
+                                        <label className="sr-only" for='citizenship'>Citizenship Number</label>
+                                        <input value={this.state.citizenship_num} name="citizenship_num" type="text" required="required" onChange={this.handleChange} placeholder="नागरिक्ता नंं" className="form-control" id='citizenship' />
+                                    </div>
+                                    <div className=" col-4  ">
+                                        <label className="sr-only" for='dob'>Date of Birth</label>
+                                        <input value={this.state.dob} name="dob" type="date" required="required" onChange={this.handleChange} placeholder="Date in AD" className="form-control" id='dob' />
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+
+                        <form className="form-inline">
+                            <section className =" bottom">
+                               
+                                {/* <div className="input-group col-12 "> */}
+                                <div className="form-group row">
+                                <div className="input-group ">
+                                
+                                <label  for='photo'>Photo</label>
+                               
+                                    <div className="custom-file photo-box" style={{ border: '1px solid #ced4da', 'border-radius': '0.25rem' }}>
+                                   
+                                        <input className="my-input"  name="photoLocation" onChange={this.handlePhoto} required="required" accept='image/*' type="file" id="photo" aria-describedby="inputGroupFileAddon01" />
+                                    </div>
+                                    </div>
+                                {/* <input type='file' onChange={this.handlePhoto} required="required" accept='image/*'></input> */}
+                             
+
+
+                                
+
+                                <div >
+                                <button onClick={this.signupAndWriteDetails} align="right" style={{ marginLeft: '25px' }} className='btn btn-success'>Create User</button>
+                               </div>
+                               </div>
+                            </section>
+                        </form>
+                    </CardBody>
+                </Card>
             </div>
-        </div>);
+        );
     }
 }
 

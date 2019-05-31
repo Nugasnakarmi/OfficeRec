@@ -33,6 +33,7 @@ class EditLand extends Component {
     }
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
     handleAreaChange = e => {
+        this.getlandTax();
         this.setState({ [e.target.name]: e.target.value });
     
     }
@@ -222,7 +223,7 @@ class EditLand extends Component {
                     </div>
                     <div class="col-md-3 mb-3">
                         <label htmlFor="landCat"><i>जग्गा वर्ग</i></label>
-                        <select value={this.state.landCat} id="landCat" name="landCat" className="custom-select" type="number" onChange={this.handleSelectChange} >
+                        <select value={this.state.landCat} id="landCat" name="landCat" className="form-control custom-select" type="number" onChange={this.handleSelectChange} >
                             <option value="1"> क</option>
                             <option value="2"> ख</option>
                             <option value="3"> ग</option>
@@ -234,7 +235,7 @@ class EditLand extends Component {
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label htmlFor="area">Area</label>
+                        <label htmlFor="area">Area in sq. metre</label>
                         <input value={this.state.area} id="area" name="area" className="form-control" onChange={this.handleAreaChange} placeholder="Area in sq. meters"></input>                            </div>
                 </div>
                 <button onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>

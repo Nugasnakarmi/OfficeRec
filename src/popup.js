@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Popup.css';
+import './popup.css';
 import fire from './config/fire';
 import MainWindow from './MainWindow';
 import EditLand from './EditLand';
