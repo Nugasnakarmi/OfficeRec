@@ -400,7 +400,7 @@ class Land extends Component {
                 {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal title</Modal.Title>
+                        <Modal.Title>Confirm Delete</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>

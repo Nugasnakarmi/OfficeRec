@@ -103,7 +103,6 @@ class Vehicle extends Component {
         e.preventDefault();
         let writeID = this.props.addNew ? (this.state.VRN) : this.props.details.id;
         console.log("WriteID", writeID);
-
         var vehicleRef;
         var re = /^[a-z]{2} [1-9]{1,2} [a-z]{2,3} [0-9]{1,4}$/i;
         var test = re.test(this.state.VRN);
@@ -137,6 +136,7 @@ class Vehicle extends Component {
                 this.props.refresh();
             }).catch((error) => {
                 window.alert("Error: ", error);
+                
             });
         }
         else {
@@ -176,14 +176,10 @@ class Vehicle extends Component {
             window.alert("Error: ", error);
         });
         
-        
-        
-        
-        
-        
-        
-        
-        
+  
+
+
+
         console.log('paid today', todayBS);
         
 
@@ -399,7 +395,7 @@ class Vehicle extends Component {
 
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="inputDate" position="left">Due date</label>
-                                <input disabled value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                                <input disabled value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange}></input>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="inputTax" position="left">Tax amount</label>
@@ -539,7 +535,7 @@ class Vehicle extends Component {
 
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="inputDate" position="left">Due date</label>
-                                <input disabled value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                                <input disabled value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange}></input>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="inputTax" position="left">Tax amount</label>
@@ -583,7 +579,7 @@ class Vehicle extends Component {
                 {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal title</Modal.Title>
+                        <Modal.Title>Confirm Delete</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
