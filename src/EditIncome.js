@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
-
+import {
+    Card, Button, CardHeader, CardFooter, CardBody,
+    CardTitle, CardText
+} from 'reactstrap';
 
 class EditIncome extends Component {
     constructor(props) {
@@ -63,8 +66,13 @@ class EditIncome extends Component {
         // let engdate = adbs.bs2ad("2047/4/26");
         // console.log(engdate['month']);
         return (
+            <Card className="popupCards">
+                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Income details</CardHeader>
+
+
+                <CardBody>
             <section>
-                <h2> Income details </h2>
+                
                 <div className="form-row">
                     <div class="col-md-3 mb-3">
                         <label htmlFor="inputpan">PAN</label>
@@ -96,7 +104,8 @@ class EditIncome extends Component {
                 </div>
 
             </section>
-
+            </CardBody>
+            </Card>
         )
     }
 }

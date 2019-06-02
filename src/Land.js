@@ -6,6 +6,10 @@ import { Form, Row, Col, Button, ButtonToolbar, Modal } from 'react-bootstrap';
 import fire from './config/fire';
 import firebase from 'firebase';
 import adbs from 'ad-bs-converter';
+import {
+    Card, CardHeader, CardFooter, CardBody,
+    CardTitle, CardText
+} from 'reactstrap';
 
 class Land extends Component {
     constructor(props) {
@@ -61,7 +65,7 @@ class Land extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
-        this.editButton = [<ButtonToolbar><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
+        this.editButton = [<ButtonToolbar  ><Button variant="warning"  onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
 
         this.db = fire.firestore();
@@ -227,8 +231,13 @@ class Land extends Component {
     renderForm(isEditable) {
         if (isEditable) {
             return (
+                // <Card className="popupCards">
+                // <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Land details </CardHeader>
+
+
+                // <CardBody>
                 <section>
-                    <label htmlFor="inputLocation">Provice/District/Municipality</label>
+                    <label htmlFor="inputLocation">Province/District/Municipality</label>
                     <div class="form-row" id="inputLocation">
                         <div class="col-md-3 mb-3">
                             <input value={this.state.province} id="inputprovince" name="province" className="form-control" type="text" onChange={this.handleChange} placeholder=" Province"></input>
@@ -292,10 +301,17 @@ class Land extends Component {
                         {/* <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button> */}
                     </div>
                 </section>
+            //      {/* </CardBody>
+            //    </Card>  */}
             );
         }
         else {
             return (
+                // <Card className="popupCards">
+                // <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Land details </CardHeader>
+
+
+                // <CardBody>
                 <section>
                     <label htmlFor="inputLocation">Province/District/Municipality</label>
                     <div class="form-row" id="inputLocation">
@@ -360,7 +376,9 @@ class Land extends Component {
                         {/* <button disabled onClick={this.writeLandDetails} className="btn btn-primary">Submit</button> */}
                     </div>
                 </section>
-            );
+                //  </CardBody>
+                //</Card>            
+                  );
         }
     }
 
@@ -371,7 +389,7 @@ class Land extends Component {
     render() {
         return (
             // <div className="item-box">
-            <div>
+            <div align ="center">
                 {/* <h3>Land at {this.props.details.Location.municipality} Kitta {this.props.details.kittaId}</h3>
                 <div className="row">
                     <div className="location col-6">
@@ -394,10 +412,17 @@ class Land extends Component {
                     </div>
                 </div> */}
                 {/* {this.displayText} */}
+                <Card className="popupCards">
+                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Land details </CardHeader>
 
+
+                <CardBody>
                 {this.renderForm(this.state.editable)}
-
+              
                 {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
+                
+                </CardBody>
+                </Card>
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirm Delete</Modal.Title>

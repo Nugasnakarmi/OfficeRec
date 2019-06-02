@@ -88,7 +88,7 @@ class AddUser extends Component {
             <div className="main-div" align="center" >
 
                 <Card className="cardbox">
-                    <CardHeader tag="h4"> Login Details</CardHeader>
+                    <CardHeader style={{backgroundColor : "#2D93AD",color: "aliceblue"}}tag="h4"> Login Details</CardHeader>
 
 
                     <CardBody>
@@ -124,7 +124,7 @@ class AddUser extends Component {
                 </Card>
 
                 <Card className="cardbox2" >
-                    <CardHeader tag="h4"> User Details</CardHeader>
+                    <CardHeader style={{backgroundColor : "#2D93AD" ,color: "aliceblue"}} tag="h4"> User Details</CardHeader>
 
 
                     <CardBody>

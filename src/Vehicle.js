@@ -6,6 +6,7 @@ import wheel2 from './res/2wheel.png';
 import wheel4 from './res/4wheel.png';
 import { ButtonToolbar, Button, Modal } from 'react-bootstrap';
 import adbs from 'ad-bs-converter';
+import { Card, CardBody , CardHeader} from 'reactstrap';
 
 class Vehicle extends Component {
     constructor(props) {
@@ -270,8 +271,9 @@ class Vehicle extends Component {
     renderForm(isEditable) {
         if (isEditable) {
             return (
+                
                 <section>
-                    <h2> Vehicle details here </h2>
+                   
                     <div className="form-row">
                         <div class="col-md-4  mb-3">
                             <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
@@ -406,12 +408,14 @@ class Vehicle extends Component {
                         </div>
                     </form>
                 </section>
+                
             );
         }
         else {
             return (
+               
                 <section>
-                    <h2> Vehicle details here </h2>
+                    
                     <div className="form-row">
                         <div class="col-md-4  mb-3">
                             <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
@@ -547,6 +551,7 @@ class Vehicle extends Component {
                         </div>
                     </form>
                 </section>
+               
             );
         }
     }
@@ -574,9 +579,17 @@ class Vehicle extends Component {
             //     </div>
             // </div>
             <div>
+                <Card className ="popupCards">
+                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4">  Vehicle details here   </CardHeader>
+
+
+                <CardBody>
                 {this.renderForm(this.state.editable)}
 
                 {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
+                </CardBody>
+                </Card>
+
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirm Delete</Modal.Title>

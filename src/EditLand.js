@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
+// import {
+//     Card, Button, CardHeader, CardFooter, CardBody,
+//     CardTitle, CardText
+// } from 'reactstrap';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import Land from './Land';
 
@@ -229,7 +233,7 @@ class EditLand extends Component {
                 totalRecords++;
             })
             if (this.props.isAdmin){
-                this.displayText.push(<Card>
+                this.displayText.push(<Card align ="center">
                     <Accordion.Toggle as={Card.Header} eventKey={totalRecords}>
                         <b>Add Record</b>
                     </Accordion.Toggle>
@@ -255,6 +259,80 @@ class EditLand extends Component {
             })
         }
         return (
+            // <Card className="cardbox">
+            //     <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Land details </CardHeader>
+
+
+            //     <CardBody>
+            // <section>
+                
+            //     <label htmlFor="inputLocation">Enter Location</label>
+            //     <div class="form-row" id="inputLocation">
+            //         <div class="col-md-3 mb-3">
+            //             <input value={this.state.province} id="inputprovince" name="province" className="form-control" type="text" onChange={this.handleChange} placeholder=" Province"></input>
+            //         </div>
+            //         <div class="col-md-3 mb-3">
+            //             <input value={this.state.district} id="inputdistrict" name="district" className="form-control" type="text" onChange={this.handleChange} placeholder=" District "></input>
+            //         </div>
+            //         <div class="col-md-3 mb-3">
+            //             <input value={this.state.municipality} id="inputmuni" name="municipality" className="form-control" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
+            //         </div>
+            //         <div class="col-md-3 mb-3">
+            //             <input value={this.state.ward} id="inputward" name="ward" type="number" className="form-control" min="1" onChange={this.handleChange} placeholder=" Ward"></input>
+            //         </div>
+            //     </div>
+            //     <div className="form-row">
+            //         <div class="col-md-3 mb-3">
+            //             <label htmlFor="inputkitta"><i>Kitta Number</i></label>
+            //             <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
+            //         </div>
+            //         <div class="col-md-3 mb-3">
+            //             <label htmlFor="landCat"><i>जग्गा वर्ग</i></label>
+            //             <select value={this.state.landCat} id="landCat" name="landCat" className="form-control custom-select" type="number" onChange={this.handleSelectChange} >
+            //                 <option value="1"> क</option>
+            //                 <option value="2"> ख</option>
+            //                 <option value="3"> ग</option>
+            //                 <option value="4"> घ</option>
+            //                 <option value="5"> ङ</option>
+            //                 <option value="6"> च</option>
+            //                 <option value="7"> वर्ग नखुलेको</option>
+
+            //             </select>
+            //         </div>
+            //         <div class="col-md-6 mb-3">
+            //             <label htmlFor="area">Area in sq. metre</label>
+            //             <input value={this.state.area} id="area" name="area" className="form-control" onChange={this.handleAreaChange} placeholder="Area in sq. meters"></input>                            </div>
+            //     </div>
+            //     <button onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
+            //     <div className="form-row">
+            //         {console.log(this.state.taxAmountLand)}
+                   
+            //         {this.state.taxVisible ? <div class="col-md-12 mb-3"> 
+            //         <p> 
+            //            <b> भुमी कर</b> : Nrs. {this.state.taxAmountLand}<br/>
+            //            <b>  No. of Aanas </b> : {(this.state.area / this.state.Aana).toFixed(2)}<br/>
+            //            <b>  Rate per आना </b> : Nrs. {this.state.taxRate} 
+                    
+                    
+            //         </p> </div>: null}
+                    
+                    
+            //         <div class="col-md-6 mb-3">
+            //             <label htmlFor="inputDate" position="left">Due date</label>
+            //             <input value={this.state.dueDateLand} className="form-control" id="inputDateLand" name="dueDateLand" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+            //         </div>
+            //         {/* <div class="col-md-6 mb-3">
+            //             <label htmlFor="inputTax" position="left">Tax amount</label>
+            //             <input value={this.state.taxAmountLand} className="form-control" id="inputTaxLand" name="taxAmountLand" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
+
+            //         </div> */}
+            //         {// ABOVE SECTION IS REMOVED AS TAX IS AUTOMATICALLY CALCULATED ON THE BASIS OF CATEGORY
+            //         }
+            //         <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
+            //     </div>
+            // </section>
+            // </CardBody>
+            // </Card>
             // <section>
             //     <h2>Land details</h2>
             //     <label htmlFor="inputLocation">Enter Location</label>
