@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
 import adbs from 'ad-bs-converter';
+import {
+    Card, Button, CardHeader, CardFooter, CardBody,
+    CardTitle, CardText
+} from 'reactstrap';
 
 class EditVehicle extends Component {
     constructor(props) {
@@ -223,9 +227,13 @@ class EditVehicle extends Component {
             })
         }
         return (
+            <Card className="cardbox">
+                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4">  Vehicle details here </CardHeader>
 
+
+                <CardBody>
             <section>
-                <h2> Vehicle details here </h2>
+                
                 <div className="form-row">
                     <div class="col-md-4  mb-3">
                         <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
@@ -363,7 +371,8 @@ class EditVehicle extends Component {
                     </div>
                 </form>
             </section>
-
+            </CardBody>
+            </Card>
 
         )
 

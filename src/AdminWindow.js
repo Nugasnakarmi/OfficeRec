@@ -4,6 +4,12 @@ import Details from './Details';
 import RecordList from './RecordList';
 import Popup from './popup';
 import './AdminWindow.css';
+import {
+    Card, Button, CardHeader, CardFooter, CardBody,
+    CardTitle, CardText
+} from 'reactstrap';
+import { BulletList } from 'react-content-loader';
+
 
 //import fixDate from './FixDate';
 
@@ -124,8 +130,13 @@ class AdminWindow extends Component {
             // console.log("displau", this.displayedData);
         }
         return (
-            <div className='admin-panel' style={{ 'marginTop': '60' }}>
-                <h2>Admin Panel</h2>
+           
+            <div className='admin-panel' align="center" style={{ 'marginTop': '60' }}>
+                <Card className="adminCard">
+            <CardHeader style={{backgroundColor: "#2D93AD",color: "aliceblue"}} tag="h4">  Admin Panel </CardHeader>
+
+
+            <CardBody>
                 <p>Search and view User Records here</p>
                 <form >
                     <div className="form-group">
@@ -140,6 +151,9 @@ class AdminWindow extends Component {
                 {this.state.listed ? this.displayedData.map((item, index) => (<RecordList data={item} index={index} pop={this.togglePopup} ></RecordList>)) : <div>Loading</div>}
                 {/* {console.log(this.displayedData, this.state.listed)} */}
                 {this.state.popupActive === true ? <Popup id={this.state.activeUser} close={this.closePopup}></Popup> : null}
+          
+            </CardBody>
+            </Card>
             </div>
         );
     }

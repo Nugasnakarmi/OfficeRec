@@ -12,6 +12,7 @@
 
 .popup-inner{
     position: absolute;
+    
     left: 20%;
     right: 20%;
     top: 20%;
@@ -24,4 +25,9 @@
     height: 300px;    
     overflow-y:auto;
     overflow-x: hidden;
+}
+.cardHeader{
+    background-color: #2D93AD;
+   
+    color: aliceblue;
 }

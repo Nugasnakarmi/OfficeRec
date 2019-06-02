@@ -9,3 +9,22 @@
     width: auto;
     height: fit-content;
 }
+
+.cardbox{
+   
+    width : 75%;
+    margin-top: 5%;
+    border-radius: 0.30rem;
+}
+
+.adminCard{
+    width: 60%;
+    margin-top : 2.5%;
+    border-radius: 0.30rem;
+
+}
+
+.cardHeader{
+    background-color: #2D93AD;
+    color: aliceblue;
+}

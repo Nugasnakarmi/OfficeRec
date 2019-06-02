@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
-
+import {
+    Card, Button, CardHeader, CardFooter, CardBody,
+    CardTitle, CardText
+} from 'reactstrap';
 
 class EditLand extends Component {
     constructor(props) {
@@ -199,8 +202,13 @@ class EditLand extends Component {
             })
         }
         return (
+            <Card className="cardbox">
+                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Land details </CardHeader>
+
+
+                <CardBody>
             <section>
-                <h2>Land details</h2>
+                
                 <label htmlFor="inputLocation">Enter Location</label>
                 <div class="form-row" id="inputLocation">
                     <div class="col-md-3 mb-3">
@@ -266,6 +274,8 @@ class EditLand extends Component {
                     <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button>
                 </div>
             </section>
+            </CardBody>
+            </Card>
         )
     }
 }
