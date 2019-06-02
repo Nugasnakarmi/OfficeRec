@@ -259,7 +259,7 @@ class EditHouse extends Component {
             console.log("INSIDE RENDER, CATEGORY", this.state.category);
         }
         return (
-            <Card className="cardbox">
+            <Card className="popupCards">
                 <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Property details </CardHeader>
 
 

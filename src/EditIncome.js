@@ -66,7 +66,7 @@ class EditIncome extends Component {
         // let engdate = adbs.bs2ad("2047/4/26");
         // console.log(engdate['month']);
         return (
-            <Card className="cardbox">
+            <Card className="popupCards">
                 <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Income details</CardHeader>
 
 
