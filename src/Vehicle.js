@@ -50,7 +50,7 @@ class Vehicle extends Component {
         this.delete = this.delete.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        
+
         this.editButton = [<ButtonToolbar><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
         this.db = fire.firestore();
@@ -101,43 +101,91 @@ class Vehicle extends Component {
 
     save(e) {
         e.preventDefault();
-        let writeID = this.props.addNew ? (this.props.maxID + 1).toString() : this.props.details.id;
+        let writeID = this.props.addNew ? (this.state.VRN) : this.props.details.id;
         console.log("WriteID", writeID);
-        this.db.collection("UserBase").doc(this.props.user).collection("land-tax").doc(writeID).set({
-            Location: {
-                province: this.state.province,
-                district: this.state.district,
-                municipality: this.state.municipality,
-                ward: parseFloat(this.state.ward)
-            },
-            kittaId: parseFloat(this.state.kittaId),
-            category: parseFloat(this.state.landCat),
-            taxAmount: parseFloat(this.state.taxAmountLand),
-            area: parseFloat(this.state.area),
-            ['due date']: this.state.dueDateLand,
-            regDate: this.state.regDate,
-            lastDate: this.state.lastDate
+
+        var vehicleRef;
+        var re = /^[a-z]{2} [1-9]{1,2} [a-z]{2,3} [0-9]{1,4}$/i;
+        var test = re.test(this.state.VRN);
+        console.log(test);
+        if (test) {
+            this.setState({ warningStatus: "inactive" })
+            vehicleRef = this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(writeID);
+            vehicleRef.set(
+                {
+                    amount: parseFloat(this.state.taxAmount),
+                    ['registered date']: this.state.regDate,
+                    ['due date']: this.state.dueDate,
+                    type: this.state.type,
+                    VRN: this.state.VRN,
+                    companyName: this.state.companyName,
+                    model: this.state.model,
+                    ['Year of Manufacture']: this.state.manDate,
+                    ['No of Cylinders']: this.state.noofCyl,
+                    ChassisNo: this.state.ChassisNo,
+                    EngineNo: this.state.EngineNo,
+                    ['HorsePower/CC']: this.state.hpcc,
+                    vehicleColor: this.state.vehicleColor,
+                    seatCapacity: this.state.seatCapacity,
+                    Use: this.state.useType,
+                    ['Petrol/Diesel']: this.state.PDtype,
+                    ['Bhansar ko Nissa']: this.state.CustomNissa,
+                    lastDate: this.state.lastDate
+                }//, { merge: true }
+            ).then(() => {
+                window.alert("Success!");
+                this.props.refresh();
+            }).catch((error) => {
+                window.alert("Error: ", error);
+            });
+        }
+        else {
+            //document.getElementById("vrnDown").innerHTML = "Please correct format for VRN";
+            this.setState({
+                warningStatus: 'active'
+            });
+            // window.alert("Please put spaces as specified for VRN ")
+        }
+    }
+
+    recordPayment(e) {
+        e.preventDefault();
+        let today = new Date(); //todays date object
+        console.log('regdate', this.state.regDate); //input reg date
+        console.log('last payment', this.state.lastDate); //input date of last payment
+        let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
+        let todayBS = adbs.ad2bs(todayString);  //todays date in BS
+        var regDateArr = this.state.regDate.split('/').map(function (str) {
+            return Number(str);
+        });
+        var regDateObj = { year: regDateArr[0], month: regDateArr[1], day: regDateArr[2] }; //object of registered date BS
+
+        this.setState({
+            lastDate: [todayBS.en.year, todayBS.en.month, todayBS.en.day].join('/'),
+            dueDate: [todayBS.en.year + 1, regDateObj.month, regDateObj.day-1].join('/'),
+            taxAmount: 0
+        });
+        this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(this.props.details.id).set({
+            ['due date']: this.state.dueDate,
+            lastDate: this.state.lastDate,
+            amount: this.state.taxAmount
         }).then(() => {
             window.alert("Success!");
             this.props.refresh();
         }).catch((error) => {
             window.alert("Error: ", error);
         });
-    }
-
-    recordPayment(e) {
-        e.preventDefault();
-        let today = new Date(); //todays date object
-        //console.log(today);
-        console.log('regdate', this.state.regDate); //input reg date
-        console.log('last payment', this.state.lastDate); //input date of last payment
-        let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
-        let todayBS = adbs.ad2bs(todayString);  //todays date in BS
+        
+        
+        
+        
+        
+        
+        
+        
+        
         console.log('paid today', todayBS);
-        var regDateArr = this.state.regDate.split('/').map(function (str) {
-            return Number(str);
-        });
-        var regDateObj = { year: regDateArr[0], month: regDateArr[1], day: regDateArr[2] }; //object of registered date
+        
 
         var lastDateArr = this.state.lastDate.split('/').map(function (str) {
             return Number(str);
@@ -194,7 +242,7 @@ class Vehicle extends Component {
     delete(e) {
         e.preventDefault();
         if (this.state.inputID === this.props.user) {
-            this.db.collection("UserBase").doc(this.props.user).collection("land-tax").doc(this.props.details.id).delete().then(() => {
+            this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(this.props.details.id).delete().then(() => {
                 window.alert("Success!");
                 this.handleClose();
                 this.props.refresh();
@@ -261,7 +309,7 @@ class Vehicle extends Component {
                         <div class="col-md-4  mb-3">
                             <span> <label htmlFor="vrn" id="vrnUp">Vehicle Registration Number</label>
                                 <i><label className="hidden" htmlFor="vrn" id="vrnDown" status={this.state.warningStatus}>Please enter as in the format specified.</label> </i> </span>
-                            <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="BA 3 CHA 1234"></input>
+                            {this.props.addNew ? <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="BA 3 CHA 1234"></input> : <input disabled value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="BA 3 CHA 1234"></input>}
                         </div>
                         <div class="col-md-4  mb-3">
                             <label htmlFor="companyName" position="left">Company Name</label>
@@ -351,7 +399,7 @@ class Vehicle extends Component {
 
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="inputDate" position="left">Due date</label>
-                                <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+                                <input disabled value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="inputTax" position="left">Tax amount</label>
