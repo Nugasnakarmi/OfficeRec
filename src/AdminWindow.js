@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import Details from './Details';
 import RecordList from './RecordList';
-import Popup from './popup';
+import Popup from './Popup';
 import './AdminWindow.css';
 import {
     Card, Button, CardHeader, CardFooter, CardBody,
