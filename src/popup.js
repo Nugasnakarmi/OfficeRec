@@ -127,30 +127,30 @@ class Popup extends Component {
 
     render() {
         return (
-            <div className='popup'align="center"  onClick={this.close} >
-                <div className='popup-inner' style={{position:"center"}} onClick={this.donotClose}>
+            <div className='popup' onClick={this.close} >
+                <div className='popup-inner' onClick={this.donotClose}>
                     <ul className="nav nav-tabs">
                         <li className="nav-item" onClick={() => { this.changeTab('personal') }}>
-                            <a className="nav-link active" href="#">Personal</a>
+                            {this.state.activeTab === 'personal' ? <a className="nav-link active" href="#">Personal</a> : <a className="nav-link" href="#">Personal</a>}
                         </li>
                         {this.landData.length
                             ? (<li className="nav-item" onClick={() => { this.changeTab('land') }}>
-                                <a className="nav-link" href="#">Land</a>
+                                {this.state.activeTab === 'land' ? <a className="nav-link active" href="#">Land</a> : <a className="nav-link" href="#">Land</a>}
                             </li>)
                             : null}
                         {this.houseData.length
                             ? (<li className="nav-item" onClick={() => { this.changeTab('property') }}>
-                                <a className="nav-link" href="#">Property</a>
+                                {this.state.activeTab === 'property' ? <a className="nav-link active" href="#">Property</a> : <a className="nav-link" href="#">Property</a>}
                             </li>)
                             : null}
                         {this.vehicleData.length
                             ? (<li className="nav-item" onClick={() => { this.changeTab('vehicle') }}>
-                                <a className="nav-link" href="#">Vehicle</a>
+                                {this.state.activeTab === 'vehicle' ? <a className="nav-link active" href="#">Vehicle</a> : <a className="nav-link" href="#">Vehicle</a>}
                             </li>)
                             : null}
                         {this.incomeData.length
                             ? (<li className="nav-item" onClick={() => { this.changeTab('income') }}>
-                                <a className="nav-link" href="#">Income</a>
+                                {this.state.activeTab === 'income' ? <a className="nav-link active" href="#">Income</a> : <a className="nav-link" href="#">Income</a>}
                             </li>)
                             : null}
                     </ul>

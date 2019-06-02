@@ -425,7 +425,7 @@ class Land extends Component {
                 </Card>
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal title</Modal.Title>
+                        <Modal.Title>Confirm Delete</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
