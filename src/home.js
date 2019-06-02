@@ -99,9 +99,9 @@ class Home extends Component {
 
         if (this.state.loaded === false) { this.verifyAdmin(user); }
 
-        if (this.state.openTab === 'Dashboard') renderthing = <AdminWindow />
-        else if (this.state.openTab === 'Add User') renderthing = <AddUser />
-        else if (this.state.openTab === 'Edit Details') renderthing = <Precords />
+        if (this.state.openTab === 'Dashboard') renderthing = <AdminWindow isAdmin = {this.state.isAdmin} />
+        else if (this.state.openTab === 'Add User') renderthing = <AddUser isAdmin = {this.state.isAdmin} />
+        else if (this.state.openTab === 'Edit Details') renderthing = <Precords isAdmin = {this.state.isAdmin} />
 
         return (
             <div>
@@ -114,7 +114,7 @@ class Home extends Component {
                         <div className="content-window">
                             <div>
                                 {this.state.isAdmin ?
-                                    renderthing : ((this.state.openTab === 'Dashboard') ? <MainWindow user={user} /> : <Details user={user}></Details>)}
+                                    renderthing : ((this.state.openTab === 'Dashboard') ? <MainWindow user={user} isAdmin = {this.state.isAdmin}/> : <Details user={user} isAdmin = {this.state.isAdmin}></Details>)}
                             </div>
                         </div>
                     </div>

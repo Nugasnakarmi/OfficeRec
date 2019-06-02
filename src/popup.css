@@ -12,16 +12,16 @@
 
 .popup-inner{
     position: absolute;
-    left: 20%;
-    right: 20%;
-    top: 20%;
-    bottom: 20%;
+    left: 10%;
+    right: 10;
+    top: 15%;
+    bottom: 5%;
     margin: auto;
     background: white;
 }
 
 .scrollable-content{
-    height: 300px;    
+    height: 400px;    
     overflow-y:auto;
     overflow-x: hidden;
 }

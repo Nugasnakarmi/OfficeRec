@@ -95,10 +95,10 @@ class Details extends Component {
         console.log('loaded?', this.state.loaded);
         return (<div className="container" style={{ 'margin-top': '70px' }}>
             {/* <h2 style = {{margin : '15px'}}>The Details Pane</h2> */}
-            {this.landData.length ? this.landData.map((item) => (<Land details={item} />)) : ''}
-            {this.vehicleData.length ? this.vehicleData.map((item) => (<Vehicle details={item} />)) : ''}
-            {this.incomeData.length ? this.incomeData.map((item) => (<Income details={item} />)) : ''}
-            {this.houseData.length ? this.houseData.map((item) => (<House details={item} />)) : ''}
+            {this.landData.length ? this.landData.map((item) => (<Land details={item} isAdmin = {this.props.isAdmin}/>)) : ''}
+            {this.vehicleData.length ? this.vehicleData.map((item) => (<Vehicle details={item} isAdmin = {this.props.isAdmin} />)) : ''}
+            {this.incomeData.length ? this.incomeData.map((item) => (<Income details={item} isAdmin = {this.props.isAdmin}/>)) : ''}
+            {this.houseData.length ? this.houseData.map((item) => (<House details={item} isAdmin = {this.props.isAdmin}/>)) : ''}
             {/* {renderLand}
             {renderVehicle}
             {renderIncome} */}

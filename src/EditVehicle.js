@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
 import adbs from 'ad-bs-converter';
+import { Accordion, Card } from 'react-bootstrap';
+import Vehicle from './Vehicle';
 
 class EditVehicle extends Component {
     constructor(props) {
@@ -36,6 +38,9 @@ class EditVehicle extends Component {
         this.setVehicleType = this.setVehicleType.bind(this);
         this.recordPayment = this.recordPayment.bind(this);
         this.writeVehicleDetails = this.writeVehicleDetails.bind(this);
+
+        this.itemList = [];
+        this.displayText = [];
     }
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
@@ -216,6 +221,56 @@ class EditVehicle extends Component {
             window.alert("User cannot be empty");
         }
     }
+
+    componentDidMount(){
+        let totalRecords  = 0;
+        //let idList = [];
+        var landRef = this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax");
+        landRef.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                this.countItem++;
+                console.log(doc.id, " => ", doc.data());
+                this.itemList.push({ ...doc.data(), id: doc.id });
+                //idList.push(parseFloat(doc.id));
+            });
+        }).then(() => {
+            //console.clear();
+            console.log("NO of property", this.countItem);
+            console.log("The list", this.itemList);
+            //this.maxID = Math.max(...idList);
+            this.itemList.map((item, index) => {
+                this.displayText.push(<Card>
+                    <Accordion.Toggle as={Card.Header} eventKey={index}>
+                        {item.id}
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={index}>
+                        <Card.Body>
+                            <Vehicle user={this.props.user} details={item} isAdmin={this.props.isAdmin} refresh={this.toggleUpdate} />
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>)
+                totalRecords++;
+            })
+            if (this.props.isAdmin){
+                this.displayText.push(<Card>
+                    <Accordion.Toggle as={Card.Header} eventKey={totalRecords}>
+                        <b>Add Record</b>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={totalRecords}>
+                        <Card.Body>
+                            <Vehicle addNew = {true} user={this.props.user} details={null} isAdmin={this.props.isAdmin} refresh={this.toggleUpdate} />
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>)
+            }
+            this.setState({
+                loaded: true
+            });
+
+            //set a state to list loaded.
+        });
+    }
+
     render() {
         if (!this.state.email) {
             this.setState({
@@ -223,148 +278,150 @@ class EditVehicle extends Component {
             })
         }
         return (
+            
+            // <section>
+            //     <h2> Vehicle details here </h2>
+            //     <div className="form-row">
+            //         <div class="col-md-4  mb-3">
+            //             <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
+            //             <select id="drop-vehicle" onChange={this.handleSelectChange} name='type' value={this.state.type} className="custom-select">
+            //                 <optgroup label='Category I'>
 
-            <section>
-                <h2> Vehicle details here </h2>
-                <div className="form-row">
-                    <div class="col-md-4  mb-3">
-                        <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
-                        <select id="drop-vehicle" onChange={this.handleSelectChange} name='type' value={this.state.type} className="custom-select">
-                            <optgroup label='Category I'>
+            //                     <option value='Motorcycle'>Motorcycle/Scooter</option>
+            //                     <option value='Minitruck/Minibus'>Minitruck/Minibus</option>
+            //                     <option value='Truck/Bus'>Truck/Bus</option>
+            //                     <option value='Car'>Car</option>
+            //                     <option value='Jeep'>Jeep</option>
+            //                     <option value='Van'>Van</option>
+            //                     <option value='Microbus'>Microbus</option>
+            //                 </optgroup>
+            //                 <optgroup label='Category II'>
+            //                     <option value='Dozer'>Dozer</option>
+            //                     <option value='Excavator'>Excavator</option>
+            //                     <option value='Loader'>Loader</option>
+            //                     <option value='Roller'>Roller</option>
+            //                     <option value='Tripper'>Tripper</option>
+            //                     <option value='Crane'>Crane</option>
+            //                     <option value='Mini-tripper'>Mini-tripper</option>
+            //                 </optgroup>
+            //                 <optgroup label='Category III'>
+            //                     <option value='Tractor'>Tractor</option>
+            //                     <option value='Power Tiller'>Power Tiller</option>
+            //                 </optgroup>
+            //             </select>
 
-                                <option value='Motorcycle'>Motorcycle/Scooter</option>
-                                <option value='Minitruck/Minibus'>Minitruck/Minibus</option>
-                                <option value='Truck/Bus'>Truck/Bus</option>
-                                <option value='Car'>Car</option>
-                                <option value='Jeep'>Jeep</option>
-                                <option value='Van'>Van</option>
-                                <option value='Microbus'>Microbus</option>
-                            </optgroup>
-                            <optgroup label='Category II'>
-                                <option value='Dozer'>Dozer</option>
-                                <option value='Excavator'>Excavator</option>
-                                <option value='Loader'>Loader</option>
-                                <option value='Roller'>Roller</option>
-                                <option value='Tripper'>Tripper</option>
-                                <option value='Crane'>Crane</option>
-                                <option value='Mini-tripper'>Mini-tripper</option>
-                            </optgroup>
-                            <optgroup label='Category III'>
-                                <option value='Tractor'>Tractor</option>
-                                <option value='Power Tiller'>Power Tiller</option>
-                            </optgroup>
-                        </select>
-
-                    </div>
-                    <div class="col-md-4  mb-3">
-                        <span> <label htmlFor="vrn" id="vrnUp">Vehicle Registration Number</label>
-                            <i><label className="hidden" htmlFor="vrn" id="vrnDown" status={this.state.warningStatus}>Please enter as in the format specified.</label> </i> </span>
-                        <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="BA 3 CHA 1234"></input>
-                    </div>
-                    <div class="col-md-4  mb-3">
-                        <label htmlFor="companyName" position="left">Company Name</label>
-                        <input value={this.state.companyName} className="form-control" id="companyName" name="companyName" type="text" onChange={this.handleChange} placeholder="TVS"></input>
-                    </div>
-                </div>
-                <form>
-                    <div className="form-row">
-
-
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="model" position="left">Model</label>
-                            <input value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
-                        </div>
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="noofCyl" position="left">No of Cylinders</label>
-                            <input value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 1"></input>
-                        </div>
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="hpcc" position="left">Horse Power/ CC</label>
-                            <input value={this.state.hpcc} className="form-control" id="hpcc" name="hpcc" type="text" onChange={this.handleChange} placeholder="Eg:200"></input>
-                        </div>
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="vehicleColor" position="left">Vehicle Color</label>
-                            <input value={this.state.vehicleColor} className="form-control" id="vehicleColor" name="vehicleColor" type="text" onChange={this.handleChange} placeholder="Eg: White"></input>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="manDate" position="left">Year of Manufacture</label>
-                            <input value={this.state.manDate} className="form-control" id="manDate" name="manDate" type="number" min="2000" onChange={this.handleChange} placeholder="Eg: 2014"></input>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="lastDate" position="left">Last Paid</label>
-                            <input value={this.state.lastDate} className="form-control" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
-                        </div>
-                        {/* <div class="col-md-6 mb-3">
-                            <label htmlFor="regDate" position="left">Date of Registration</label>
-                            <input value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="date" onChange={this.handleChange} placeholder="Eg: 7th March 2010"></input>
-                        </div> */}
-                        {/* THIS IS TEST CODE FOR NEPALI DATE ------ PURAK */}
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="regDate" position="left">Date of Registration</label>
-                            <input value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/M/DD"></input>
-                        </div>
-                    </div>
-                    <div className="form-row">
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="seatCapacity" position="left">Seat Capacity</label>
-                            <input value={this.state.seatCapacity} className="form-control" id="seatCapacity" name="seatCapacity" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 2"></input>
-                        </div>
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="ChassisNo" position="left">Chassis No</label>
-                            <input value={this.state.ChassisNo} className="form-control" id="ChassisNo" name="ChassisNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: MDS236A9942P32099"></input>
-                        </div>
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="EngineNo" position="left">Engine No</label>
-                            <input value={this.state.EngineNo} className="form-control" id="EngineNo" name="EngineNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: 6R9D42030456"></input>
-                        </div>
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="drop-PD" position="left">Petrol/Diesel</label>
-
-                            <select id="drop-PD" onChange={this.handleSelectChange} name='PDtype' value={this.state.PDtype} className="custom-select">
-                                <option value="Petrol">Petrol</option>
-                                <option value='Diesel'>Diesel</option>
-                            </select>
-
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="col-md-6 mb-3">
-                            <label htmlFor="drop-useType" position="left">Use</label>
-                            <select id="drop-useType" onChange={this.handleSelectChange} name='useType' value={this.state.useType} className="custom-select">
-                                <option value='Private'>Private</option>
-                                <option value='Rented'>Rented</option>
-                                <option value='Government'>Government</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label htmlFor="CustomNissa" position="left">Bhansar Nissa</label>
-                            <input value={this.state.CustomNissa} className="form-control" id="CustomNissa" name="CustomNissa" type="text" onChange={this.handleChange} placeholder="Eg: ME45599 2074/03/16"></input>
-
-                        </div>
-                    </div>
-                    <div class="form-row">
-
-                        <div class="col-md-6 mb-3">
-                            <label htmlFor="inputDate" position="left">Due date</label>
-                            <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label htmlFor="inputTax" position="left">Tax amount</label>
-                            <input value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
-                        </div>
-
-                        <button onClick={this.recordPayment} className="btn btn-primary">Record Payment</button>
-                        <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
+            //         </div>
+            //         <div class="col-md-4  mb-3">
+            //             <span> <label htmlFor="vrn" id="vrnUp">Vehicle Registration Number</label>
+            //                 <i><label className="hidden" htmlFor="vrn" id="vrnDown" status={this.state.warningStatus}>Please enter as in the format specified.</label> </i> </span>
+            //             <input value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="BA 3 CHA 1234"></input>
+            //         </div>
+            //         <div class="col-md-4  mb-3">
+            //             <label htmlFor="companyName" position="left">Company Name</label>
+            //             <input value={this.state.companyName} className="form-control" id="companyName" name="companyName" type="text" onChange={this.handleChange} placeholder="TVS"></input>
+            //         </div>
+            //     </div>
+            //     <form>
+            //         <div className="form-row">
 
 
-                    </div>
-                </form>
-            </section>
+            //             <div class="col-md-3  mb-3">
+            //                 <label htmlFor="model" position="left">Model</label>
+            //                 <input value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
+            //             </div>
+            //             <div class="col-md-3  mb-3">
+            //                 <label htmlFor="noofCyl" position="left">No of Cylinders</label>
+            //                 <input value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 1"></input>
+            //             </div>
+            //             <div class="col-md-3  mb-3">
+            //                 <label htmlFor="hpcc" position="left">Horse Power/ CC</label>
+            //                 <input value={this.state.hpcc} className="form-control" id="hpcc" name="hpcc" type="text" onChange={this.handleChange} placeholder="Eg:200"></input>
+            //             </div>
+            //             <div class="col-md-3  mb-3">
+            //                 <label htmlFor="vehicleColor" position="left">Vehicle Color</label>
+            //                 <input value={this.state.vehicleColor} className="form-control" id="vehicleColor" name="vehicleColor" type="text" onChange={this.handleChange} placeholder="Eg: White"></input>
+            //             </div>
+            //         </div>
+            //         <div class="form-row">
+            //             <div class="col-md-4 mb-3">
+            //                 <label htmlFor="manDate" position="left">Year of Manufacture</label>
+            //                 <input value={this.state.manDate} className="form-control" id="manDate" name="manDate" type="number" min="2000" onChange={this.handleChange} placeholder="Eg: 2014"></input>
+            //             </div>
+            //             <div class="col-md-4 mb-3">
+            //                 <label htmlFor="lastDate" position="left">Last Paid</label>
+            //                 <input value={this.state.lastDate} className="form-control" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
+            //             </div>
+            //             {/* <div class="col-md-6 mb-3">
+            //                 <label htmlFor="regDate" position="left">Date of Registration</label>
+            //                 <input value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="date" onChange={this.handleChange} placeholder="Eg: 7th March 2010"></input>
+            //             </div> */}
+            //             {/* THIS IS TEST CODE FOR NEPALI DATE ------ PURAK */}
+            //             <div class="col-md-4 mb-3">
+            //                 <label htmlFor="regDate" position="left">Date of Registration</label>
+            //                 <input value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/M/DD"></input>
+            //             </div>
+            //         </div>
+            //         <div className="form-row">
+            //             <div class="col-md-3  mb-3">
+            //                 <label htmlFor="seatCapacity" position="left">Seat Capacity</label>
+            //                 <input value={this.state.seatCapacity} className="form-control" id="seatCapacity" name="seatCapacity" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 2"></input>
+            //             </div>
+            //             <div class="col-md-3  mb-3">
+            //                 <label htmlFor="ChassisNo" position="left">Chassis No</label>
+            //                 <input value={this.state.ChassisNo} className="form-control" id="ChassisNo" name="ChassisNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: MDS236A9942P32099"></input>
+            //             </div>
+            //             <div class="col-md-3  mb-3">
+            //                 <label htmlFor="EngineNo" position="left">Engine No</label>
+            //                 <input value={this.state.EngineNo} className="form-control" id="EngineNo" name="EngineNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: 6R9D42030456"></input>
+            //             </div>
+            //             <div class="col-md-3  mb-3">
+            //                 <label htmlFor="drop-PD" position="left">Petrol/Diesel</label>
+
+            //                 <select id="drop-PD" onChange={this.handleSelectChange} name='PDtype' value={this.state.PDtype} className="custom-select">
+            //                     <option value="Petrol">Petrol</option>
+            //                     <option value='Diesel'>Diesel</option>
+            //                 </select>
+
+            //             </div>
+            //         </div>
+
+            //         <div class="form-row">
+            //             <div class="col-md-6 mb-3">
+            //                 <label htmlFor="drop-useType" position="left">Use</label>
+            //                 <select id="drop-useType" onChange={this.handleSelectChange} name='useType' value={this.state.useType} className="custom-select">
+            //                     <option value='Private'>Private</option>
+            //                     <option value='Rented'>Rented</option>
+            //                     <option value='Government'>Government</option>
+            //                 </select>
+            //             </div>
+            //             <div class="col-md-6 mb-3">
+            //                 <label htmlFor="CustomNissa" position="left">Bhansar Nissa</label>
+            //                 <input value={this.state.CustomNissa} className="form-control" id="CustomNissa" name="CustomNissa" type="text" onChange={this.handleChange} placeholder="Eg: ME45599 2074/03/16"></input>
+
+            //             </div>
+            //         </div>
+            //         <div class="form-row">
+
+            //             <div class="col-md-6 mb-3">
+            //                 <label htmlFor="inputDate" position="left">Due date</label>
+            //                 <input value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+            //             </div>
+            //             <div class="col-md-6 mb-3">
+            //                 <label htmlFor="inputTax" position="left">Tax amount</label>
+            //                 <input value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
+            //             </div>
+
+            //             <button onClick={this.recordPayment} className="btn btn-primary">Record Payment</button>
+            //             <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button>
 
 
+            //         </div>
+            //     </form>
+            // </section>
+
+            <Accordion defaultActiveKey="0">
+                {this.state.loaded ? (this.displayText) : 'Loading'}
+            </Accordion>
         )
 
     }

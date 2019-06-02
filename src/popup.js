@@ -6,6 +6,7 @@ import EditLand from './EditLand';
 import EditHouse from './EditHouse';
 import EditVehicle from './EditVehicle';
 import EditIncome from './EditIncome';
+import { Button } from 'react-bootstrap';
 
 class Popup extends Component {
     constructor(props) {
@@ -27,11 +28,11 @@ class Popup extends Component {
         this.incomeData = [];
         this.houseData = [];
         this.tabData = {
-            'personal': <MainWindow user={this.props.id} />,
-            'land':<EditLand user={this.props.id}></EditLand>,
-            'property': <EditHouse user={this.props.id}></EditHouse>,
-            'vehicle': <EditVehicle user={this.props.id}></EditVehicle>,
-            'income': <EditIncome user={this.props.id}></EditIncome>
+            'personal': <MainWindow user={this.props.id} isAdmin = {this.props.isAdmin} />,
+            'land':<EditLand user={this.props.id} isAdmin = {this.props.isAdmin}></EditLand>,
+            'property': <EditHouse user={this.props.id} isAdmin = {this.props.isAdmin}></EditHouse>,
+            'vehicle': <EditVehicle user={this.props.id} isAdmin = {this.props.isAdmin}></EditVehicle>,
+            'income': <EditIncome user={this.props.id} isAdmin = {this.props.isAdmin}></EditIncome>
         };
         this.state = {
             loaded: false,
@@ -156,7 +157,7 @@ class Popup extends Component {
                     <div className='scrollable-content'>
                         {this.tabData[this.state.activeTab]}
                     </div>
-                    <button onClick={this.close} style={{ 'margin-lef`t': '100px' }}>Close</button>
+                    <Button variant="primary" onClick={this.close} style={{ 'margin-lef`t': '100px' }}>Close</Button>
                 </div>
             </div >
         );
