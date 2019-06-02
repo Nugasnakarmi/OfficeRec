@@ -1,3 +1,7 @@
+.main-div{
+    margin-top : 5%
+}
+
 #photo::-webkit-file-upload-button {
     border-color: #28a745;
         display: -webkit-flex;
@@ -27,4 +31,19 @@
     opacity: 1;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
+}
+.cardbox{
+    width : 60%;
+    /* margin-top: 5%; */
+    border-radius: 0.25rem;
+}
+
+.cardbox2{
+    width : 60%;
+    margin-top: 1%;
+    border-radius: 0.25rem;
+}
+
+.bottom{
+    padding :20px;
 }
