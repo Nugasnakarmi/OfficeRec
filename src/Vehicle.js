@@ -275,11 +275,7 @@ class Vehicle extends Component {
     renderForm(isEditable) {
         if (isEditable) {
             return (
-                <Card className ="popupCards">
-                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4">  Vehicle details here   </CardHeader>
-
-
-                <CardBody>
+                
                 <section>
                    
                     <div className="form-row">
@@ -416,17 +412,12 @@ class Vehicle extends Component {
                         </div>
                     </form>
                 </section>
-                </CardBody>
-                </Card>
+                
             );
         }
         else {
             return (
-                <Card className ="popupCards">
-                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Vehicle details   </CardHeader>
-
-
-                <CardBody>
+               
                 <section>
                     
                     <div className="form-row">
@@ -564,8 +555,7 @@ class Vehicle extends Component {
                         </div>
                     </form>
                 </section>
-                </CardBody>
-                </Card>
+               
             );
         }
     }
@@ -593,9 +583,17 @@ class Vehicle extends Component {
             //     </div>
             // </div>
             <div>
+                <Card className ="popupCards">
+                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4">  Vehicle details here   </CardHeader>
+
+
+                <CardBody>
                 {this.renderForm(this.state.editable)}
 
                 {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
+                </CardBody>
+                </Card>
+
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Modal title</Modal.Title>

@@ -150,7 +150,7 @@ class AdminWindow extends Component {
 
                 {this.state.listed ? this.displayedData.map((item, index) => (<RecordList data={item} index={index} pop={this.togglePopup} ></RecordList>)) : <div>Loading</div>}
                 {/* {console.log(this.displayedData, this.state.listed)} */}
-                {this.state.popupActive === true ? <Popup id={this.state.activeUser} close={this.closePopup}></Popup> : null}
+                {this.state.popupActive === true ? <Popup id={this.state.activeUser} isAdmin={this.props.isAdmin} close={this.closePopup}></Popup> : null}
           
             </CardBody>
             </Card>

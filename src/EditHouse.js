@@ -332,18 +332,22 @@ class EditHouse extends Component {
                         <div class="col-md-4 mb-3">
                             <button onClick={this.getValuationPrompt} className="btn btn-primary">Get Valuation</button>
                         </div>
-                        {this.state.toValuate ? <p><b>House Valuation </b>: Nrs. {this.state.houseVal}<br></br>
-                            <b>House Depreciation </b> : Nrs. {this.state.depreciation}<br></br>
+                        {this.state.toValuate ?
+                            <Card className ="smallcard"> 
+                                <CardBody  >
+                            <p><b>House Valuation </b>: Nrs.<font color ="	#7CFC00"> {this.state.houseVal}</font><br></br>
+                            <b>House Depreciation </b> : Nrs. <font color ="	#FF0000">{this.state.depreciation}</font><br></br>
                             <b> Depreciation Rate </b> : {this.state.depRate}<br></br>
                             <b> Depreciation in </b> : {this.state.depPeriod} years <br></br>
-                        </p> : null}
+                        </p></CardBody>
+                        </Card> : null}
 
 
 
                         <div className="form-row">
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="landval-house">भवन संरचना रहेको र संरचनाले ओगटेको थप जग्गाको मुल्याङकन</label>
-                                <input value={this.state.landVal} id="landval-house" name="landVal" type="number" min="0" onChange={this.handleChangelandVal}></input>
+                                <input value={this.state.landVal}  className="form-control"id="landval-house" name="landVal" type="number" min="0" onChange={this.handleChangelandVal}></input>
                             </div>
                             {/* <div class="col-md-6 mb-3">
                         <label htmlFor="drop-house">Type of residence</label>
@@ -362,7 +366,10 @@ class EditHouse extends Component {
                             <button onClick={this.getTaxPrompt} className="btn btn-primary">Get Property Tax</button>
                         </div>
                         {/* {this.getPropertyTax()} */}
-                        {this.state.toTax ? <p><b>Property Tax</b> : Nrs. {this.state.propTax}</p> : null}
+                        {this.state.toTax ? <Card className ="smallcard"> 
+                                <CardBody  >
+                                <p><b>Property Tax</b> : Nrs.<font color ="	#7CFC00"> {this.state.propTax}</font></p>
+                                    </CardBody></Card> : null}
 
                         <div className="form-row">
                             <div class="col-md-6 mb-3">

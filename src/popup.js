@@ -127,8 +127,8 @@ class Popup extends Component {
 
     render() {
         return (
-            <div className='popup' onClick={this.close} >
-                <div className='popup-inner' align="center" onClick={this.donotClose}>
+            <div className='popup'align="center"  onClick={this.close} >
+                <div className='popup-inner' style={{position:"center"}} onClick={this.donotClose}>
                     <ul className="nav nav-tabs">
                         <li className="nav-item" onClick={() => { this.changeTab('personal') }}>
                             <a className="nav-link active" href="#">Personal</a>

@@ -233,7 +233,7 @@ class EditLand extends Component {
                 totalRecords++;
             })
             if (this.props.isAdmin){
-                this.displayText.push(<Card>
+                this.displayText.push(<Card align ="center">
                     <Accordion.Toggle as={Card.Header} eventKey={totalRecords}>
                         <b>Add Record</b>
                     </Accordion.Toggle>
