@@ -3,7 +3,7 @@ import fire from './config/fire';
 import firebase from 'firebase';
 import adbs from 'ad-bs-converter';
 import {
-    Card, Button, CardHeader, CardFooter, CardBody,
+    Alert, Card, Button, CardHeader, CardFooter, CardBody,
     CardTitle, CardText
 } from 'reactstrap';
 
@@ -25,7 +25,8 @@ class EditHouse extends Component {
             depreciation: 0,
             depRate: 0,
             depPeriod: 0,
-            toTax: false
+            toTax: false,
+            visible: false
         };
         this.db = fire.firestore();
 
@@ -43,6 +44,8 @@ class EditHouse extends Component {
         this.getTaxPrompt = this.getTaxPrompt.bind(this);
         this.handleYearChange = this.handleYearChange.bind(this);
         this.implementYear = this.implementYear.bind(this);
+        this.onDismissValue = this.onDismissValue.bind(this);
+        this.onDismissTax = this.onDismissTax.bind(this);
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -155,7 +158,12 @@ class EditHouse extends Component {
         })
 
     }
-
+    onDismissValue(e) {
+        this.setState({ toValuate: false });
+      }
+      onDismissTax(e) {
+        this.setState({ toTax: false });
+      }
     getPropertyTax() {
         var totalVal = this.state.houseVal + parseFloat(this.state.landVal);
         var propertyTax = 0, x, crore = 10000000, percent = 0.01, multiplier = 1;
@@ -260,12 +268,12 @@ class EditHouse extends Component {
         }
         return (
             <Card className="popupCards">
-                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Property details </CardHeader>
+                <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Property details </CardHeader>
 
 
                 <CardBody>
                     <section>
-                        
+
                         <div className="form-row">
                             <div className="col-md-12 mb-3">
                                 <label htmlFor="houseno">House number</label>
@@ -332,22 +340,20 @@ class EditHouse extends Component {
                         <div class="col-md-4 mb-3">
                             <button onClick={this.getValuationPrompt} className="btn btn-primary">Get Valuation</button>
                         </div>
-                        {this.state.toValuate ?
-                            <Card className ="smallcard"> 
-                                <CardBody  >
-                            <p><b>House Valuation </b>: Nrs.<font color ="	#7CFC00"> {this.state.houseVal}</font><br></br>
-                            <b>House Depreciation </b> : Nrs. <font color ="	#FF0000">{this.state.depreciation}</font><br></br>
-                            <b> Depreciation Rate </b> : {this.state.depRate}<br></br>
-                            <b> Depreciation in </b> : {this.state.depPeriod} years <br></br>
-                        </p></CardBody>
-                        </Card> : null}
+                        <Alert className="alert" color="success" isOpen={this.state.toValuate}  toggle={this.onDismissValue}>
+                                    <p><b>House Valuation </b>: Nrs.<font color="	#7CFC00"> {this.state.houseVal}</font><br></br>
+                                        <b>House Depreciation </b> : Nrs. <font color="	#FF0000">{this.state.depreciation}</font><br></br>
+                                        <b> Depreciation Rate </b> : {this.state.depRate}<br></br>
+                                        <b> Depreciation in </b> : {this.state.depPeriod} years <br></br>
+                                    </p>
+                            </Alert>
 
 
 
                         <div className="form-row">
                             <div class="col-md-6 mb-3">
                                 <label htmlFor="landval-house">भवन संरचना रहेको र संरचनाले ओगटेको थप जग्गाको मुल्याङकन</label>
-                                <input value={this.state.landVal}  className="form-control"id="landval-house" name="landVal" type="number" min="0" onChange={this.handleChangelandVal}></input>
+                                <input value={this.state.landVal} className="form-control" id="landval-house" name="landVal" type="number" min="0" onChange={this.handleChangelandVal}></input>
                             </div>
                             {/* <div class="col-md-6 mb-3">
                         <label htmlFor="drop-house">Type of residence</label>
@@ -366,10 +372,11 @@ class EditHouse extends Component {
                             <button onClick={this.getTaxPrompt} className="btn btn-primary">Get Property Tax</button>
                         </div>
                         {/* {this.getPropertyTax()} */}
-                        {this.state.toTax ? <Card className ="smallcard"> 
-                                <CardBody  >
-                                <p><b>Property Tax</b> : Nrs.<font color ="	#7CFC00"> {this.state.propTax}</font></p>
-                                    </CardBody></Card> : null}
+                        <Alert className="alert" color="success" isOpen={this.state.toTax} toggle={this.onDismissTax}>
+
+                                <p><b>Property Tax</b> : Nrs. {this.state.propTax}</p>
+                                </Alert>
+                            
 
                         <div className="form-row">
                             <div class="col-md-6 mb-3">
@@ -400,10 +407,10 @@ class EditHouse extends Component {
 
 
                     </section>
-                    </CardBody>
+                </CardBody>
             </Card>
-                )
-            }
-        }
-        
-        export default EditHouse;
+        )
+    }
+}
+
+export default EditHouse;

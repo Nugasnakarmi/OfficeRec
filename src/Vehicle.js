@@ -6,7 +6,7 @@ import wheel2 from './res/2wheel.png';
 import wheel4 from './res/4wheel.png';
 import { ButtonToolbar, Button, Modal } from 'react-bootstrap';
 import adbs from 'ad-bs-converter';
-import { Card, CardBody , CardHeader} from 'reactstrap';
+import { Alert, Card, CardBody , CardHeader} from 'reactstrap';
 
 class Vehicle extends Component {
     constructor(props) {
@@ -455,6 +455,7 @@ class Vehicle extends Component {
                             <label htmlFor="companyName" position="left">Company Name</label>
                             <input disabled value={this.state.companyName} className="form-control" id="companyName" name="companyName" type="text" onChange={this.handleChange} placeholder="TVS"></input>
                         </div>
+                        <hr className="my-2" />
                     </div>
                     <form>
                         <div className="form-row">
