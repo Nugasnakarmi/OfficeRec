@@ -133,7 +133,7 @@ class AdminWindow extends Component {
            
             <div className='admin-panel' align="center" style={{ 'marginTop': '60' }}>
                 <Card className="adminCard">
-            <CardHeader style={{backgroundColor: "#2D93AD",color: "aliceblue"}} tag="h4">  Admin Panel </CardHeader>
+            <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4">  Admin Panel </CardHeader>
 
 
             <CardBody>

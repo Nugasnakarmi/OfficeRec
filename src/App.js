@@ -5,7 +5,6 @@ import Login from './login';
 import Home from './home';
 import './bootstrap.css';
 
-
 class App extends Component {
     constructor(props) {
         super(props);
