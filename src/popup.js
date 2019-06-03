@@ -5,7 +5,7 @@ import MainWindow from './MainWindow';
 import EditLand from './EditLand';
 import EditHouse from './EditHouse';
 import EditVehicle from './EditVehicle';
-import EditIncome from './EditIncome';
+import EditBusiness from './EditBusiness';
 import { Button } from 'react-bootstrap';
 
 class Popup extends Component {
@@ -21,18 +21,18 @@ class Popup extends Component {
 
         this.db = fire.firestore();
 
-        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax', 'house-tax'];
+        this.taxTypes = ['land-tax', 'vehicle-tax', 'business-tax', 'house-tax'];
         this.dataObject = {};
         this.landData = [];
         this.vehicleData = [];
-        this.incomeData = [];
+        this.businessData = [];
         this.houseData = [];
         this.tabData = {
             'personal': <MainWindow user={this.props.id} isAdmin = {this.props.isAdmin} />,
             'land':<EditLand user={this.props.id} isAdmin = {this.props.isAdmin}></EditLand>,
             'property': <EditHouse user={this.props.id} isAdmin = {this.props.isAdmin}></EditHouse>,
             'vehicle': <EditVehicle user={this.props.id} isAdmin = {this.props.isAdmin}></EditVehicle>,
-            'income': <EditIncome user={this.props.id} isAdmin = {this.props.isAdmin}></EditIncome>
+            'business': <EditBusiness user={this.props.id} isAdmin = {this.props.isAdmin}></EditBusiness>
         };
         this.state = {
             loaded: false,
@@ -74,7 +74,7 @@ class Popup extends Component {
         console.log('Data fetched from userbase', this.dataObject);
         this.landData = [];
         this.vehicleData = [];
-        this.incomeData = [];
+        this.businessData = [];
         this.houseData = [];
         if (this.dataObject) {
 
@@ -86,8 +86,8 @@ class Popup extends Component {
                 else if (key.includes('vehicle-tax')) {
                     this.vehicleData.push(this.dataObject[key]);
                 }
-                else if (key.includes('income-tax')) {
-                    this.incomeData.push(this.dataObject[key]);
+                else if (key.includes('business-tax')) {
+                    this.businessData.push(this.dataObject[key]);
                 }
                 else if (key.includes('house-tax')) {
                     this.houseData.push(this.dataObject[key]);
@@ -131,9 +131,9 @@ class Popup extends Component {
                 <div className='popup-inner' onClick={this.donotClose}>
                     <ul className="nav nav-tabs">
                         <li className="nav-item" onClick={() => { this.changeTab('personal') }}>
-                            {this.state.activeTab === 'personal' ? <a className="nav-link active" href="#">Personal</a> : <a className="nav-link" href="#">Personal</a>}
+                            {this.state.activeTab === 'personal' ? <a className="nav-link active" href="#">Personal</a> : <a className="nav-link " href="#">Personal</a>}
                         </li>
-                        {this.landData.length
+                        {/* {this.landData.length
                             ? (<li className="nav-item" onClick={() => { this.changeTab('land') }}>
                                 {this.state.activeTab === 'land' ? <a className="nav-link active" href="#">Land</a> : <a className="nav-link" href="#">Land</a>}
                             </li>)
@@ -148,16 +148,30 @@ class Popup extends Component {
                                 {this.state.activeTab === 'vehicle' ? <a className="nav-link active" href="#">Vehicle</a> : <a className="nav-link" href="#">Vehicle</a>}
                             </li>)
                             : null}
-                        {this.incomeData.length
-                            ? (<li className="nav-item" onClick={() => { this.changeTab('income') }}>
-                                {this.state.activeTab === 'income' ? <a className="nav-link active" href="#">Income</a> : <a className="nav-link" href="#">Income</a>}
+                        {this.businessData.length
+                            ? (<li className="nav-item" onClick={() => { this.changeTab('business') }}>
+                                {this.state.activeTab === 'business' ? <a className="nav-link active" href="#">Business</a> : <a className="nav-link" href="#">Business</a>}
                             </li>)
-                            : null}
+                            : null} */}
+                           <li className="nav-item" onClick={() => { this.changeTab('land') }}>
+                                {this.state.activeTab === 'land' ? <a className="nav-link active" href="#">Land</a> : <a className="nav-link" href="#">Land</a>}
+                            </li>
+                            
+                       <li className="nav-item" onClick={() => { this.changeTab('property') }}>
+                                {this.state.activeTab === 'property' ? <a className="nav-link active" href="#">Property</a> : <a className="nav-link" href="#">Property</a>}
+                            </li>
+                            
+                        <li className="nav-item" onClick={() => { this.changeTab('vehicle') }}>
+                                {this.state.activeTab === 'vehicle' ? <a className="nav-link active" href="#">Vehicle</a> : <a className="nav-link" href="#">Vehicle</a>}
+                            </li>
+                        <li className="nav-item" onClick={() => { this.changeTab('business') }}>
+                                {this.state.activeTab === 'business' ? <a className="nav-link active" href="#">Business</a> : <a className="nav-link" href="#">Business</a>}
+                            </li>
                     </ul>
                     <div className='scrollable-content'>
                         {this.tabData[this.state.activeTab]}
                     </div>
-                    <Button variant="primary" onClick={this.close} style={{ 'margin-lef`t': '100px' }}>Close</Button>
+                    <Button variant="primary" onClick={this.close} style={{ 'margin-left': '100px' }}>Close</Button>
                 </div>
             </div >
         );

@@ -19,7 +19,7 @@ class RecordList extends Component {
     render() { 
         //console.log(this.props.data);
         return ( 
-            <div onClick = {this.popup} className = 'main' status = {this.sequence}>
+            <div onClick = {this.popup} className = 'main ' status = {this.sequence}>
                 <ul>
                 <li className = 'inner-element' id = 'sn'>{this.props.index + 1}</li>
                 <li className = 'inner-element'>{this.props.data.name}</li>

@@ -95,20 +95,20 @@ class AddUser extends Component {
                         <form className='form-inline'>
                             <section>
 
-                                <div className="form-group row">
-                                    <div className='col-5'>
+                                <div className="form-row">
+                                    <div className='col-md-5 mb-3 sm-2'>
                                         <label className="sr-only" for="InputEmail1"> Email Address</label>
                                         <input value={this.state.email} onChange={this.handleChange} required="required" type="email" name="email"
                                             className="form-control input-email" size="35" id="InputEmail1" aria-describedby="emailHelp"
                                             placeholder="Enter email" />
                                     </div>
-                                    <div className='col-3'>
+                                    <div className='col-md-3 mb-3 sm-2'>
                                         <label className="sr-only" for="InputPassword1">Password</label>
                                         <input value={this.state.password} onChange={this.handleChange} type='password'
                                             required="required" name='password' className="form-control" id="InputPassword1"
                                             placeholder="Enter password" />
                                     </div>
-                                    <div className=" col-4  ">
+                                    <div className=" col-md-4 mb-4 sm-2">
                                         <label className="sr-only" for="InputPassword2">Confirm Password</label>
                                         <input value={this.state.confirm_password} onChange={this.handleChange} type='password'
                                             required="required" name='confirm_password' className="form-control" id="InputPassword2"
@@ -132,7 +132,7 @@ class AddUser extends Component {
                         <section>
                             <form className='form-inline'>
 
-                                <div className=" form-check-inline col-1">
+                                <div className=" form-check-inline col-md-1">
 
                                     <input class="form-check-input" type="radio" name="isAdmin" id="user" onChange={() => this.handleRadioButton(1)} checked={this.state.value === 1} />
                                     <label class="form-check-label" for="user">
@@ -140,7 +140,7 @@ class AddUser extends Component {
                             </label>
 
                                 </div>
-                                <div className="form-check-inline col-1">
+                                <div className="form-check-inline col-md-1">
 
                                     <input class="form-check-input" type="radio" name="isAdmin" id="admin" onChange={() => this.handleRadioButton(2)} checked={this.state.value === 2} />
                                     <label class="form-check-label" for="admin">
@@ -152,17 +152,17 @@ class AddUser extends Component {
 
                             </form>
                             <form className="form-inline">
-                                <div className="form-group row">
+                                <div className="form-row">
 
-                                    <div className=" col-5">
+                                    <div className=" col-md-5  sm-2 xs-1">
                                         <label className="sr-only" for='name'>Name</label>
                                         <input value={this.state.name} name="name" size="35" type="text" required="required" onChange={this.handleChange} className="form-control" id='name' placeholder="Name" />
                                     </div>
-                                    <div className=" col-3  ">
+                                    <div className=" col-md-3 sm-2 xs-1">
                                         <label className="sr-only" for='citizenship'>Citizenship Number</label>
                                         <input value={this.state.citizenship_num} name="citizenship_num" type="text" required="required" onChange={this.handleChange} placeholder="नागरिक्ता नंं" className="form-control" id='citizenship' />
                                     </div>
-                                    <div className=" col-4  ">
+                                    <div className="  col-md-4 sm-2 xs-1">
                                         <label className="sr-only" for='dob'>Date of Birth</label>
                                         <input value={this.state.dob} name="dob" type="date" required="required" onChange={this.handleChange} placeholder="Date in AD" className="form-control" id='dob' />
                                     </div>
@@ -174,8 +174,8 @@ class AddUser extends Component {
                             <section className =" bottom">
                                
                                 {/* <div className="input-group col-12 "> */}
-                                <div className="form-group row">
-                                <div className="input-group ">
+                                <div className="form-row">
+                                <div className="input-group col-md-8 mb-4 sm-2">
                                 
                                 <label  for='photo'>Photo</label>
                                
@@ -190,7 +190,7 @@ class AddUser extends Component {
 
                                 
 
-                                <div >
+                                <div clasName ="col-md-2 mb-1 sm-1 ">
                                 <button onClick={this.signupAndWriteDetails} align="right" style={{ marginLeft: '25px' }} className='btn btn-success'>Create User</button>
                                </div>
                                </div>

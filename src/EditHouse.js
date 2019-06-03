@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
 import adbs from 'ad-bs-converter';
+import House from './House'
+
 import {
-    Alert, Card, Button, CardHeader, CardFooter, CardBody,
-    CardTitle, CardText
+    Alert,  Button, Spinner
 } from 'reactstrap';
 
+import{ Card , Accordion}
+from 'react-bootstrap';
 class EditHouse extends Component {
     constructor(props) {
         super(props);
@@ -26,9 +29,15 @@ class EditHouse extends Component {
             depRate: 0,
             depPeriod: 0,
             toTax: false,
-            visible: false
+            visible: false,
+            loaded: false,
+            updated: false
         };
         this.db = fire.firestore();
+       
+        this.countItem = 0;
+        this.itemList = [];
+        this.displayText = [];
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeVal = this.handleChangeVal.bind(this);
@@ -46,6 +55,8 @@ class EditHouse extends Component {
         this.implementYear = this.implementYear.bind(this);
         this.onDismissValue = this.onDismissValue.bind(this);
         this.onDismissTax = this.onDismissTax.bind(this);
+
+        this.toggleUpdate = this.toggleUpdate.bind(this);
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -259,6 +270,60 @@ class EditHouse extends Component {
         }
 
     }
+    toggleUpdate() {
+        this.setState({
+            updated: !this.state.updated
+        });
+    }
+    componentDidMount()
+    {
+        let totalRecords  = 0;
+        let idList = [];
+        var houseRef = this.db.collection("UserBase").doc(this.props.user).collection("house-tax");
+       houseRef.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                this.countItem++;
+                console.log(doc.id, " => ", doc.data());
+                this.itemList.push({ ...doc.data(), id: doc.id });
+                idList.push(parseFloat(doc.id));
+            });
+        }).then(() => {
+            //console.clear();
+            console.log("NO of property", this.countItem);
+            console.log("The list", this.itemList);
+            this.maxID = Math.max(...idList);
+            this.itemList.map((item, index) => {
+                this.displayText.push(<Card>
+                    <Accordion.Toggle as={Card.Header} eventKey={index}>
+                        {item.id}: {item.Location.province}/{item.Location.district}/{item.Location.municipality}/{item.houseno}}
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={index}>
+                        <Card.Body>
+                            <House user={this.props.user} details={item} isAdmin={this.props.isAdmin} refresh={this.toggleUpdate} />
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>)
+                totalRecords++;
+            })
+            if (this.props.isAdmin){
+                this.displayText.push(<Card align ="center">
+                    <Accordion.Toggle as={Card.Header} eventKey={totalRecords}>
+                        <b>Add Record</b>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={totalRecords}>
+                        <Card.Body>
+                            <House addNew = {true} user={this.props.user}  maxID = {this.maxID} details={null} isAdmin={this.props.isAdmin} refresh={this.toggleUpdate} />
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>)
+            }
+            this.setState({
+                loaded: true
+            });
+
+            //set a state to list loaded.
+        });
+    }
     render() {
         if (!this.state.email) {
             this.setState({
@@ -267,148 +332,151 @@ class EditHouse extends Component {
             console.log("INSIDE RENDER, CATEGORY", this.state.category);
         }
         return (
-            <Card className="popupCards">
-                <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Property details </CardHeader>
+            // <Card className="popupCards">
+            //     <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Property details </CardHeader>
 
 
-                <CardBody>
-                    <section>
+            //     <CardBody>
+            //         <section>
 
-                        <div className="form-row">
-                            <div className="col-md-12 mb-3">
-                                <label htmlFor="houseno">House number</label>
-                                <input value={this.state.houseno} id="houseno" name="houseno" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: house number"></input>
+            //             <div className="form-row">
+            //                 <div className="col-md-12 mb-3">
+            //                     <label htmlFor="houseno">House number</label>
+            //                     <input value={this.state.houseno} id="houseno" name="houseno" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: house number"></input>
 
-                            </div>
+            //                 </div>
 
-                        </div>
-                        <label htmlFor="inputHouseLocation">Enter Location</label>
-                        <div class="form-row" id="inputHouseLocation">
-                            <div class="col-md-3 mb-3">
-                                <input value={this.state.hprovince} id="inputhprovince" name="hprovince" className="form-control" type="text" onChange={this.handleChange} placeholder=" Province"></input>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input value={this.state.hdistrict} id="inputhdistrict" name="hdistrict" className="form-control" type="text" onChange={this.handleChange} placeholder=" District "></input>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input value={this.state.hmunicipality} id="inputhmuni" name="hmunicipality" className="form-control" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input value={this.state.hward} id="inputhward" name="hward" type="number" className="form-control" min="1" onChange={this.handleChange} placeholder=" Ward"></input>
-                            </div>
-                        </div>
-                        <div className="form-row">
+            //             </div>
+            //             <label htmlFor="inputHouseLocation">Enter Location</label>
+            //             <div class="form-row" id="inputHouseLocation">
+            //                 <div class="col-md-3 mb-3">
+            //                     <input value={this.state.hprovince} id="inputhprovince" name="hprovince" className="form-control" type="text" onChange={this.handleChange} placeholder=" Province"></input>
+            //                 </div>
+            //                 <div class="col-md-3 mb-3">
+            //                     <input value={this.state.hdistrict} id="inputhdistrict" name="hdistrict" className="form-control" type="text" onChange={this.handleChange} placeholder=" District "></input>
+            //                 </div>
+            //                 <div class="col-md-3 mb-3">
+            //                     <input value={this.state.hmunicipality} id="inputhmuni" name="hmunicipality" className="form-control" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
+            //                 </div>
+            //                 <div class="col-md-3 mb-3">
+            //                     <input value={this.state.hward} id="inputhward" name="hward" type="number" className="form-control" min="1" onChange={this.handleChange} placeholder=" Ward"></input>
+            //                 </div>
+            //             </div>
+            //             <div className="form-row">
 
-                            <div class="col-md-4 mb-3">
-                                <label htmlFor="storey">Number of Storeys</label>
-                                <input value={this.state.storey} id="storey" name="storey" className="form-control" onChange={this.handleChangeVal} type="number" placeholder="Eg: 4"></input>
-                            </div>
+            //                 <div class="col-md-4 mb-3">
+            //                     <label htmlFor="storey">Number of Storeys</label>
+            //                     <input value={this.state.storey} id="storey" name="storey" className="form-control" onChange={this.handleChangeVal} type="number" placeholder="Eg: 4"></input>
+            //                 </div>
 
-                            <div class="col-md-4 mb-3">
-                                <label htmlFor="drop-house">No. of Square feets</label>
-                                <input value={this.state.sqft} id="sqft" name="sqft" type="number" className="form-control" onChange={this.handleChangeVal} placeholder="Eg: 600 "></input>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label htmlFor="builtYear">Year built</label>
-                                <input value={this.state.builtYear} id="builtYear" name="builtYear" className="form-control" onChange={this.handleYearChange} type="number" min="1900" placeholder="Eg: 2050"></input>
-                            </div>
-
-
-
-
-                        </div>
-                        <div className="form-row">
-                            <div class="col-md-12 mb-3">
-
-                                <label htmlFor="drop-cat">Category of House</label>
-                                <select value={this.state.category} id="drop-cat" className="custom-select" name="category" type='number' onChange={this.handleSelectCategoryChange}>
-                                    <option value="0">कः भित्र काँचो बाहिर पाको इट्टामा माटोको जोडाई भएको भवन र काठबाट बनेको भवन </option>
-                                    <option value="1">खः  भित्रबाहिर पाको इट्टा वा ढुंगा र माटोको जोडाई भएको सबै किसिमको भवन </option>
-                                    <option value="2">ग :  प्रिफायब भवन, गोदाम भवन </option>
-                                    <option value="3">घ :  भित्र बाहिर पाको इट्टा र सिमेन्टको जोडाई भएको भवन </option>
-                                    <option value="4">ङ :  स्टील स्ट्रक्चर (ट्रस) भवन </option>
-                                    <option value="5">च :  आर.सी.सी फ्रेम स्ट्रक्चर भवन </option>
+            //                 <div class="col-md-4 mb-3">
+            //                     <label htmlFor="drop-house">No. of Square feets</label>
+            //                     <input value={this.state.sqft} id="sqft" name="sqft" type="number" className="form-control" onChange={this.handleChangeVal} placeholder="Eg: 600 "></input>
+            //                 </div>
+            //                 <div class="col-md-4 mb-3">
+            //                     <label htmlFor="builtYear">Year built</label>
+            //                     <input value={this.state.builtYear} id="builtYear" name="builtYear" className="form-control" onChange={this.handleYearChange} type="number" min="1900" placeholder="Eg: 2050"></input>
+            //                 </div>
 
 
 
 
-                                </select>
-                            </div>
+            //             </div>
+            //             <div className="form-row">
+            //                 <div class="col-md-12 mb-3">
 
-
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <button onClick={this.getValuationPrompt} className="btn btn-primary">Get Valuation</button>
-                        </div>
-                        <Alert className="alert" color="success" isOpen={this.state.toValuate}  toggle={this.onDismissValue}>
-                                    <p><b>House Valuation </b>: Nrs. {this.state.houseVal}<br></br>
-                                        <b>House Depreciation </b> : Nrs. {this.state.depreciation}<br></br>
-                                        <b> Depreciation Rate </b> : {this.state.depRate}<br></br>
-                                        <b> Depreciation in </b> : {this.state.depPeriod} years <br></br>
-                                    </p>
-                            </Alert>
+            //                     <label htmlFor="drop-cat">Category of House</label>
+            //                     <select value={this.state.category} id="drop-cat" className="custom-select" name="category" type='number' onChange={this.handleSelectCategoryChange}>
+            //                         <option value="0">कः भित्र काँचो बाहिर पाको इट्टामा माटोको जोडाई भएको भवन र काठबाट बनेको भवन </option>
+            //                         <option value="1">खः  भित्रबाहिर पाको इट्टा वा ढुंगा र माटोको जोडाई भएको सबै किसिमको भवन </option>
+            //                         <option value="2">ग :  प्रिफायब भवन, गोदाम भवन </option>
+            //                         <option value="3">घ :  भित्र बाहिर पाको इट्टा र सिमेन्टको जोडाई भएको भवन </option>
+            //                         <option value="4">ङ :  स्टील स्ट्रक्चर (ट्रस) भवन </option>
+            //                         <option value="5">च :  आर.सी.सी फ्रेम स्ट्रक्चर भवन </option>
 
 
 
-                        <div className="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label htmlFor="landval-house">भवन संरचना रहेको र संरचनाले ओगटेको थप जग्गाको मुल्याङकन</label>
-                                <input value={this.state.landVal} className="form-control" id="landval-house" name="landVal" type="number" min="0" onChange={this.handleChangelandVal}></input>
-                            </div>
-                            {/* <div class="col-md-6 mb-3">
-                        <label htmlFor="drop-house">Type of residence</label>
-                        <select id="drop-house" className="custom-select">
-                            <option>Residential</option>
-                            <option>Rented</option>
-                        </select>
-                    </div> */}
+
+            //                     </select>
+            //                 </div>
 
 
-                            <p><b>Property Valuation</b> : Nrs. {this.state.houseVal + parseFloat(this.state.landVal)}</p>
+            //             </div>
+                       
+            //                 <button onClick={this.getValuationPrompt} style={{position:"left"}} className="btn btn-primary">Get Valuation</button>
+                        
+            //             <Alert className="alert" color="success" isOpen={this.state.toValuate}  toggle={this.onDismissValue}>
+            //                         <p><b>House Valuation </b>: Nrs. {this.state.houseVal}<br></br>
+            //                             <b>House Depreciation </b> : Nrs. {this.state.depreciation}<br></br>
+            //                             <b> Depreciation Rate </b> : {this.state.depRate}<br></br>
+            //                             <b> Depreciation in </b> : {this.state.depPeriod} years <br></br>
+            //                         </p>
+            //                 </Alert>
 
-                        </div>
 
-                        <div class="col-md-4 mb-3">
-                            <button onClick={this.getTaxPrompt} className="btn btn-primary">Get Property Tax</button>
-                        </div>
-                        {/* {this.getPropertyTax()} */}
-                        <Alert className="alert" color="success" isOpen={this.state.toTax} toggle={this.onDismissTax}>
 
-                                <p><b>Property Tax</b> : Nrs. {this.state.propTax}</p>
-                                </Alert>
+            //             <div className="form-row">
+            //                 <div class="col-md-6 mb-3">
+            //                     <label htmlFor="landval-house">भवन संरचना रहेको र संरचनाले ओगटेको थप जग्गाको मुल्याङकन</label>
+            //                     <input value={this.state.landVal} className="form-control" id="landval-house" name="landVal" type="number" min="0" onChange={this.handleChangelandVal}></input>
+            //                 </div>
+            //                 {/* <div class="col-md-6 mb-3">
+            //             <label htmlFor="drop-house">Type of residence</label>
+            //             <select id="drop-house" className="custom-select">
+            //                 <option>Residential</option>
+            //                 <option>Rented</option>
+            //             </select>
+            //         </div> */}
+
+
+            //                 <p><b>Property Valuation</b> : Nrs. {this.state.houseVal + parseFloat(this.state.landVal)}</p>
+
+            //             </div>
+
+                        
+            //                 <button onClick={this.getTaxPrompt}  className="btn btn-primary">Get Property Tax</button>
+                        
+            //             {/* {this.getPropertyTax()} */}
+            //             <Alert className="alert" color="success" isOpen={this.state.toTax} toggle={this.onDismissTax}>
+
+            //                     <p><b>Property Tax</b> : Nrs. {this.state.propTax}</p>
+            //                     </Alert>
                             
 
-                        <div className="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label htmlFor="inputDate" position="left">Due date</label>
-                                <input value={this.state.dueDateHouse} className="form-control" id="inputDateHouse" name="dueDateHouse" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
-                                <h3>{this.state.date}</h3>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label htmlFor="inputTax" position="left">Tax amount</label>
-                                <input value={this.state.taxAmountHouse} className="form-control" id="inputTaxHouse" name="taxAmountHouse" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
+            //             <div className="form-row">
+            //                 <div class="col-md-6 mb-3">
+            //                     <label htmlFor="inputDate" position="left">Due date</label>
+            //                     <input value={this.state.dueDateHouse} className="form-control" id="inputDateHouse" name="dueDateHouse" type="date" onChange={this.handleChange} placeholder="Eg: 12th March 2019"></input>
+            //                     <h3>{this.state.date}</h3>
+            //                 </div>
+            //                 <div class="col-md-6 mb-3">
+            //                     <label htmlFor="inputTax" position="left">Tax amount</label>
+            //                     <input value={this.state.taxAmountHouse} className="form-control" id="inputTaxHouse" name="taxAmountHouse" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
 
-                            </div>
-                            {/* <div className="form-row">
+            //                 </div>
+            //                 {/* <div className="form-row">
 
-                                <div class="col-md-12">
-                                    <label htmlFor="coowner">Co-owner</label>
-                                    <input value={this.state.coowner} id="coowner" name="coowner" className="form-control" onChange={this.handleChange} placeholder="Hira Kaji Shrestha"></input>                            </div>
+            //                     <div class="col-md-12">
+            //                         <label htmlFor="coowner">Co-owner</label>
+            //                         <input value={this.state.coowner} id="coowner" name="coowner" className="form-control" onChange={this.handleChange} placeholder="Hira Kaji Shrestha"></input>                            </div>
 
                                 
 
-                            </div> */}
-                            <button onClick={this.writeHouseDetails} className="btn btn-primary">Submit</button>
+            //                 </div> */}
+            //                 <button onClick={this.writeHouseDetails} className="btn btn-primary">Submit</button>
 
 
 
 
-                        </div>
+            //             </div>
 
 
-                    </section>
-                </CardBody>
-            </Card>
+            //         </section>
+            //     </CardBody>
+            // </Card>]
+            <Accordion defaultActiveKey="0">
+            {this.state.loaded ? (this.displayText) : <Spinner color="info" />}
+        </Accordion>
         )
     }
 }

@@ -7,7 +7,7 @@ import EditDetails from './EditDetails';
 import EditVehicle from './EditVehicle';
 import EditLand from './EditLand';
 import EditHouse from './EditHouse';
-import EditIncome from './EditIncome';
+import EditBusiness from './EditBusiness';
 
 class Precords extends Component {
     constructor(props) {
@@ -74,7 +74,7 @@ class Precords extends Component {
                     {this.state.emailVerified ? (<EditVehicle user={this.state.email} />) : ''}
                     {this.state.emailVerified ? (<EditLand user={this.state.email} />) : ''}
                     {this.state.emailVerified ? (<EditHouse user={this.state.email} />) : ''}
-                    {this.state.emailVerified ? (<EditIncome user={this.state.email} />) : ''}
+                    {this.state.emailVerified ? (<EditBusiness user={this.state.email} />) : ''}
 
 
 

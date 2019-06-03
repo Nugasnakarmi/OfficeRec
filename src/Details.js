@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Land from './Land';
 import Vehicle from './Vehicle';
-import Income from './Income';
+import Business from './Business';
 import fire from './config/fire';
 import House from './House';
 //import fixDate from './FixDate';
@@ -10,13 +10,13 @@ import House from './House';
 class Details extends Component {
     constructor(props) {
         super(props);
-        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax', 'house-tax'];
+        this.taxTypes = ['land-tax', 'vehicle-tax', 'business-tax', 'house-tax'];
         this.dataObject = {};
         this.getSubcollections = this.getSubcollections.bind(this);
         this.filterData = this.filterData.bind(this);
         this.landData = [];
         this.vehicleData = [];
-        this.incomeData = [];
+        this.businessData = [];
         this.houseData = [];
         this.state = { loaded: false };
     }
@@ -55,7 +55,7 @@ class Details extends Component {
         console.log('Data fetched from userbase', this.dataObject);
         this.landData = [];
         this.vehicleData = [];
-        this.incomeData = [];
+        this.businessData = [];
         this.houseData = [];
         if (this.dataObject) {
 
@@ -67,8 +67,8 @@ class Details extends Component {
                 else if (key.includes('vehicle-tax')) {
                     this.vehicleData.push(this.dataObject[key]);
                 }
-                else if (key.includes('income-tax')) {
-                    this.incomeData.push(this.dataObject[key]);
+                else if (key.includes('business-tax')) {
+                    this.businessData.push(this.dataObject[key]);
                 }
                 else if (key.includes('house-tax')) {
                     this.houseData.push(this.dataObject[key]);
@@ -77,31 +77,31 @@ class Details extends Component {
             this.setState({ loaded: !this.state.loaded });
             //console.log('LandData', this.landData);
             //console.log('VehicleData', this.vehicleData);
-            //console.log('IncomeData', this.incomeData);
+            //console.log('BusinessData', this.businessData);
             // console.table("LandData", this.landData);
         }
     }
 
     render() {
         console.log("Render starts");
-        if (this.landData && this.vehicleData && this.incomeData) {
+        if (this.landData && this.vehicleData && this.businessData) {
             console.log('LandData', this.landData);
             console.log('VehicleData', this.vehicleData);
-            console.log('IncomeData', this.incomeData);
+            console.log('BusinessData', this.businessData);
         }
         // let renderLand = (this.landData.length) ? <Land details={this.landData} /> : '';
         // let renderVehicle = (this.vehicleData.length) ? <Vehicle details={this.vehicleData} /> : '';
-        // let renderIncome = (this.incomeData.length) ? <Income details={this.landData} /> : '';
+        // let renderBusiness = (this.businessData.length) ? <Business details={this.landData} /> : '';
         console.log('loaded?', this.state.loaded);
         return (<div className="container" style={{ 'margin-top': '70px' }}>
             {/* <h2 style = {{margin : '15px'}}>The Details Pane</h2> */}
             {this.landData.length ? this.landData.map((item) => (<Land details={item} isAdmin = {this.props.isAdmin}/>)) : ''}
             {this.vehicleData.length ? this.vehicleData.map((item) => (<Vehicle details={item} isAdmin = {this.props.isAdmin} />)) : ''}
-            {this.incomeData.length ? this.incomeData.map((item) => (<Income details={item} isAdmin = {this.props.isAdmin}/>)) : ''}
+            {this.businessData.length ? this.businessData.map((item) => (<Business details={item} isAdmin = {this.props.isAdmin}/>)) : ''}
             {this.houseData.length ? this.houseData.map((item) => (<House details={item} isAdmin = {this.props.isAdmin}/>)) : ''}
             {/* {renderLand}
             {renderVehicle}
-            {renderIncome} */}
+            {renderBusiness} */}
         </div>);
     }
 }
