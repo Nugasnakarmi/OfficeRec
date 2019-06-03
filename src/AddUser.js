@@ -154,15 +154,15 @@ class AddUser extends Component {
                             <form className="form-inline">
                                 <div className="form-row">
 
-                                    <div className=" col-md-5  sm-2 xs-1">
+                                    <div className=" col-md-5 mb-3 sm-2 xs-2">
                                         <label className="sr-only" for='name'>Name</label>
                                         <input value={this.state.name} name="name" size="35" type="text" required="required" onChange={this.handleChange} className="form-control" id='name' placeholder="Name" />
                                     </div>
-                                    <div className=" col-md-3 sm-2 xs-1">
+                                    <div className=" col-md-3 mb-3 sm-2 xs-2">
                                         <label className="sr-only" for='citizenship'>Citizenship Number</label>
                                         <input value={this.state.citizenship_num} name="citizenship_num" type="text" required="required" onChange={this.handleChange} placeholder="नागरिक्ता नंं" className="form-control" id='citizenship' />
                                     </div>
-                                    <div className="  col-md-4 sm-2 xs-1">
+                                    <div className="  col-md-4 mb-4 sm-2 xs-2">
                                         <label className="sr-only" for='dob'>Date of Birth</label>
                                         <input value={this.state.dob} name="dob" type="date" required="required" onChange={this.handleChange} placeholder="Date in AD" className="form-control" id='dob' />
                                     </div>

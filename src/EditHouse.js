@@ -295,7 +295,7 @@ class EditHouse extends Component {
             this.itemList.map((item, index) => {
                 this.displayText.push(<Card>
                     <Accordion.Toggle as={Card.Header} eventKey={index}>
-                        {item.id}: {item.Location.province}/{item.Location.district}/{item.Location.municipality}/{item.houseno}}
+                        {item.id}: {item.Location.province}/{item.Location.district}/{item.Location.municipality}/{item.houseno}
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={index}>
                         <Card.Body>
