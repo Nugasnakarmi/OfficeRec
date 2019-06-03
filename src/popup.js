@@ -7,6 +7,7 @@ import EditHouse from './EditHouse';
 import EditVehicle from './EditVehicle';
 import EditIncome from './EditIncome';
 import { Button } from 'react-bootstrap';
+import EditBahal from './EditBahal';
 
 class Popup extends Component {
     constructor(props) {
@@ -21,18 +22,20 @@ class Popup extends Component {
 
         this.db = fire.firestore();
 
-        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax', 'house-tax'];
+        this.taxTypes = ['land-tax', 'vehicle-tax', 'income-tax', 'house-tax','bahal-tax'];
         this.dataObject = {};
         this.landData = [];
         this.vehicleData = [];
         this.incomeData = [];
         this.houseData = [];
+        this.bahalData = [];
         this.tabData = {
             'personal': <MainWindow user={this.props.id} isAdmin = {this.props.isAdmin} />,
             'land':<EditLand user={this.props.id} isAdmin = {this.props.isAdmin}></EditLand>,
             'property': <EditHouse user={this.props.id} isAdmin = {this.props.isAdmin}></EditHouse>,
             'vehicle': <EditVehicle user={this.props.id} isAdmin = {this.props.isAdmin}></EditVehicle>,
-            'income': <EditIncome user={this.props.id} isAdmin = {this.props.isAdmin}></EditIncome>
+            'income': <EditIncome user={this.props.id} isAdmin = {this.props.isAdmin}></EditIncome>,
+            'bahal': <EditBahal user = {this.props.id} isAdmin = {this.props.isAdmin}></EditBahal>
         };
         this.state = {
             loaded: false,
@@ -91,6 +94,9 @@ class Popup extends Component {
                 }
                 else if (key.includes('house-tax')) {
                     this.houseData.push(this.dataObject[key]);
+                }
+                else if (key.includes('bahal-tax')) {
+                    this.bahalData.push(this.dataObject[key]);
                 }
             }
             this.setState({ loaded: !this.state.loaded });

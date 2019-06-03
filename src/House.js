@@ -294,7 +294,6 @@ class House extends Component {
                     <div className="col-md-12 mb-3">
                         <label htmlFor="houseno">House number</label>
                         <input disabled={isEditable ? "" : "disabled"} value={this.state.houseno} id="houseno" name="houseno" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: house number"></input>
-
                     </div>
                     <div className="form-row">
                         <div class="col-md-12 mb-3">
