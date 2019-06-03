@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
 import adbs from 'ad-bs-converter';
-// import {
-//     Card, Button, CardHeader, CardFooter, CardBody,
-//     CardTitle, CardText
-// } from 'reactstrap';
+import {
+    Spinner
+} from 'reactstrap';
 import { Accordion, Card } from 'react-bootstrap'
 import Vehicle from './Vehicle';
 
@@ -571,7 +570,7 @@ class EditVehicle extends Component {
             // </section>
 
             <Accordion defaultActiveKey="0">
-                {this.state.loaded ? (this.displayText) : 'Loading'}
+                {this.state.loaded ? (this.displayText) : <Spinner color="info" />}
             </Accordion>
         )
 

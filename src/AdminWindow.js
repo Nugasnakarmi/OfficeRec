@@ -6,7 +6,7 @@ import Popup from './Popup';
 import './AdminWindow.css';
 import {
     Card, Button, CardHeader, CardFooter, CardBody,
-    CardTitle, CardText
+    CardTitle, CardText, Spinner
 } from 'reactstrap';
 import { BulletList } from 'react-content-loader';
 
@@ -148,7 +148,7 @@ class AdminWindow extends Component {
 
                 {/* <button onClick={this.handleClick} className="btn btn-primary">Search</button> */}
 
-                {this.state.listed ? this.displayedData.map((item, index) => (<RecordList data={item} index={index} pop={this.togglePopup} ></RecordList>)) : <div>Loading</div>}
+                {this.state.listed ? this.displayedData.map((item, index) => (<RecordList data={item} index={index} pop={this.togglePopup} ></RecordList>)) : <div><Spinner color="info" /></div>}
                 {/* {console.log(this.displayedData, this.state.listed)} */}
                 {this.state.popupActive === true ? <Popup id={this.state.activeUser} isAdmin={this.props.isAdmin} close={this.closePopup}></Popup> : null}
           
