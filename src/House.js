@@ -14,7 +14,7 @@ class House extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            houseNo: this.props.details ? this.props.details.houseno : '',
+            houseno: this.props.details ? this.props.details.houseno : '',
             editable: this.props.addNew ? true : false,
             hprovince: this.props.details ? this.props.details.Location.province : '',
             hdistrict: this.props.details ? this.props.details.Location.district : '',
@@ -38,11 +38,20 @@ class House extends Component {
             regDate: this.props.details ? this.props.details.regDate : '',
             lastDate: this.props.details ? this.props.details.lastDate : '',
             landVal: this.props.details? this.props.details.landVal : 0,
-            show:false
+            show:false,
+            inputId:''
         };
         this.db = fire.firestore();
+        this.displayText = [];
 
-
+        this.edit = this.edit.bind(this);
+        this.cancel = this.cancel.bind(this);
+        this.renderForm = this.renderForm.bind(this);
+        this.save = this.save.bind(this);
+        this.delete = this.delete.bind(this);
+        this.recordPayment = this.recordPayment.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
 
         this.editButton = [<ButtonToolbar  ><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
@@ -98,6 +107,26 @@ class House extends Component {
             window.alert("Wrong information!");
         }
     }
+    recordPayment(e) {
+        e.preventDefault();
+        let today = new Date(); //todays date object
+        let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
+        let todayBS = adbs.ad2bs(todayString);  //todays date in BS
+        this.setState({
+            lastDate: [todayBS.en.year, todayBS.en.month, todayBS.en.day].join('/')
+            //also set a new due date
+        });
+        this.db.collection("UserBase").doc(this.props.user).collection("land-tax").doc(this.props.details.id).set({
+            //['due date']: this.state.dueDateLand,
+            lastDate: this.state.lastDate
+        }).then(() => {
+            window.alert("Success!");
+            this.props.refresh();
+        }).catch((error) => {
+            window.alert("Error: ", error);
+        });
+    }
+
 
     implementCategory = e => {
         return new Promise((resolve, reject) => {
@@ -182,8 +211,8 @@ class House extends Component {
                 valuation -= depreciation;
                 this.setState(
                     {
-                        houseVal: valuation,
-                        depreciation: depreciation,
+                        houseVal: valuation.toFixed(2),
+                        depreciation: depreciation.toFixed(2),
                         depRate: doc.data()[parseFloat(category) + 1].depRate,
                         depPeriod: depYear
                     }
@@ -239,7 +268,7 @@ class House extends Component {
             console.log("tax :", propertyTax)
             this.setState(
                 {
-                    propTax: propertyTax,
+                    propTax: propertyTax.toFixed(2),
 
                 }
             )
@@ -266,6 +295,7 @@ class House extends Component {
                     houseValuation: this.state.houseVal,
                     area: this.state.sqft,
                     ['due date']: this.state.dueDateHouse,
+                   
                     taxAmount: parseFloat(this.state.propTax),
                     builtYear: this.state.builtYear,
                     depRate: this.state.depRate,
@@ -379,7 +409,7 @@ class House extends Component {
                     </div> */}
 
 
-                    <p><b>Property Valuation</b> : Nrs. {this.state.houseVal + parseFloat(this.state.landVal)}</p>
+                    <p><b>Property Valuation</b> : Nrs. {parseFloat(this.state.houseVal) + parseFloat(this.state.landVal)}</p>
 
                 </div>
 
