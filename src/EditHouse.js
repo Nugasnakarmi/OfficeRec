@@ -341,8 +341,8 @@ class EditHouse extends Component {
                             <button onClick={this.getValuationPrompt} className="btn btn-primary">Get Valuation</button>
                         </div>
                         <Alert className="alert" color="success" isOpen={this.state.toValuate}  toggle={this.onDismissValue}>
-                                    <p><b>House Valuation </b>: Nrs.<font color="	#7CFC00"> {this.state.houseVal}</font><br></br>
-                                        <b>House Depreciation </b> : Nrs. <font color="	#FF0000">{this.state.depreciation}</font><br></br>
+                                    <p><b>House Valuation </b>: Nrs. {this.state.houseVal}<br></br>
+                                        <b>House Depreciation </b> : Nrs. {this.state.depreciation}<br></br>
                                         <b> Depreciation Rate </b> : {this.state.depRate}<br></br>
                                         <b> Depreciation in </b> : {this.state.depPeriod} years <br></br>
                                     </p>

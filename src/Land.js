@@ -7,7 +7,7 @@ import fire from './config/fire';
 import firebase from 'firebase';
 import adbs from 'ad-bs-converter';
 import {
-    Card, CardHeader, CardFooter, CardBody,
+    Alert, Card, CardHeader, CardFooter, CardBody,
     CardTitle, CardText
 } from 'reactstrap';
 
@@ -65,7 +65,9 @@ class Land extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
-        this.editButton = [<ButtonToolbar  ><Button variant="warning"  onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
+        this.onDismiss = this.onDismiss.bind(this);
+
+        this.editButton = [<ButtonToolbar  ><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
 
         this.db = fire.firestore();
@@ -169,7 +171,7 @@ class Land extends Component {
 
     save(e) {
         e.preventDefault();
-        let writeID = this.props.addNew ? (this.props.maxID+1).toString() : this.props.details.id;
+        let writeID = this.props.addNew ? (this.props.maxID + 1).toString() : this.props.details.id;
         console.log("WriteID", writeID);
         this.db.collection("UserBase").doc(this.props.user).collection("land-tax").doc(writeID).set({
             Location: {
@@ -204,11 +206,13 @@ class Land extends Component {
                 window.alert("Error: ", error);
             });
         }
-        else{
+        else {
             window.alert("Wrong information!");
         }
     }
-
+    onDismiss(e) {
+        this.setState({ taxVisible: false });
+    }
     // renderForm() {
     //     let key;
     //     this.displayText = [];
@@ -229,158 +233,82 @@ class Land extends Component {
     // }
 
     renderForm(isEditable) {
-        if (isEditable) {
-            return (
-                // <Card className="popupCards">
-                // <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Land details </CardHeader>
 
+        return (
 
-                // <CardBody>
-                <section>
-                    <label htmlFor="inputLocation">Province/District/Municipality</label>
-                    <div class="form-row" id="inputLocation">
-                        <div class="col-md-3 mb-3">
-                            <input value={this.state.province} id="inputprovince" name="province" className="form-control" type="text" onChange={this.handleChange} placeholder=" Province"></input>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <input value={this.state.district} id="inputdistrict" name="district" className="form-control" type="text" onChange={this.handleChange} placeholder=" District "></input>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <input value={this.state.municipality} id="inputmuni" name="municipality" className="form-control" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <input value={this.state.ward} id="inputward" name="ward" type="number" className="form-control" min="1" onChange={this.handleChange} placeholder=" Ward"></input>
-                        </div>
+            <section>
+                <label htmlFor="inputLocation">Province/District/Municipality</label>
+                <div class="form-row" id="inputLocation">
+                    <div class="col-md-3 mb-3">
+                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.province} id="inputprovince" name="province" className="form-control" type="text" onChange={this.handleChange} placeholder=" Province"></input>
                     </div>
-                    <div className="form-row">
-                        <div class="col-md-3 mb-3">
-                            <label htmlFor="inputkitta"><i>Kitta Number</i></label>
-                            <input value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label htmlFor="landCat"><i>जग्गा वर्ग</i></label>
-                            <select value={this.state.landCat} id="landCat" name="landCat" className="custom-select" type="number" onChange={this.handleSelectChange} >
-                                <option value="1"> क</option>
-                                <option value="2"> ख</option>
-                                <option value="3"> ग</option>
-                                <option value="4"> घ</option>
-                                <option value="5"> ङ</option>
-                                <option value="6"> च</option>
-                                <option value="7"> वर्ग नखुलेको</option>
-
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label htmlFor="area">Area</label>
-                            <input value={this.state.area} id="area" name="area" type="number" className="form-control" onChange={this.handleAreaChange} placeholder="Area in sq. meters"></input>                            </div>
+                    <div class="col-md-3 mb-3">
+                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.district} id="inputdistrict" name="district" className="form-control" type="text" onChange={this.handleChange} placeholder=" District "></input>
                     </div>
-                    <button onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
-                    <div className="form-row">
-                        {console.log(this.state.taxAmountLand)}
+                    <div class="col-md-3 mb-3">
+                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.municipality} id="inputmuni" name="municipality" className="form-control" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.ward} id="inputward" name="ward" type="number" className="form-control" min="1" onChange={this.handleChange} placeholder=" Ward"></input>
+                    </div>
+                </div>
+                <div className="form-row">
+                    <div class="col-md-3 mb-3">
+                        <label htmlFor="inputkitta"><i>Kitta Number</i></label>
+                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label htmlFor="landCat"><i>जग्गा वर्ग</i></label>
+                        <select disabled={this.state.editable ? "" : "disabled"} value={this.state.landCat} id="landCat" name="landCat" className="custom-select" type="number" onChange={this.handleSelectChange} >
+                            <option value="1"> क</option>
+                            <option value="2"> ख</option>
+                            <option value="3"> ग</option>
+                            <option value="4"> घ</option>
+                            <option value="5"> ङ</option>
+                            <option value="6"> च</option>
+                            <option value="7"> वर्ग नखुलेको</option>
 
-                        {this.state.taxVisible ? <div class="col-md-12 mb-3">
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label htmlFor="area">Area</label>
+                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.area} id="area" name="area" type="number" className="form-control" onChange={this.handleAreaChange} placeholder="Area in sq. meters"></input>                            </div>
+                </div>
+                <button disabled={this.state.editable ? "" : "disabled"} onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
+                
+                    <Alert className="alert" color="success" isOpen={this.state.taxVisible} toggle={this.onDismiss}>
+                    <div class="col-md-4 mb-3">
                             <p>
                                 <b> भुमी कर</b> : Nrs. {this.state.taxAmountLand}<br />
                                 <b>  No. of Aanas </b> : {(this.state.area / this.state.Aana).toFixed(2)}<br />
                                 <b>  Rate per आना </b> : Nrs. {this.state.taxRate}
-                            </p> </div> : null}
+                            </p>
+                            </div>
+                    </Alert>
+                 
+                <div className="form-row">
+                    {console.log(this.state.taxAmountLand)}
+                    
 
-
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="regDate" position="left">Registered Date</label>
-                            <input value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="lastDate" position="left">Last Paid</label>
-                            <input value={this.state.lastDate} className="form-control" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="dueDate" position="left">Due Date</label>
-                            {this.props.addNew ? <input value={this.state.dueDateLand} className="form-control" id="dueDate" name="dueDateLand" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input> : <input disabled value={this.state.dueDateLand} className="form-control" id="dueDate" name="dueDateLand" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>}
-                        </div>
-                        {/* <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button> */}
+                    <div class="col-md-4 mb-3">
+                        <label htmlFor="regDate" position="left">Registered Date</label>
+                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
                     </div>
-                </section>
-            //      {/* </CardBody>
-            //    </Card>  */}
-            );
-        }
-        else {
-            return (
-                // <Card className="popupCards">
-                // <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Land details </CardHeader>
-
-
-                // <CardBody>
-                <section>
-                    <label htmlFor="inputLocation">Province/District/Municipality</label>
-                    <div class="form-row" id="inputLocation">
-                        <div class="col-md-3 mb-3">
-                            <input disabled value={this.state.province} id="inputprovince" name="province" className="form-control" type="text" onChange={this.handleChange} placeholder=" Province"></input>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <input disabled value={this.state.district} id="inputdistrict" name="district" className="form-control" type="text" onChange={this.handleChange} placeholder=" District "></input>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <input disabled value={this.state.municipality} id="inputmuni" name="municipality" className="form-control" type="text" onChange={this.handleChange} placeholder=" Municipality"></input>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <input disabled value={this.state.ward} id="inputward" name="ward" type="number" className="form-control" min="1" onChange={this.handleChange} placeholder=" Ward"></input>
-                        </div>
+                    <div class="col-md-4 mb-3">
+                        <label htmlFor="lastDate" position="left">Last Paid</label>
+                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.lastDate} className="form-control" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
                     </div>
-                    <div className="form-row">
-                        <div class="col-md-3 mb-3">
-                            <label htmlFor="inputkitta"><i>Kitta Number</i></label>
-                            <input disabled value={this.state.kittaId} id="inputkitta" name="kittaId" className="form-control" onChange={this.handleChange} placeholder="कित्ता नम्बर"></input>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label htmlFor="landCat"><i>जग्गा वर्ग</i></label>
-                            <select disabled value={this.state.landCat} id="landCat" name="landCat" className="custom-select" type="number" onChange={this.handleSelectChange} >
-                                <option value="1"> क</option>
-                                <option value="2"> ख</option>
-                                <option value="3"> ग</option>
-                                <option value="4"> घ</option>
-                                <option value="5"> ङ</option>
-                                <option value="6"> च</option>
-                                <option value="7"> वर्ग नखुलेको</option>
-
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label htmlFor="area">Area</label>
-                            <input disabled value={this.state.area} id="area" name="area" type="number" className="form-control" onChange={this.handleAreaChange} placeholder="Area in sq. meters"></input>                            </div>
+                    <div class="col-md-4 mb-3">
+                        <label htmlFor="dueDate" position="left">Due Date</label>
+                        <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.dueDateLand} className="form-control" id="dueDate" name="dueDateLand" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
                     </div>
-                    <button disabled onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
-                    <div className="form-row">
-                        {console.log(this.state.taxAmountLand)}
+                    {/* <button onClick={this.writeLandDetails} className="btn btn-primary">Submit</button> */}
+                </div>
+            </section>
 
-                        {this.state.taxVisible ? <div class="col-md-12 mb-3">
-                            <p>
-                                <b> भुमी कर</b> : Nrs. {this.state.taxAmountLand}<br />
-                                <b>  No. of Aanas </b> : {(this.state.area / this.state.Aana).toFixed(2)}<br />
-                                <b>  Rate per आना </b> : Nrs. {this.state.taxRate}
-                            </p> </div> : null}
-
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="regDate" position="left">Registered Date</label>
-                            <input disabled value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="lastDate" position="left">Last Paid</label>
-                            <input disabled value={this.state.lastDate} className="form-control" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label htmlFor="dueDate" position="left">Due Date</label>
-                            <input disabled value={this.state.dueDateLand} className="form-control" id="dueDate" name="dueDateLand" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
-                        </div>
-                        {/* <button disabled onClick={this.writeLandDetails} className="btn btn-primary">Submit</button> */}
-                    </div>
-                </section>
-                //  </CardBody>
-                //</Card>            
-                  );
-        }
+        );
     }
+
 
     componentDidMount() {
         this.baseState = { ...this.state, loaded: true };
@@ -389,7 +317,7 @@ class Land extends Component {
     render() {
         return (
             // <div className="item-box">
-            <div align ="center">
+            <div align="center">
                 {/* <h3>Land at {this.props.details.Location.municipality} Kitta {this.props.details.kittaId}</h3>
                 <div className="row">
                     <div className="location col-6">
@@ -413,15 +341,15 @@ class Land extends Component {
                 </div> */}
                 {/* {this.displayText} */}
                 <Card className="popupCards">
-                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Land details </CardHeader>
+                    <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Land details </CardHeader>
 
 
-                <CardBody>
-                {this.renderForm(this.state.editable)}
-              
-                {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
-                
-                </CardBody>
+                    <CardBody>
+                        {this.renderForm(this.state.editable)}
+
+                        {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
+
+                    </CardBody>
                 </Card>
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
