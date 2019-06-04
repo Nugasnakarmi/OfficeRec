@@ -22,6 +22,8 @@
 .login-box{
     padding: 30px 30px 30px 30px; 
     border-style: hidden;
-    border-radius: 5px;
-    background: aliceblue;
+    border-radius: 0.7rem;
+    /* background: #2D93AD; */
+    background : white
+    /* color : aliceblue; */
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
-import firebase from 'firebase';
 import {
     Spinner
 } from 'reactstrap';
@@ -12,13 +11,18 @@ class EditBahal extends Component {
         super(props);
         this.state = {
         };
+        this.db = fire.firestore();
+        this.countItem = 0;
+        this.itemList = [];
+        this.displayText = [];
+
     }
-    
+
     componentDidMount() {
         let totalRecords = 0;
         let idList = [];
-        var landRef = this.db.collection("UserBase").doc(this.props.user).collection("rent-tax");
-        landRef.get().then((querySnapshot) => {
+        var rentRef = this.db.collection("UserBase").doc(this.props.user).collection("rent-tax");
+        rentRef.get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 this.countItem++;
                 console.log(doc.id, " => ", doc.data());
@@ -27,11 +31,15 @@ class EditBahal extends Component {
             });
         }).then(() => {
             //console.clear();
-            this.maxID = Math.max(...idList);
-            this.itemList.map((item, index) => {
+            if (!this.itemList) {
+                this.maxID = Math.max(...idList);
+            }
+            else {
+                this.maxID = 0
+            } this.itemList.map((item, index) => {
                 this.displayText.push(<Card>
                     <Accordion.Toggle as={Card.Header} eventKey={index}>
-                        {item.id}: {item.Location.province}/{item.Location.district}/{item.Location.municipality}
+                        {item.id}
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={index}>
                         <Card.Body>

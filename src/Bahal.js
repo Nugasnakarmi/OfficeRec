@@ -268,7 +268,7 @@ class Bahal extends Component {
                     <input disabled={isEditable ? "" : "disabled"} value={this.state.landPrice} id="landPrice" name="landPrice" type="number" className="form-control" onChange={this.handleChange} placeholder="in NPR."></input>
                 </div>
                 <div className="col-md-3 sm-4">
-                    <label htmlFor="housePrice">Rate of House per sq. m.</label>
+                    <label htmlFor="housePrice">Rate of House per sq.m.</label>
                     <input disabled={isEditable ? "" : "disabled"} value={this.state.housePrice} id="housePrice" name="housePrice" type="number" className="form-control" onChange={this.handleChange} placeholder="in NPR."></input>
                 </div>
                 <div className="col-md-3 sm-4">
@@ -278,14 +278,17 @@ class Bahal extends Component {
                         <option value='c1'>C2</option>
                     </select>
                 </div>
-                <Alert className="alert" color="success" isOpen={this.state.taxVisible} toggle={this.onDismiss}>
-                    <div class="col-md-4 mb-3">
-                        <p>USE C1 FOR: सिंहदरवार – माइतीघर – थापाथली – त्रिपुरेश्वर; त्रिपुरेश्वर – सुन्धारा – खिचापोखरी – रणमुक्तेश्वर – पुरानो महानगरपालिका (सिद्धिचरण चोक) – दमकल – बसन्तपुर – हनुमानढोका – सुरज आर्केड – आकाश भैरब – जुद्धशालिक –न्युरोड गेट – भोंसिको – महाबौद्ध – वीर अस्पताल –कान्तिपथ); भोटाहिटी – असन चोक – कमलाक्षी; सुन्धाराबाट कान्तिपथ उत्तरतर्फ केशरमहल – त्रिदेबी मार्ग – नर्सिङ्ग चोक – जे.पी चोक – मनाङ्ग होटल – सोह्रखुट्टे उकालो – लेखनाथ मार्ग – नेपाल स्काउट चोक – केशर महल; केशर महल –नारायणहिटीको संग्राहालयको दक्षिण – दरबार मार्ग (महेन्द्र सालिक) – कृष्ण पाउरोटी चोक – पुतलीसडक – सिंहदरबार; रत्नपार्क – बागबजार – पुतलीसडक चोक, माइतीघर–नयाँबानेश्वर–तिनकुने–कोटेश्वर हुँदै बालकुमारी पुल, तिनकुने–सिनामगल–गौशाला–चावहिल–बौद्ध जोरपाटी सिमानासम्म, लैनचौर–लाजिम्पाट–पानिपोखरी–महाराजगञ्ज–बाँसबारी सिमानासम्म, सोह्रखुट्टे ओरालो–बालाजु चोक–बाइसधारा– बाइपास हुँदै माछापोखरीसम्म, सानेपा पुल– बल्खु–कलंकी–स्वयम्भु–बालाजु–गोंगबु चोक– महाराजगञ्ज नारायणगोपाल चोक–हुँदै चावहिल चोकसम्म, त्रिपुरेश्वर–टेकु– कालिमाटी–रविभवन हुँदै–कलंकी, काललिमाटी–बल्खु हुँदै सडकको दाँयाबाँया जोडिएका क्षेत्रहरू।
+
+            </div>
+            <div className = "col-md-12 mb-12"> 
+            <Alert style={{ width:"100%"}} color="info" isOpen={true} toggle={this.onDismiss}>
+                
+                    <p>USE C1 FOR:<br/> सिंहदरवार – माइतीघर – थापाथली – त्रिपुरेश्वर; त्रिपुरेश्वर – सुन्धारा – खिचापोखरी – रणमुक्तेश्वर – पुरानो महानगरपालिका (सिद्धिचरण चोक) – दमकल – बसन्तपुर – हनुमानढोका – सुरज आर्केड – आकाश भैरब – जुद्धशालिक –न्युरोड गेट – भोंसिको – महाबौद्ध – वीर अस्पताल –कान्तिपथ); भोटाहिटी – असन चोक – कमलाक्षी; सुन्धाराबाट कान्तिपथ उत्तरतर्फ केशरमहल – त्रिदेबी मार्ग – नर्सिङ्ग चोक – जे.पी चोक – मनाङ्ग होटल – सोह्रखुट्टे उकालो – लेखनाथ मार्ग – नेपाल स्काउट चोक – केशर महल; केशर महल –नारायणहिटीको संग्राहालयको दक्षिण – दरबार मार्ग (महेन्द्र सालिक) – कृष्ण पाउरोटी चोक – पुतलीसडक – सिंहदरबार; रत्नपार्क – बागबजार – पुतलीसडक चोक, माइतीघर–नयाँबानेश्वर–तिनकुने–कोटेश्वर हुँदै बालकुमारी पुल, तिनकुने–सिनामगल–गौशाला–चावहिल–बौद्ध जोरपाटी सिमानासम्म, लैनचौर–लाजिम्पाट–पानिपोखरी–महाराजगञ्ज–बाँसबारी सिमानासम्म, सोह्रखुट्टे ओरालो–बालाजु चोक–बाइसधारा– बाइपास हुँदै माछापोखरीसम्म, सानेपा पुल– बल्खु–कलंकी–स्वयम्भु–बालाजु–गोंगबु चोक– महाराजगञ्ज नारायणगोपाल चोक–हुँदै चावहिल चोकसम्म, त्रिपुरेश्वर–टेकु– कालिमाटी–रविभवन हुँदै–कलंकी, काललिमाटी–बल्खु हुँदै सडकको दाँयाबाँया जोडिएका क्षेत्रहरू।
                          </p>
-                         <p>USE C2 FOR: अन्य क्षेत्रहरू।
+                    <p>USE C2 FOR: अन्य क्षेत्रहरू।
                          </p>
-                    </div>
-                </Alert>
+
+            </Alert>
             </div>
         </section>
         );
@@ -301,7 +304,7 @@ class Bahal extends Component {
             // <div className="item-box">
             <div align="center">
                 <Card className="popupCards">
-                    <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Land details </CardHeader>
+                    <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Rent details </CardHeader>
 
 
                     <CardBody>

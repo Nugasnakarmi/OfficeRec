@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 //import { Link } from 'react-router-dom';
 import fire from './config/fire';
 import './login.css';
+import { InputGroup, InputGroupAddon, InputGroupText, Input ,Button} from 'reactstrap';
+
 
 class Login extends Component {
     constructor(props) {
@@ -35,24 +37,38 @@ class Login extends Component {
             <div className='row pad'>
                 <div className='col-lg-3 col-md-2 col-sm-2 col-xl-3'></div>
                 <div className="col-lg-6 col-md-8 col-sm-8 col-xs-12 col-xl-6 container-fluid shadow login-box">
-                    <h2 align='center'>AUTOMATA</h2>
-                    <form>
+                    <h2 align='left'>Sign in </h2>
+                   <hr/>
                         <div className="form-group">
-                            <label for="InputEmail1"> Email Address</label>
+                            <InputGroup>
+                                <InputGroupAddon addonType="prepend">
+                                    <InputGroupText>Email  </InputGroupText>
+                                </InputGroupAddon>
+                                <Input value={this.state.email} onChange={this.handleChange} type="email" name="email"/>
+                            </InputGroup>
+                            {/* <label for="InputEmail1"> Email Address</label>
                             <input value={this.state.email} onChange={this.handleChange} type="email" name="email"
                                 className="form-control" id="InputEmail1" aria-describedby="emailHelp"
-                                placeholder="Enter email" />
+                                placeholder="Enter email" /> */}
                             <small id="emailHelp" className="form-text text-muted"> We will never share your email with anyone else.</small>
                         </div>
 
                         <div className="form-group">
-                            <label for="InputPassword1">Password</label>
+                        <InputGroup>
+                                <InputGroupAddon addonType="prepend">
+                                    <InputGroupText>Password</InputGroupText>
+                                </InputGroupAddon>
+                                <Input value={this.state.password} onChange={this.handleChange} type='password'
+                                name='password' />
+                            </InputGroup>
+                            {/* <label for="InputPassword1">Password</label>
                             <input value={this.state.password} onChange={this.handleChange} type='password'
                                 name='password' className="form-control" id="InputPassword1"
-                                placeholder="Enter password" />
+                                placeholder="Enter password" /> */}
                         </div>
                         <div className='d-flex justify-content-center'>
-                            <button type="submit" onClick={this.login} className="btn btn-primary loginbutton"> Login </button>
+                        <Button outline       onClick={this.login} color="success">Login</Button>{' '}
+                            {/* <button type="submit" onClick={this.login} className="btn btn-primary loginbutton">  </button> */}
                         </div>
                         <div className='d-flex justify-content-center'>
                             {/* <small id="emailHelp" className="form-text text-muted">To register, contact your administrator.</small> */}
@@ -61,7 +77,7 @@ class Login extends Component {
                         <div className='d-flex justify-content-center'>
                             <small id="emailHelp" className="form-text text-muted"><b>User:</b> email: hari@gmail.com, pass: hari123</small>
                         </div>
-                    </form>
+                   
 
                 </div>
                 <div className='col-lg-3 col-md-2 col-sm-2 col-xl-3'></div>

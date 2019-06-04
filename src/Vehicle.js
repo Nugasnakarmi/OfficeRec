@@ -31,7 +31,7 @@ class Vehicle extends Component {
             PDtype: this.props.details ? this.props.details['Petrol/Diesel'] : '',
             useType: this.props.details ? this.props.details.Use : '',
             CustomNissa: this.props.details ? this.props.details['Bhansar ko Nissa'] : '',
-            dueDate: this.props.details ? this.props.details['due date'] : '',
+            dueDate: this.props.details ? this.props.details.dueDate : '',
             taxAmount: this.props.details ? this.props.details.amount : '',
             warningStatus: 'inactive',
             isOverdue: false
@@ -50,8 +50,10 @@ class Vehicle extends Component {
         this.delete = this.delete.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-
-        this.editButton = [<ButtonToolbar><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" disabled={this.state.isOverdue ? '' : 'disabled'} onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
+        this.today = new Date(); //todays date object
+     this.todayString = [this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate()].join('/');  //string of date delimited by /
+     this.todayBS = adbs.ad2bs(this.todayString);  //todays date in BS                                          //disabled={this.state.isOverdue ? '' : 'disabled'} yo tala button ma thyo record payment
+        this.editButton = [<ButtonToolbar><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning"  onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>,<Button variant="success" onClick={this.calculate}>Calculate</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
         this.db = fire.firestore();
     }
@@ -191,7 +193,7 @@ class Vehicle extends Component {
                     {
                         amount: parseFloat(this.state.taxAmount),
                         ['registered date']: this.state.regDate,
-                        ['due date']: this.state.dueDate,
+                        dueDate : this.state.dueDate,
                         type: this.state.type,
                         VRN: this.state.VRN,
                         companyName: this.state.companyName,
@@ -246,16 +248,38 @@ class Vehicle extends Component {
             dueDate: [todayBS.en.year + 1, regDateObj.month, regDateObj.day - 1].join('/'),
             taxAmount: 0
         });
-        this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(this.props.details.id).set({
-            ['due date']: this.state.dueDate,
-            lastDate: this.state.lastDate,
-            amount: this.state.taxAmount
+        var vehicletaxRef = this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(this.props.details.id);
+
+        this.db.runTransaction((tr) => {
+            return tr.get(vehicletaxRef).then((sdoc) => {
+                if (!sdoc.data()) {
+                    throw "Document doesn't exist";
+                }
+
+                tr.update(vehicletaxRef, {  dueDate: this.state.dueDate,
+                lastDate: this.state.lastDate,
+                amount: this.state.taxAmount });
+                return this.state.lastDate;
+            });
         }).then(() => {
             window.alert("Success!");
             this.props.refresh();
-        }).catch((error) => {
-            window.alert("Error: ", error);
-        });
+        })
+            .catch(function (err) {
+                // This will be an "population is too big" error.
+                console.error(err);
+                window.alert("Error: ", err);
+            });
+        // this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(this.props.details.id).set({
+        //     ['due date']: this.state.dueDate,
+        //     lastDate: this.state.lastDate,
+        //     amount: this.state.taxAmount
+        // }).then(() => {
+        //     window.alert("Success!");
+        //     this.props.refresh();
+        // }).catch((error) => {
+        //     window.alert("Error: ", error);
+        // });
 
 
 
@@ -358,19 +382,20 @@ class Vehicle extends Component {
                         <div >
                             Basic information
                         </div>
-                        <hr size="80%" />
+                        <hr />
                         <CardBody>
 
-                            <div className="form-group row">
-                                <div class="col-md-4 sm-4">
+                            <div className="form-row">
+                                <div className="col-md-5 mb-4">
                                     <span> <label htmlFor="vrn" id="vrnUp">Vehicle Registration Number</label>
                                         <i><label className="hidden" htmlFor="vrn" id="vrnDown" status={this.state.warningStatus}>Please enter as in the format specified.</label> </i> </span>
                                     <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="BA 3 CHA 1234"></input>
                                 </div>
-                                <div className="col-md-4 sm-4">
+                                <div className="col-md-4 mb-4">
                                     <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
                                     <select disabled={this.state.editable ? "" : "disabled"} id="drop-vehicle" onChange={this.handleSelectChange} name='type' value={this.state.type} className="custom-select">
                                         <optgroup label='Category I'>
+
                                             <option value='Motorcycle'>Motorcycle/Scooter</option>
                                             <option value='Minitruck/Minibus'>Minitruck/Minibus</option>
                                             <option value='Truck/Bus'>Truck/Bus</option>
@@ -393,53 +418,30 @@ class Vehicle extends Component {
                                             <option value='Power Tiller'>Power Tiller</option>
                                         </optgroup>
                                     </select>
+                                    </div>
 
-
-                                    <div class="col-md-3  mb-3">
+                                    <div className="col-md-3  mb-4">
                                         <label htmlFor="model" position="left">Model</label>
                                         <input disabled={this.state.editable ? "" : "disabled"} value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
                                     </div>
-                                    <div class="col-md-3  mb-3">
-                                        <label htmlFor="noofCyl" position="left">No of Cylinders</label>
-                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 1"></input>
-                                    </div>
+                                </div>
 
-                                    <div class="  col-md-4  sm-4 ">
+                                <div className="form-row">
+                                    
+
+                                    <div class="  col-md-6  mb-4 ">
                                         <label htmlFor="companyName" position="left">Company Name</label>
                                         <input disabled={this.state.editable ? "" : "disabled"} value={this.state.companyName} className="form-control" id="companyName" name="companyName" type="text" onChange={this.handleChange} placeholder="TVS"></input>
                                     </div>
+                                    
 
-
-
+                                    <div className="col-md-6 mb-4">
+                                        <label htmlFor="noofCyl" position="left">No of Cylinders</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange}></input>
+                                    </div>
                                 </div>
                                 <div className="form-row">
 
-
-                                    <div class="col-md-3  mb-3">
-                                        <label htmlFor="model" position="left">Model</label>
-                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
-                                    </div>
-                                    <div class="col-md-3  mb-3">
-                                        <label htmlFor="noofCyl" position="left">No of Cylinders</label>
-                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 1"></input>
-                                    </div>
-                                    <div class="col-md-3  mb-3">
-                                        <label htmlFor="hpcc" position="left">Horse Power/ CC</label>
-                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.hpcc} className="form-control" id="hpcc" name="hpcc" type="text" onChange={this.handleChange} placeholder="Eg:200"></input>
-                                    </div>
-                                    <div class="col-md-3  mb-3">
-                                        <label htmlFor="vehicleColor" position="left">Vehicle Color</label>
-                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.vehicleColor} className="form-control" id="vehicleColor" name="vehicleColor" type="text" onChange={this.handleChange} placeholder="Eg: White"></input>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
-
-                    <Card style={{ marginBottom: "2.5%" }}>
-                        <CardBody>
-
-                            <div class="form-row">
                                 <div class="col-md-4 mb-3">
                                     <label htmlFor="drop-useType" position="left">Use</label>
                                     <select disabled={this.state.editable ? "" : "disabled"} id="drop-useType" onChange={this.handleSelectChange} name='useType' value={this.state.useType} className="custom-select">
@@ -448,6 +450,27 @@ class Vehicle extends Component {
                                         <option value='Government'>Government</option>
                                     </select>
                                 </div>
+                                   
+                                   
+                                    <div class="col-md-4  mb-4">
+                                        <label htmlFor="hpcc" position="left">Horse Power/ CC</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.hpcc} className="form-control" id="hpcc" name="hpcc" type="text" onChange={this.handleChange} placeholder="Eg:200"></input>
+                                    </div>
+                                    <div class="col-md-4  mb-4">
+                                        <label htmlFor="vehicleColor" position="left">Vehicle Color</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.vehicleColor} className="form-control" id="vehicleColor" name="vehicleColor" type="text" onChange={this.handleChange} placeholder="Eg: White"></input>
+                                    </div>
+                                </div>
+                                
+                        </CardBody>
+                        
+                    </Card>
+
+                    <Card style={{ marginBottom: "2.5%" }}>
+                        <CardBody>
+
+                            <div class="form-row">
+                                
                                 <div class="col-md-4 mb-3">
                                     <label htmlFor="CustomNissa" position="left">Bhansar Nissa</label>
                                     <input disabled={this.state.editable ? "" : "disabled"} value={this.state.CustomNissa} className="form-control" id="CustomNissa" name="CustomNissa" type="text" onChange={this.handleChange} placeholder="Eg: ME45599 2074/03/16"></input>
@@ -456,17 +479,6 @@ class Vehicle extends Component {
                                 <div class="col-md-4  mb-3">
                                     <label htmlFor="seatCapacity" position="left">Seat Capacity</label>
                                     <input disabled={this.state.editable ? "" : "disabled"} value={this.state.seatCapacity} className="form-control" id="seatCapacity" name="seatCapacity" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 2"></input>
-                                </div>
-                            </div>
-                            <div className="form-row">
-
-                                <div class="col-md-4  mb-3">
-                                    <label htmlFor="ChassisNo" position="left">Chassis No</label>
-                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.ChassisNo} className="form-control" id="ChassisNo" name="ChassisNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: MDS236A9942P32099"></input>
-                                </div>
-                                <div class="col-md-4  mb-3">
-                                    <label htmlFor="EngineNo" position="left">Engine No</label>
-                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.EngineNo} className="form-control" id="EngineNo" name="EngineNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: 6R9D42030456"></input>
                                 </div>
                                 <div class="col-md-4  mb-3">
                                     <label htmlFor="drop-PD" position="left">Petrol/Diesel</label>
@@ -477,6 +489,19 @@ class Vehicle extends Component {
                                     </select>
 
                                 </div>
+                            </div>
+                            <div className="form-row">
+
+                               
+                                <div class="col-md-6  mb-3">
+                                    <label htmlFor="EngineNo" position="left">Engine No</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.EngineNo} className="form-control" id="EngineNo" name="EngineNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: 6R9D42030456"></input>
+                                </div>
+                                <div class="col-md-6  mb-3">
+                                    <label htmlFor="ChassisNo" position="left">Chassis No</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.ChassisNo} className="form-control" id="ChassisNo" name="ChassisNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: MDS236A9942P32099"></input>
+                                </div>
+                                
                             </div>
                         </CardBody>
                     </Card>
@@ -538,7 +563,7 @@ class Vehicle extends Component {
         console.log("RENDER");
         return (
 
-            <div>
+            <div align = "center">
                 <Card className="popupCards">
                     <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4">  Vehicle details here   </CardHeader>
 

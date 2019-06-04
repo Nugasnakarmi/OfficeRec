@@ -69,7 +69,9 @@ class Land extends Component {
 
         this.editButton = [<ButtonToolbar  ><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
-
+        this.today = new Date(); //todays date object
+     this.todayString = [this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate()].join('/');  //string of date delimited by /
+     this.todayBS = adbs.ad2bs(this.todayString);  //todays date in BS
         this.db = fire.firestore();
     }
 
@@ -103,22 +105,67 @@ class Land extends Component {
 
     recordPayment(e) {
         e.preventDefault();
-        let today = new Date(); //todays date object
-        let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
-        let todayBS = adbs.ad2bs(todayString);  //todays date in BS
+        // let today = new Date(); //todays date object
+        // let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
+        // let todayBS = adbs.ad2bs(todayString);  //todays date in BS
         this.setState({
-            lastDate: [todayBS.en.year, todayBS.en.month, todayBS.en.day].join('/')
+            lastDate: [this.todayBS.en.year, this.todayBS.en.month, this.todayBS.en.day].join('/')
             //also set a new due date
         });
-        this.db.collection("UserBase").doc(this.props.user).collection("land-tax").doc(this.props.details.id).set({
-            //['due date']: this.state.dueDateLand,
-            lastDate: this.state.lastDate
+
+        console.log(this.props.details.id)
+        var landtaxRef = this.db.collection("UserBase").doc(this.props.user).collection("land-tax").doc(this.props.details.id);
+
+        this.db.runTransaction((tr) => {
+            return tr.get(landtaxRef).then((sdoc) => {
+                if (!sdoc.data()) {
+                    throw "Document doesn't exist";
+                }
+
+                tr.update(landtaxRef, { lastDate: this.state.lastDate });
+                return this.state.lastDate;
+            });
         }).then(() => {
             window.alert("Success!");
             this.props.refresh();
-        }).catch((error) => {
-            window.alert("Error: ", error);
-        });
+        })
+            .catch(function (err) {
+                // This will be an "population is too big" error.
+                console.error(err);
+                window.alert("Error: ", err);
+            });
+
+        //    this.db.runTransaction(function (transaction) {
+        //         return transaction.get(landtaxRef).then(
+        //             function (sfDoc) {
+        //             if (!sfDoc.exists) {
+        //                 throw "Document does not exist!";
+        //             }
+
+
+
+        //                 transaction.update(landtaxRef, { lastDate: this.state.lastDate });
+        //                 return this.state.lastDate;
+
+        //         });
+        //     }).then(() => {
+        //                 window.alert("Success!");
+        //                 this.props.refresh();
+        //             })
+        //     .catch(function (err) {
+        //         // This will be an "population is too big" error.
+        //         console.error(err);
+        //         window.alert("Error: ", err);
+        //     });
+        //    .update({
+        //         //['due date']: this.state.dueDateLand,
+        //         lastDate: this.state.lastDate
+        //     }).then(() => {
+        //         window.alert("Success!");
+        //         this.props.refresh();
+        //     }).catch((error) => {
+        //         window.alert("Error: ", error);
+        //     });
     }
 
     getlandTax() {
@@ -150,6 +197,7 @@ class Land extends Component {
 
     showLandTax(e) {
         e.preventDefault();
+
         this.getlandTax();
         this.setState({ taxVisible: true })
     }
@@ -181,7 +229,7 @@ class Land extends Component {
                 ward: parseFloat(this.state.ward)
             },
             kittaId: parseFloat(this.state.kittaId),
-            category: parseFloat(this.state.landCat),
+            landCat: parseFloat(this.state.landCat),
             taxAmount: parseFloat(this.state.taxAmountLand),
             area: parseFloat(this.state.area),
             ['due date']: this.state.dueDateLand,
@@ -274,21 +322,21 @@ class Land extends Component {
                         <label htmlFor="area">Area</label>
                         <input disabled={this.state.editable ? "" : "disabled"} value={this.state.area} id="area" name="area" type="number" className="form-control" onChange={this.handleAreaChange} placeholder="Area in sq. meters"></input>                            </div>
                 </div>
-                <button disabled={this.state.editable ? "" : "disabled"} onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
-                
-                    <Alert className="alert" color="success" isOpen={this.state.taxVisible} toggle={this.onDismiss}>
+                <button onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
+
+                <Alert className="alert" color="success" isOpen={this.state.taxVisible} toggle={this.onDismiss}>
                     <div class="col-md-4 mb-3">
-                            <p>
-                                <b> भुमी कर</b> : Nrs. {this.state.taxAmountLand}<br />
-                                <b>  No. of Aanas </b> : {(this.state.area / this.state.Aana).toFixed(2)}<br />
-                                <b>  Rate per आना </b> : Nrs. {this.state.taxRate}
-                            </p>
-                            </div>
-                    </Alert>
-                 
+                        <p>
+                            <b> भुमी कर</b> : Nrs. {this.state.taxAmountLand}<br />
+                            <b>  No. of Aanas </b> : {(this.state.area / this.state.Aana).toFixed(2)}<br />
+                            <b>  Rate per आना </b> : Nrs. {this.state.taxRate}
+                        </p>
+                    </div>
+                </Alert>
+
                 <div className="form-row">
                     {console.log(this.state.taxAmountLand)}
-                    
+
 
                     <div class="col-md-4 mb-3">
                         <label htmlFor="regDate" position="left">Registered Date</label>
@@ -316,11 +364,11 @@ class Land extends Component {
 
     render() {
         return (
-            
+
             <div align="center">
-                
+
                 <Card className="popupCards">
-                    <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Land details </CardHeader>
+                    <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Land tax </CardHeader>
 
 
                     <CardBody>
