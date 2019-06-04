@@ -16,8 +16,9 @@ class Advertisement extends Component {
             loaded: false,
             editable: this.props.addNew ? true : false,
             adType: this.props.details ? this.props.details.adType : '',
-            taxRate : this.props.details ? this.props.details.taxAmount : '',
-            dueDate : this.props.details ? this.props.details.dueDate : '',
+            taxRate: this.props.details ? this.props.details.taxAmount : '',
+            regDate: this.props.details ? this.props.details.regDate : '',
+            dueDate: this.props.details ? this.props.details.dueDate : '',
             lastDate: this.props.details ? this.props.details.lastDate : '',
             inputID: '',
             show: false
@@ -36,7 +37,10 @@ class Advertisement extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.recordPayment = this.recordPayment.bind(this);
         this.editButton = [<ButtonToolbar  ><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
-       this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
+        this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
+        this.today = new Date(); //todays date object
+        this.todayString = [this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate()].join('/');  //string of date delimited by /
+        this.todayBS = adbs.ad2bs(this.todayString);  //todays date in BS
     }
 
     componentDidMount() {
@@ -44,22 +48,31 @@ class Advertisement extends Component {
     }
     recordPayment(e) {
         e.preventDefault();
-        let today = new Date(); //todays date object
-        let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
-        let todayBS = adbs.ad2bs(todayString);  //todays date in BS
+        
         this.setState({
-            lastDate: [todayBS.en.year, todayBS.en.month, todayBS.en.day].join('/')
+            lastDate: [this.todayBS.en.year, this.todayBS.en.month, this.todayBS.en.day].join('/')
             //also set a new due date
         });
-        this.db.collection("UserBase").doc(this.props.user).collection("advertisement-tax").doc(this.props.details.id).set({
-            //['due date']: this.state.dueDateLand,
-            lastDate: this.state.lastDate
+        var advertisementtaxRef = this.db.collection("UserBase").doc(this.props.user).collection("advertisement-tax").doc(this.props.details.id);
+       
+        this.db.runTransaction((tr) => {
+            return tr.get(advertisementtaxRef).then((sdoc) => {
+                if (!sdoc.data()) {
+                    throw "Document doesn't exist";
+                }
+
+                tr.update(advertisementtaxRef, { lastDate: this.state.lastDate, taxAmount: 0 });
+                return this.state.lastDate;
+            });
         }).then(() => {
             window.alert("Success!");
             this.props.refresh();
-        }).catch((error) => {
-            window.alert("Error: ", error);
-        });
+        })
+            .catch(function (err) {
+                // This will be an "population is too big" error.
+                console.error(err);
+                window.alert("Error: ", err);
+            });
     }
     handleClose() {
         this.setState({ show: false });
@@ -118,18 +131,21 @@ class Advertisement extends Component {
         console.log("WriteID", writeID);
         this.db.collection("UserBase").doc(this.props.user).collection("advertisement-tax").doc(writeID).set({
             adType: this.state.adType,
-          
+
 
             taxAmount: parseFloat(this.state.taxRate),
             dueDate: this.state.dueDate,
+            regDate: this.props.addNew ? [this.todayBS.en.year, this.todayBS.en.month, this.todayBS.en.day].join('/') : this.state.regDate,
 
-            
             lastDate: this.state.lastDate
         }).then(() => {
             window.alert("Success!");
-            this.props.refresh();
+            // this.props.refresh();
         }).catch((error) => {
-            window.alert("Error: ", error);
+            if (error){
+                window.alert("Error: ", error);
+                console.log(error);
+            }
         });
     }
     // writeBusinessDetails(e) {
@@ -172,80 +188,92 @@ class Advertisement extends Component {
                     <div className="col-md-12 mb-3">
 
                         <label htmlFor="drop-cat">Advertisement Type</label>
-                        <select disabled={isEditable ? "" : "disabled"} value={this.state.adType} id="adType" className="custom-select" name="category" onChange={this.handleChange}>
-                            <option >१ः फ्लेक्स बोर्डबाट तयार गरिएको विज्ञापन प्रचार सामाग्रीको प्रतिवर्ष प्रतिवर्ग फुट</option>
+                        <select disabled={isEditable ? "" : "disabled"} value={this.state.adType} id="adType" className="custom-select" name="adType" onChange={this.handleChange}>
+                            {/* <option value ="1" >१ः फ्लेक्स बोर्डबाट तयार गरिएको विज्ञापन प्रचार सामाग्रीको प्रतिवर्ष प्रतिवर्ग फुट</option>
+                            <option  value ="2" >२ः डिजिटल बोर्ड, ग्लो साइन बोर्ड, स्टिकरबाट गरिने विज्ञापन प्रचार सामग्रीको प्रतिवर्ष प्रतिवर्ग फुट</option>
+                            <option  value ="3" >३ः उत्पादनमुऋक व्यवसाय </option>
+                            <option  value ="4" >४ः क्रिषि तथा वन्यजन्तु </option>
+                            <option  value ="5" >५ः पर्यटन व्यवसाय </option>
+                            <option  value ="6" >६ः सेवा व्यवसाय </option>
+                            <option value ="7"  >७ः संचार सेवा व्यवसाय </option>
+                            <option value ="8"  >८ः विक्तीय सेवा व्यवसाय  </option> */}
+
+                            <option>१ः फ्लेक्स बोर्डबाट तयार गरिएको विज्ञापन प्रचार सामाग्रीको प्रतिवर्ष प्रतिवर्ग फुट</option>
                             <option >२ः डिजिटल बोर्ड, ग्लो साइन बोर्ड, स्टिकरबाट गरिने विज्ञापन प्रचार सामग्रीको प्रतिवर्ष प्रतिवर्ग फुट</option>
-                            <option >३ः उत्पादनमुऋक व्यवसाय </option>
-                            <option >४ः क्रिषि तथा वन्यजन्तु </option>
+                            <option  >३ः उत्पादनमुऋक व्यवसाय </option>
+                            <option  >४ः क्रिषि तथा वन्यजन्तु </option>
                             <option >५ः पर्यटन व्यवसाय </option>
-                            <option >६ः सेवा व्यवसाय </option>
-                            <option >७ः संचार सेवा व्यवसाय </option>
-                            <option >८ः विक्तीय सेवा व्यवसाय  </option>
-
-
+                            <option  >६ः सेवा व्यवसाय </option>
+                            <option   >७ः संचार सेवा व्यवसाय </option>
+                            <option   >८ः विक्तीय सेवा व्यवसाय  </option>
 
                         </select>
                     </div>
-                    </div>
-                    
-                
+                </div>
+                            
+
                 <div className="form-row">
-                    
+
 
                     <div class="col-md-3 mb-3">
                         <label htmlFor="taxAmount"> Tax rate</label>
                         <input disabled={this.state.editable ? "" : "disabled"} value={this.state.taxRate} id="taxRate" name="taxRate" className="form-control" onChange={this.handleChange} ></input>
                     </div>
 
-                    <div class="col-md-5 mb-3">
+                    <div class="col-md-3 mb-3">
                         <label htmlFor="dueDateBusiness"> Due date</label>
-                        <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.dueDate} type="text" id="dueDate" name="dueDate" className="form-control" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
+                        <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.dueDate} type="text" id="dueDate" name="dueDate" className="form-control" onChange={this.handleChange}></input>
+                    </div>
+                    
+                    <div class="col-md-3 mb-3">
+                        <label htmlFor="dueDateBusiness"> Registration date</label>
+                        <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.regDate} type="text" id="regDate" name="regDate" className="form-control" onChange={this.handleChange} ></input>
                     </div>
 
                     {/* <button disabled={this.state.editable ? "" : "disabled"}  onClick={this.writeBusinessDetails} className="btn btn-primary">Submit</button> */}
-                
-                    <div class="col-md-4 mb-3">
+
+                    <div class="col-md-3 mb-3">
                         <label htmlFor="lastDate"> Last Paid Date</label>
                         <input disabled={this.state.addNew ? "" : "disabled"} value={this.state.lastDate} id="lastDate" name="lastDate" type="text" className="form-control" onChange={this.handleChange} ></input>
                     </div>
 
-                    
+
                 </div>
 
             </section>
-            );
+        );
     }
     render() {
         return (
-        <div align="center">
+            <div align="center">
 
-            <Card className="popupCards">
-                <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Advertisement Tax  </CardHeader>
+                <Card className="popupCards">
+                    <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Advertisement Tax  </CardHeader>
 
 
-                <CardBody>
-                    {this.renderForm(this.state.editable)}
+                    <CardBody>
+                        {this.renderForm(this.state.editable)}
 
-                    {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
+                        {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
 
-                </CardBody>
-            </Card>
-            <Modal show={this.state.show} onHide={this.handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirm Delete</Modal.Title>
-                </Modal.Header>
+                    </CardBody>
+                </Card>
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Confirm Delete</Modal.Title>
+                    </Modal.Header>
 
-                <Modal.Body>
-                    <p>Enter the user ID.</p>
-                    <input value={this.state.inputID} name="inputID" className="form-control" onChange={this.handleChange}></input>
-                </Modal.Body>
+                    <Modal.Body>
+                        <p>Enter the user ID.</p>
+                        <input value={this.state.inputID} name="inputID" className="form-control" onChange={this.handleChange}></input>
+                    </Modal.Body>
 
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>Close</Button>
-                    <Button variant="primary" onClick={this.delete}>Proceed</Button>
-                </Modal.Footer>
-            </Modal>
-        </div>);
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.handleClose}>Close</Button>
+                        <Button variant="primary" onClick={this.delete}>Proceed</Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>);
     }
 }
 

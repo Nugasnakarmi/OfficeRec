@@ -45,7 +45,11 @@ class Business extends Component {
         
          this.recordPayment = this.recordPayment.bind(this);
          this.editButton = [<ButtonToolbar  ><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
-        this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
+        
+     this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
+     this.today = new Date(); //todays date object
+     this.todayString = [this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate()].join('/');  //string of date delimited by /
+     this.todayBS = adbs.ad2bs(this.todayString);  //todays date in BS
     }
 
     componentDidMount(){
@@ -53,23 +57,34 @@ class Business extends Component {
     }
     recordPayment(e) {
         e.preventDefault();
-        let today = new Date(); //todays date object
-        let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
-        let todayBS = adbs.ad2bs(todayString);  //todays date in BS
+        // let today = new Date(); //todays date object
+        // let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
+        // let todayBS = adbs.ad2bs(todayString);  //todays date in BS
         this.setState({
-            lastDate: [todayBS.en.year, todayBS.en.month, todayBS.en.day].join('/')
+            lastDate: [this.todayBS.en.year, this.todayBS.en.month, this.todayBS.en.day].join('/')
             //also set a new due date
         });
-        this.db.collection("UserBase").doc(this.props.user).collection("business-tax").doc(this.props.details.id).set({
-            //['due date']: this.state.dueDateLand,
-            lastDate: this.state.lastDate
+        var businesstaxRef = this.db.collection("UserBase").doc(this.props.user).collection("business-tax").doc(this.props.details.id);
+
+        this.db.runTransaction((tr) => {
+            return tr.get(businesstaxRef).then((sdoc) => {
+                if (!sdoc.data()) {
+                    throw "Document doesn't exist";
+                }
+
+                tr.update(businesstaxRef, { lastDate: this.state.lastDate });
+                return this.state.lastDate;
+            });
         }).then(() => {
             window.alert("Success!");
             this.props.refresh();
-        }).catch((error) => {
-            window.alert("Error: ", error);
-        });
-    }
+        })
+            .catch(function (err) {
+                // This will be an "population is too big" error.
+                console.error(err);
+                window.alert("Error: ", err);
+            });
+        }
     handleClose() {
         this.setState({ show: false });
     }
@@ -125,6 +140,7 @@ class Business extends Component {
         e.preventDefault();
         let writeID = this.props.addNew ? (this.props.maxID + 1).toString() : this.props.details.id;
         console.log("WriteID", writeID);
+        
         this.db.collection("UserBase").doc(this.props.user).collection("business-tax").doc(writeID).set({
             PAN: parseFloat(this.state.PAN),
             businessName: this.state.bn,
@@ -133,9 +149,9 @@ class Business extends Component {
            annualIncome: parseFloat(this.state.income),
             
             taxAmount: parseFloat(this.state.taxAmount),
-            dueDate: this.state.dueDateBusiness,
+            dueDate: this.state.dueDate,
+            regDate: this.props.addNew ? [this.todayBS.en.year, this.todayBS.en.month, this.todayBS.en.day].join('/') :this.state.BRD,
             
-            regDate: this.state.BRD,
             lastDate: this.state.lastDate
         }).then(() => {
             window.alert("Success!");
@@ -229,12 +245,12 @@ class Business extends Component {
                 
                 <div class="col-md-3 mb-3">
                     <label htmlFor="taxAmount"> Tax rate</label>
-                    <input disabled={this.state.editable ? "" : "disabled"}  value={this.state.taxAmount} id="taxAmount" name="taxAmount" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                    <input disabled={this.state.editable ? "" : "disabled"}  value={this.state.taxAmount} id="taxAmount" name="taxAmount" className="form-control" onChange={this.handleChange} ></input>
                 </div>
 
                 <div class="col-md-5 mb-3">
                     <label htmlFor="dueDateBusiness"> Due date</label>
-                    <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.dueDate} type="text" id="dueDate" name="dueDate" className="form-control" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
+                    <input disabled value={this.state.dueDate} type="text" id="dueDate" name="dueDate" className="form-control" onChange={this.handleChange} ></input>
                 </div>
                 
                 {/* <button disabled={this.state.editable ? "" : "disabled"}  onClick={this.writeBusinessDetails} className="btn btn-primary">Submit</button> */}
@@ -242,12 +258,12 @@ class Business extends Component {
             <div className="form-row">
             <div class="col-md-6 mb-3">
                     <label htmlFor="lastDate"> Last Paid Date</label>
-                    <input disabled={this.state.addNew ? "" : "disabled"} value={this.state.lastDate} id="lastDate" name="lastDate" type="text" className="form-control" onChange={this.handleChange} ></input>
+                    <input disabled value={this.state.lastDate} id="lastDate" name="lastDate" type="text" className="form-control" onChange={this.handleChange} ></input>
                 </div>
                 
                 <div class="col-md-6 mb-3">
                     <label htmlFor="BRD">Business Registration Date</label>
-                    <input disabled={this.state.editable ? "" : "disabled"}  value={this.state.BRD} id="BRD" name="BRD" className="form-control" type ="text" onChange={this.handleChange}></input>
+                    <input disabled value={this.state.BRD} id="BRD" name="BRD" className="form-control" type ="text" onChange={this.handleChange}></input>
                 </div>
                 </div>
 

@@ -71,7 +71,12 @@ class EditBusiness extends Component {
             //console.clear();
             console.log("NO of property", this.countItem);
             console.log("The list", this.itemList);
-            this.maxID = Math.max(...idList);
+            if(!this.itemList ){
+                this.maxID = Math.max(...idList);
+            }
+            else{
+                this.maxID = 0
+            }
             this.itemList.map((item, index) => {
                 this.displayText.push(<Card>
                     <Accordion.Toggle as={Card.Header} eventKey={index}>

@@ -36,7 +36,14 @@ class EditAdvertisement extends Component {
             //console.clear();
             console.log("NO of advertisement", this.countItem);
             console.log("The list", this.itemList);
-            this.maxID = Math.max(...idList);
+            if(!this.itemList ){
+                this.maxID = 0
+            }
+            else{
+                this.maxID = Math.max(...idList);
+                
+            }
+            
             this.itemList.map((item, index) => {
                 this.displayText.push(<Card>
                     <Accordion.Toggle as={Card.Header} eventKey={index}>

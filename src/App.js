@@ -42,7 +42,7 @@ class App extends Component {
             var User=this.state.user["email"];}
             
             return (
-                <div className="App">
+                <div className="App" >
                   {console.log( User)}
                     { this.state.user ?( <Home user= {User} />) : (<Login />) }
                 </div>

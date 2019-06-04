@@ -38,6 +38,8 @@ class House extends Component {
             regDate: this.props.details ? this.props.details.regDate : '',
             lastDate: this.props.details ? this.props.details.lastDate : '',
             landVal: this.props.details? this.props.details.landVal : 0,
+
+            showCalculation:'',
             show:false,
             inputId:''
         };
@@ -54,7 +56,11 @@ class House extends Component {
         this.handleClose = this.handleClose.bind(this);
 
         this.editButton = [<ButtonToolbar  ><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
+        
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
+        this.today = new Date(); //todays date object
+     this.todayString = [this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate()].join('/');  //string of date delimited by /
+     this.todayBS = adbs.ad2bs(this.todayString);  //todays date in BS
     }
 
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -109,22 +115,42 @@ class House extends Component {
     }
     recordPayment(e) {
         e.preventDefault();
-        let today = new Date(); //todays date object
-        let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
-        let todayBS = adbs.ad2bs(todayString);  //todays date in BS
+        // let today = new Date(); //todays date object
+        // let todayString = [today.getFullYear(), today.getMonth() + 1, today.getDate()].join('/');  //string of date delimited by /
+        // let todayBS = adbs.ad2bs(todayString);  //todays date in BS
         this.setState({
-            lastDate: [todayBS.en.year, todayBS.en.month, todayBS.en.day].join('/')
+            lastDate: [this.todayBS.en.year, this.todayBS.en.month, this.todayBS.en.day].join('/')
             //also set a new due date
         });
-        this.db.collection("UserBase").doc(this.props.user).collection("land-tax").doc(this.props.details.id).set({
-            //['due date']: this.state.dueDateLand,
-            lastDate: this.state.lastDate
+       var housetaxRef= this.db.collection("UserBase").doc(this.props.user).collection("house-tax").doc(this.props.details.id);
+        
+       this.db.runTransaction((tr) => {
+            return tr.get(housetaxRef).then((sdoc) => {
+                if (!sdoc.data()) {
+                    throw "Document doesn't exist";
+                }
+
+                tr.update(housetaxRef, { lastDate: this.state.lastDate });
+                return this.state.lastDate;
+            });
         }).then(() => {
             window.alert("Success!");
             this.props.refresh();
-        }).catch((error) => {
-            window.alert("Error: ", error);
-        });
+        })
+            .catch(function (err) {
+                // This will be an "population is too big" error.
+                console.error(err);
+                window.alert("Error: ", err);
+            });
+        // this.db.collection("UserBase").doc(this.props.user).collection("house-tax").doc(this.props.details.id).set({
+        //     //['due date']: this.state.dueDateLand,
+        //     lastDate: this.state.lastDate
+        // }).then(() => {
+        //     window.alert("Success!");
+        //     this.props.refresh();
+        // }).catch((error) => {
+        //     window.alert("Error: ", error);
+        // });
     }
 
 
@@ -235,6 +261,7 @@ class House extends Component {
         this.db.collection("TaxRate").doc(this.state.currentYear).collection("PropertyTax").doc("totalVal").get().then((doc) => {
             var PropValArr = new Array();
             var cal = totalVal;
+            // var showCalc;
             PropValArr = doc.data();
             if (PropValArr) {
                 for (x in PropValArr) {// ALGORITHM FOR CALCULATING TAX FROM PROPERTY VALUATION
@@ -244,32 +271,41 @@ class House extends Component {
                         if ((cal <= 2 * crore) || (x == 11)) {
                             propertyTax += PropValArr[x] * percent * cal
                             cal -= cal;
-                            console.log("x 11 here");
+
+                            // showCalc += propertyTax.toString() + "+="+ PropValArr[x].toString() + "%" + " * " + cal.toString() + "~";
+                           
                         }
                         else {
                             propertyTax += PropValArr[x] * percent * 2 * crore;
                             cal -= 2 * crore;
+                            // showCalc += propertyTax.toString() + "+="+ PropValArr[x].toString() + "%" + " * " + cal.toString() + "~";
+
                         }
                     }
                     else if (cal <= crore) {
                         propertyTax += PropValArr[x] * percent * cal
+                        // showCalc += propertyTax.toString() + "+="+ PropValArr[x].toString() + "%" + " * " + cal.toString() + "~";
+
                         break;
                     }
                     else {
 
                         propertyTax += PropValArr[x] * percent * crore
                         cal -= crore;
+                        // showCalc += propertyTax.toString() + "+="+ PropValArr[x].toString() + "%" + " * " + cal.toString() +"~";
+
 
                     }
                 }
             }
 
-
+            
+            // console.log(showCalc);
             console.log("tax :", propertyTax)
             this.setState(
                 {
                     propTax: propertyTax.toFixed(2),
-
+                    // showCalculation : showCalc
                 }
             )
         }
@@ -279,10 +315,11 @@ class House extends Component {
 
     save = (e) => {
         e.preventDefault();
+        let writeID = this.props.addNew ? (this.props.maxID + 1).toString() : this.props.details.id;
         this.db.collection("UserBase").doc(this.props.user).get().then((doc) => {
             if (doc.data()) {
                 let houseRef = this.db.collection("UserBase").doc(this.props.user).collection("house-tax");
-                houseRef.doc(this.state.houseno).set({
+                houseRef.doc(writeID).set({
                     houseno: parseFloat(this.state.houseno),
                     Location: {
                         province: this.state.hprovince,
@@ -303,7 +340,10 @@ class House extends Component {
                     depreciation: this.state.depreciation,
                     landVal: this.state.landVal,
                     depPeriod: this.state.depPeriod,
-                    houseVal: this.state.houseVal
+                    houseVal: this.state.houseVal,
+                    regDate: this.props.addNew ? [this.todayBS.en.year, this.todayBS.en.month, this.todayBS.en.day].join('/') : this.state.regDate,
+                    lastDate : this.state.lastDate,
+                    dueDate :this.state.dueDate
                     // coowner: this.state.coowner
                 }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
             }
@@ -419,7 +459,8 @@ class House extends Component {
                 </div>
                 {/* {this.getPropertyTax()} */}
                 <Alert className="alert" color="success" isOpen={this.state.toTax} toggle={this.onDismissTax}>
-
+                       {/* {this.state.showCalculation.split('~').join("<br/>")}  code for showing calculation*/}
+                    
                     <p><b>Property Tax</b> : Nrs. {this.state.propTax}</p>
                 </Alert>
 

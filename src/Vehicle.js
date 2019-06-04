@@ -31,7 +31,7 @@ class Vehicle extends Component {
             PDtype: this.props.details ? this.props.details['Petrol/Diesel'] : '',
             useType: this.props.details ? this.props.details.Use : '',
             CustomNissa: this.props.details ? this.props.details['Bhansar ko Nissa'] : '',
-            dueDate: this.props.details ? this.props.details['due date'] : '',
+            dueDate: this.props.details ? this.props.details.dueDate : '',
             taxAmount: this.props.details ? this.props.details.amount : '',
             warningStatus: 'inactive',
             isOverdue: false
@@ -50,8 +50,10 @@ class Vehicle extends Component {
         this.delete = this.delete.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-
-        this.editButton = [<ButtonToolbar><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" disabled={this.state.isOverdue ? '' : 'disabled'} onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
+        this.today = new Date(); //todays date object
+     this.todayString = [this.today.getFullYear(), this.today.getMonth() + 1, this.today.getDate()].join('/');  //string of date delimited by /
+     this.todayBS = adbs.ad2bs(this.todayString);  //todays date in BS                                          //disabled={this.state.isOverdue ? '' : 'disabled'} yo tala button ma thyo record payment
+        this.editButton = [<ButtonToolbar><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning"  onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>,<Button variant="success" onClick={this.calculate}>Calculate</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
         this.db = fire.firestore();
     }
@@ -191,7 +193,7 @@ class Vehicle extends Component {
                     {
                         amount: parseFloat(this.state.taxAmount),
                         ['registered date']: this.state.regDate,
-                        ['due date']: this.state.dueDate,
+                        dueDate : this.state.dueDate,
                         type: this.state.type,
                         VRN: this.state.VRN,
                         companyName: this.state.companyName,
@@ -246,16 +248,38 @@ class Vehicle extends Component {
             dueDate: [todayBS.en.year + 1, regDateObj.month, regDateObj.day - 1].join('/'),
             taxAmount: 0
         });
-        this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(this.props.details.id).set({
-            ['due date']: this.state.dueDate,
-            lastDate: this.state.lastDate,
-            amount: this.state.taxAmount
+        var vehicletaxRef = this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(this.props.details.id);
+
+        this.db.runTransaction((tr) => {
+            return tr.get(vehicletaxRef).then((sdoc) => {
+                if (!sdoc.data()) {
+                    throw "Document doesn't exist";
+                }
+
+                tr.update(vehicletaxRef, {  dueDate: this.state.dueDate,
+                lastDate: this.state.lastDate,
+                amount: this.state.taxAmount });
+                return this.state.lastDate;
+            });
         }).then(() => {
             window.alert("Success!");
             this.props.refresh();
-        }).catch((error) => {
-            window.alert("Error: ", error);
-        });
+        })
+            .catch(function (err) {
+                // This will be an "population is too big" error.
+                console.error(err);
+                window.alert("Error: ", err);
+            });
+        // this.db.collection("UserBase").doc(this.props.user).collection("vehicle-tax").doc(this.props.details.id).set({
+        //     ['due date']: this.state.dueDate,
+        //     lastDate: this.state.lastDate,
+        //     amount: this.state.taxAmount
+        // }).then(() => {
+        //     window.alert("Success!");
+        //     this.props.refresh();
+        // }).catch((error) => {
+        //     window.alert("Error: ", error);
+        // });
 
 
 
@@ -405,16 +429,13 @@ class Vehicle extends Component {
                                 <div className="form-row">
                                     
 
-                                    <div class="  col-md-4  mb-4 ">
+                                    <div class="  col-md-6  mb-4 ">
                                         <label htmlFor="companyName" position="left">Company Name</label>
                                         <input disabled={this.state.editable ? "" : "disabled"} value={this.state.companyName} className="form-control" id="companyName" name="companyName" type="text" onChange={this.handleChange} placeholder="TVS"></input>
                                     </div>
-                                    <div class="col-md-4  mb-4">
-                                        <label htmlFor="model" position="left">Model</label>
-                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
-                                    </div>
+                                    
 
-                                    <div className="col-md-4  mb-4">
+                                    <div className="col-md-6 mb-4">
                                         <label htmlFor="noofCyl" position="left">No of Cylinders</label>
                                         <input disabled={this.state.editable ? "" : "disabled"} value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange}></input>
                                     </div>
