@@ -32,3 +32,10 @@
     margin-top: 5%;
     border-radius: 0.30rem;
 }
+
+.vehicleInnerCard{
+
+    width : 95%;
+    position : center;
+    margin-top : 2%
+}

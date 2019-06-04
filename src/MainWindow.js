@@ -3,7 +3,7 @@ import fire from './config/fire';
 import './mainwindow.css';
 import fixDate from './FixDate';
 import profile from './res/profile.png';
-import {Card, CardHeader, CardBody} from 'reactstrap';
+import {Card, CardHeader, CardBody, Spinner} from 'reactstrap';
 
 class MainWindow extends Component {
     constructor(props) {
@@ -41,12 +41,12 @@ class MainWindow extends Component {
         //console.log("StoredData inside render", this.storedData);
         var date = this.state.userInfo['Date of Birth'];
         return (
-            <Card>
+            <Card >
                 <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Dashboard</CardHeader>
             <CardBody>
             <div className = "abc">
                 {/* <h1 className='mainwindow-header'>Dashboard</h1> */}
-                <div className='dashboard-content row'>
+                <div className='dashboard-content row details' align="left">
                     <div className="col-6">
                         <p className='list'>User ID: {this.props.user}</p>
                         <p className='list'>Name: {this.storedData ? this.storedData['Name'] : this.state.userInfo['Name']}</p>

@@ -5,7 +5,7 @@ import MainWindow from './MainWindow';
 import EditLand from './EditLand';
 import EditHouse from './EditHouse';
 import EditVehicle from './EditVehicle';
-import EditIncome from './EditIncome';
+import EditBusiness from './EditBusiness';
 import { Button } from 'react-bootstrap';
 import EditBahal from './EditBahal';
 
@@ -34,7 +34,7 @@ class Popup extends Component {
             'land':<EditLand user={this.props.id} isAdmin = {this.props.isAdmin}></EditLand>,
             'property': <EditHouse user={this.props.id} isAdmin = {this.props.isAdmin}></EditHouse>,
             'vehicle': <EditVehicle user={this.props.id} isAdmin = {this.props.isAdmin}></EditVehicle>,
-            'income': <EditIncome user={this.props.id} isAdmin = {this.props.isAdmin}></EditIncome>,
+            'income': <EditBusiness user={this.props.id} isAdmin = {this.props.isAdmin}></EditBusiness>,
             'bahal': <EditBahal user = {this.props.id} isAdmin = {this.props.isAdmin}></EditBahal>
         };
         this.state = {

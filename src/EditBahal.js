@@ -17,7 +17,7 @@ class EditBahal extends Component {
     componentDidMount() {
         let totalRecords = 0;
         let idList = [];
-        var landRef = this.db.collection("UserBase").doc(this.props.user).collection("land-tax");
+        var landRef = this.db.collection("UserBase").doc(this.props.user).collection("rent-tax");
         landRef.get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 this.countItem++;
@@ -27,8 +27,6 @@ class EditBahal extends Component {
             });
         }).then(() => {
             //console.clear();
-            console.log("NO of property", this.countItem);
-            console.log("The list", this.itemList);
             this.maxID = Math.max(...idList);
             this.itemList.map((item, index) => {
                 this.displayText.push(<Card>
@@ -37,7 +35,7 @@ class EditBahal extends Component {
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={index}>
                         <Card.Body>
-                            <Land user={this.props.user} details={item} isAdmin={this.props.isAdmin} refresh={this.toggleUpdate} />
+                            <Bahal user={this.props.user} details={item} isAdmin={this.props.isAdmin} refresh={this.toggleUpdate} />
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>)

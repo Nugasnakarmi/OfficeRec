@@ -8,7 +8,9 @@
     padding-left: 40px;
     padding-top: 5px;
 }
-
+.details{
+    position: left;
+}
 .list{
     margin: none;
     padding-left: none;

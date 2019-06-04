@@ -6,7 +6,7 @@ import {
     CardTitle, CardText
 } from 'reactstrap';
 
-class EditIncome extends Component {
+class EditBusiness extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,12 +17,12 @@ class EditIncome extends Component {
         this.db = fire.firestore();
 
         this.handleChange = this.handleChange.bind(this);
-        this.writeIncomeDetails = this.writeIncomeDetails.bind(this);
+        this.writeBusinessDetails = this.writeBusinessDetails.bind(this);
 
 
     }
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
-    writeIncomeDetails(e) {
+    writeBusinessDetails(e) {
         e.preventDefault();
         var userRef;
         var incomeRef;
@@ -36,8 +36,8 @@ class EditIncome extends Component {
                         ['business name']: this.state.bn,
                         ['type of employment']: this.state.employType,
                         ['annual income']: parseFloat(this.state.income),
-                        taxAmount: parseFloat(this.state.taxAmountIncome),
-                        ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateIncome))
+                        taxAmount: parseFloat(this.state.taxAmountBusiness),
+                        ['due date']: firebase.firestore.Timestamp.fromDate(new Date(this.state.dueDateBusiness))
 
                     }).then(() => { window.alert("updated successfully") }).catch((error) => { window.alert(error.message) });
                 }
@@ -67,7 +67,7 @@ class EditIncome extends Component {
         // console.log(engdate['month']);
         return (
             <Card className="popupCards">
-                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Income details</CardHeader>
+                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Business details</CardHeader>
 
 
                 <CardBody>
@@ -79,7 +79,7 @@ class EditIncome extends Component {
                         <input value={this.state.PAN} id="inputpan" name="PAN" type="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <label htmlFor="income"> Annual Income</label>
+                        <label htmlFor="income"> Annual Business</label>
                         <input value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -93,14 +93,14 @@ class EditIncome extends Component {
                         <input value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} placeholder="Eg: ABC trading pvt ltd."></input>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <label htmlFor="dueDateIncome"> Due date</label>
-                        <input value={this.state.dueDateIncome} type="date" id="dueDateIncome" name="dueDateIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: 12th March 2020"></input>
+                        <label htmlFor="dueDateBusiness"> Due date</label>
+                        <input value={this.state.dueDateBusiness} type="date" id="dueDateBusiness" name="dueDateBusiness" className="form-control" onChange={this.handleChange} placeholder="Eg: 12th March 2020"></input>
                     </div>
                     <div class="col-md-3 mb-3">
                         <label htmlFor="taxAmount"> Tax amount</label>
-                        <input value={this.state.taxAmountIncome} id="taxAmountIncome" name="taxAmountIncome" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                        <input value={this.state.taxAmountBusiness} id="taxAmountBusiness" name="taxAmountBusiness" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
                     </div>
-                    <button onClick={this.writeIncomeDetails} className="btn btn-primary">Submit</button>
+                    <button onClick={this.writeBusinessDetails} className="btn btn-primary">Submit</button>
                 </div>
 
             </section>
@@ -110,4 +110,4 @@ class EditIncome extends Component {
     }
 }
 
-export default EditIncome;
+export default EditBusiness;
