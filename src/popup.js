@@ -6,6 +6,7 @@ import EditLand from './EditLand';
 import EditHouse from './EditHouse';
 import EditVehicle from './EditVehicle';
 import EditBusiness from './EditBusiness';
+import EditAdvertisement from './EditAdvertisement';
 import { Button } from 'react-bootstrap';
 
 class Popup extends Component {
@@ -32,7 +33,8 @@ class Popup extends Component {
             'land':<EditLand user={this.props.id} isAdmin = {this.props.isAdmin}></EditLand>,
             'property': <EditHouse user={this.props.id} isAdmin = {this.props.isAdmin}></EditHouse>,
             'vehicle': <EditVehicle user={this.props.id} isAdmin = {this.props.isAdmin}></EditVehicle>,
-            'business': <EditBusiness user={this.props.id} isAdmin = {this.props.isAdmin}></EditBusiness>
+            'business': <EditBusiness user={this.props.id} isAdmin = {this.props.isAdmin}></EditBusiness>,
+            'advertisement': <EditAdvertisement user={this.props.id} isAdmin = {this.props.isAdmin}></EditAdvertisement>
         };
         this.state = {
             loaded: false,
@@ -76,6 +78,7 @@ class Popup extends Component {
         this.vehicleData = [];
         this.businessData = [];
         this.houseData = [];
+        this.advertisementData = [];
         if (this.dataObject) {
 
             for (let key in this.dataObject) {
@@ -90,6 +93,9 @@ class Popup extends Component {
                     this.businessData.push(this.dataObject[key]);
                 }
                 else if (key.includes('house-tax')) {
+                    this.houseData.push(this.dataObject[key]);
+                }
+                else if (key.includes('advertisement-tax')) {
                     this.houseData.push(this.dataObject[key]);
                 }
             }
@@ -166,6 +172,9 @@ class Popup extends Component {
                             </li>
                         <li className="nav-item" onClick={() => { this.changeTab('business') }}>
                                 {this.state.activeTab === 'business' ? <a className="nav-link active" href="#">Business</a> : <a className="nav-link" href="#">Business</a>}
+                            </li>
+                            <li className="nav-item" onClick={() => { this.changeTab('advertisement') }}>
+                                {this.state.activeTab === 'advertisement' ? <a className="nav-link active" href="#">Advertisement</a> : <a className="nav-link" href="#">Advertisement</a>}
                             </li>
                     </ul>
                     <div className='scrollable-content'>

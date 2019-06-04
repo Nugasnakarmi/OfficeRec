@@ -350,182 +350,185 @@ class Vehicle extends Component {
 
     renderForm(isEditable) {
         // if (isEditable) {
-            return (
-                <div align ="center">
+        return (
+            <div align="center">
                 <section >
-                       
-                    <Card style={{ marginBottom :"2.5%"}}>
+
+                    <Card style={{ marginBottom: "2.5%" }}>
                         <div >
-                        Basic information
+                            Basic information
                         </div>
-                        <hr size ="80%"/>
+                        <hr />
                         <CardBody>
-                       
-                        <div className ="form-group row">
-                        <div class="col-md-4 sm-4">
-                            <span> <label htmlFor="vrn" id="vrnUp">Vehicle Registration Number</label>
-                                <i><label className="hidden" htmlFor="vrn" id="vrnDown" status={this.state.warningStatus}>Please enter as in the format specified.</label> </i> </span>
-                             <input disabled={this.props.addNew ? "": "disabled"} value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="BA 3 CHA 1234"></input> 
-                        </div>
-                        <div className ="col-md-4 sm-4">
-                            <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
-                            <select disabled={this.state.editable ? "": "disabled"}id="drop-vehicle" onChange={this.handleSelectChange} name='type' value={this.state.type} className="custom-select">
-                                <optgroup label='Category I'>
 
-                                    <option value='Motorcycle'>Motorcycle/Scooter</option>
-                                    <option value='Minitruck/Minibus'>Minitruck/Minibus</option>
-                                    <option value='Truck/Bus'>Truck/Bus</option>
-                                    <option value='Car'>Car</option>
-                                    <option value='Jeep'>Jeep</option>
-                                    <option value='Van'>Van</option>
-                                    <option value='Microbus'>Microbus</option>
-                                </optgroup>
-                                <optgroup label='Category II'>
-                                    <option value='Dozer'>Dozer</option>
-                                    <option value='Excavator'>Excavator</option>
-                                    <option value='Loader'>Loader</option>
-                                    <option value='Roller'>Roller</option>
-                                    <option value='Tripper'>Tripper</option>
-                                    <option value='Crane'>Crane</option>
-                                    <option value='Mini-tripper'>Mini-tripper</option>
-                                </optgroup>
-                                <optgroup label='Category III'>
-                                    <option value='Tractor'>Tractor</option>
-                                    <option value='Power Tiller'>Power Tiller</option>
-                                </optgroup>
-                            </select>
+                            <div className="form-row">
+                                <div className="col-md-5 mb-4">
+                                    <span> <label htmlFor="vrn" id="vrnUp">Vehicle Registration Number</label>
+                                        <i><label className="hidden" htmlFor="vrn" id="vrnDown" status={this.state.warningStatus}>Please enter as in the format specified.</label> </i> </span>
+                                    <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.VRN} className="form-control upper" name="VRN" type="text" id="vrn" onChange={this.handleChangeVRN} placeholder="BA 3 CHA 1234"></input>
+                                </div>
+                                <div className="col-md-4 mb-4">
+                                    <label htmlFor="drop-vehicle" position="left">Vehicle Type</label>
+                                    <select disabled={this.state.editable ? "" : "disabled"} id="drop-vehicle" onChange={this.handleSelectChange} name='type' value={this.state.type} className="custom-select">
+                                        <optgroup label='Category I'>
 
+                                            <option value='Motorcycle'>Motorcycle/Scooter</option>
+                                            <option value='Minitruck/Minibus'>Minitruck/Minibus</option>
+                                            <option value='Truck/Bus'>Truck/Bus</option>
+                                            <option value='Car'>Car</option>
+                                            <option value='Jeep'>Jeep</option>
+                                            <option value='Van'>Van</option>
+                                            <option value='Microbus'>Microbus</option>
+                                        </optgroup>
+                                        <optgroup label='Category II'>
+                                            <option value='Dozer'>Dozer</option>
+                                            <option value='Excavator'>Excavator</option>
+                                            <option value='Loader'>Loader</option>
+                                            <option value='Roller'>Roller</option>
+                                            <option value='Tripper'>Tripper</option>
+                                            <option value='Crane'>Crane</option>
+                                            <option value='Mini-tripper'>Mini-tripper</option>
+                                        </optgroup>
+                                        <optgroup label='Category III'>
+                                            <option value='Tractor'>Tractor</option>
+                                            <option value='Power Tiller'>Power Tiller</option>
+                                        </optgroup>
+                                    </select>
+                                    </div>
 
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="model" position="left">Model</label>
-                            <input disabled={this.state.editable ? "" : "disabled"} value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
-                        </div>
-                        <div class="col-md-3  mb-3">
-                            <label htmlFor="noofCyl" position="left">No of Cylinders</label>
-                            <input disabled={this.state.editable ? "" : "disabled"} value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 1"></input>
-                        </div>
-                       
-                        <div class="  col-md-4  sm-4 ">
-                            <label htmlFor="companyName" position="left">Company Name</label>
-                            <input disabled={this.state.editable ? "": "disabled"} value={this.state.companyName} className="form-control" id="companyName" name="companyName" type="text" onChange={this.handleChange} placeholder="TVS"></input>
-                        </div>
-                    
-                 
-                  
-                        </div>
-                        <div className="form-row">
+                                    <div className="col-md-3  mb-4">
+                                        <label htmlFor="model" position="left">Model</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
+                                    </div>
+                                </div>
 
+                                <div className="form-row">
+                                    
 
-                            <div class="col-md-3  mb-3">
-                                <label htmlFor="model" position="left">Model</label>
-                                <input disabled={this.state.editable ? "": "disabled"} value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
-                            </div>
-                            <div class="col-md-3  mb-3">
-                                <label htmlFor="noofCyl" position="left">No of Cylinders</label>
-                                <input disabled={this.state.editable ? "": "disabled"}value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 1"></input>
-                            </div>
-                            <div class="col-md-3  mb-3">
-                                <label htmlFor="hpcc" position="left">Horse Power/ CC</label>
-                                <input disabled={this.state.editable ? "": "disabled"}value={this.state.hpcc} className="form-control" id="hpcc" name="hpcc" type="text" onChange={this.handleChange} placeholder="Eg:200"></input>
-                            </div>
-                            <div class="col-md-3  mb-3">
-                                <label htmlFor="vehicleColor" position="left">Vehicle Color</label>
-                                <input disabled={this.state.editable ? "": "disabled"}value={this.state.vehicleColor} className="form-control" id="vehicleColor" name="vehicleColor" type="text" onChange={this.handleChange} placeholder="Eg: White"></input>
-                            </div>
-                        </div>
-                        </div>
+                                    <div class="  col-md-4  mb-4 ">
+                                        <label htmlFor="companyName" position="left">Company Name</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.companyName} className="form-control" id="companyName" name="companyName" type="text" onChange={this.handleChange} placeholder="TVS"></input>
+                                    </div>
+                                    <div class="col-md-4  mb-4">
+                                        <label htmlFor="model" position="left">Model</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.model} className="form-control" id="model" name="model" type="text" onChange={this.handleChange} placeholder="Eg: Apache"></input>
+                                    </div>
+
+                                    <div className="col-md-4  mb-4">
+                                        <label htmlFor="noofCyl" position="left">No of Cylinders</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.noofCyl} className="form-control" id="noofCyl" name="noofCyl" type="number" min="1" onChange={this.handleChange}></input>
+                                    </div>
+                                </div>
+                                <div className="form-row">
+
+                                <div class="col-md-4 mb-3">
+                                    <label htmlFor="drop-useType" position="left">Use</label>
+                                    <select disabled={this.state.editable ? "" : "disabled"} id="drop-useType" onChange={this.handleSelectChange} name='useType' value={this.state.useType} className="custom-select">
+                                        <option value='Private'>Private</option>
+                                        <option value='Rented'>Rented</option>
+                                        <option value='Government'>Government</option>
+                                    </select>
+                                </div>
+                                   
+                                   
+                                    <div class="col-md-4  mb-4">
+                                        <label htmlFor="hpcc" position="left">Horse Power/ CC</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.hpcc} className="form-control" id="hpcc" name="hpcc" type="text" onChange={this.handleChange} placeholder="Eg:200"></input>
+                                    </div>
+                                    <div class="col-md-4  mb-4">
+                                        <label htmlFor="vehicleColor" position="left">Vehicle Color</label>
+                                        <input disabled={this.state.editable ? "" : "disabled"} value={this.state.vehicleColor} className="form-control" id="vehicleColor" name="vehicleColor" type="text" onChange={this.handleChange} placeholder="Eg: White"></input>
+                                    </div>
+                                </div>
+                                
                         </CardBody>
-                   </Card>
+                        
+                    </Card>
 
-                   <Card style={{ marginBottom :"2.5%"}}>
+                    <Card style={{ marginBottom: "2.5%" }}>
                         <CardBody>
-                
-                        <div class="form-row">
-                            <div class="col-md-4 mb-3">
-                                <label htmlFor="drop-useType" position="left">Use</label>
-                                <select disabled={this.state.editable ? "": "disabled"} id="drop-useType" onChange={this.handleSelectChange} name='useType' value={this.state.useType} className="custom-select">
-                                    <option value='Private'>Private</option>
-                                    <option value='Rented'>Rented</option>
-                                    <option value='Government'>Government</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label htmlFor="CustomNissa" position="left">Bhansar Nissa</label>
-                                <input  disabled={this.state.editable ? "": "disabled"}value={this.state.CustomNissa} className="form-control" id="CustomNissa" name="CustomNissa" type="text" onChange={this.handleChange} placeholder="Eg: ME45599 2074/03/16"></input>
 
-                            </div>
-                            <div class="col-md-4  mb-3">
-                                <label htmlFor="seatCapacity" position="left">Seat Capacity</label>
-                                <input disabled={this.state.editable ? "": "disabled"} value={this.state.seatCapacity} className="form-control" id="seatCapacity" name="seatCapacity" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 2"></input>
-                            </div>
-                        </div>
-                        <div className="form-row">
-                            
-                            <div class="col-md-4  mb-3">
-                                <label htmlFor="ChassisNo" position="left">Chassis No</label>
-                                <input disabled={this.state.editable ? "": "disabled"}  value={this.state.ChassisNo} className="form-control" id="ChassisNo" name="ChassisNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: MDS236A9942P32099"></input>
-                            </div>
-                            <div class="col-md-4  mb-3">
-                                <label htmlFor="EngineNo" position="left">Engine No</label>
-                                <input disabled={this.state.editable ? "": "disabled"} value={this.state.EngineNo} className="form-control" id="EngineNo" name="EngineNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: 6R9D42030456"></input>
-                            </div>
-                            <div class="col-md-4  mb-3">
-                                <label htmlFor="drop-PD" position="left">Petrol/Diesel</label>
+                            <div class="form-row">
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label htmlFor="CustomNissa" position="left">Bhansar Nissa</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.CustomNissa} className="form-control" id="CustomNissa" name="CustomNissa" type="text" onChange={this.handleChange} placeholder="Eg: ME45599 2074/03/16"></input>
 
-                                <select disabled={this.state.editable ? "": "disabled"} id="drop-PD" onChange={this.handleSelectChange} name='PDtype' value={this.state.PDtype} className="custom-select">
-                                    <option value="Petrol">Petrol</option>
-                                    <option value='Diesel'>Diesel</option>
-                                </select>
+                                </div>
+                                <div class="col-md-4  mb-3">
+                                    <label htmlFor="seatCapacity" position="left">Seat Capacity</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.seatCapacity} className="form-control" id="seatCapacity" name="seatCapacity" type="number" min="1" onChange={this.handleChange} placeholder="Eg: 2"></input>
+                                </div>
+                                <div class="col-md-4  mb-3">
+                                    <label htmlFor="drop-PD" position="left">Petrol/Diesel</label>
 
+                                    <select disabled={this.state.editable ? "" : "disabled"} id="drop-PD" onChange={this.handleSelectChange} name='PDtype' value={this.state.PDtype} className="custom-select">
+                                        <option value="Petrol">Petrol</option>
+                                        <option value='Diesel'>Diesel</option>
+                                    </select>
+
+                                </div>
                             </div>
-                        </div>
+                            <div className="form-row">
+
+                               
+                                <div class="col-md-6  mb-3">
+                                    <label htmlFor="EngineNo" position="left">Engine No</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.EngineNo} className="form-control" id="EngineNo" name="EngineNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: 6R9D42030456"></input>
+                                </div>
+                                <div class="col-md-6  mb-3">
+                                    <label htmlFor="ChassisNo" position="left">Chassis No</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.ChassisNo} className="form-control" id="ChassisNo" name="ChassisNo" type="text" onChange={this.handleChangeVRN} placeholder="Eg: MDS236A9942P32099"></input>
+                                </div>
+                                
+                            </div>
                         </CardBody>
-                   </Card>
-                   <Card  style={{ marginBottom :"2.5%"}}>
+                    </Card>
+                    <Card style={{ marginBottom: "2.5%" }}>
                         <CardBody>
-                
-                   <div class="form-row">
 
-                            <div class="col-md-6 mb-3">
-                                <label htmlFor="inputDate" position="left">Due date</label>
-                                <input disabled value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange}></input>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label htmlFor="inputTax" position="left">Tax amount</label>
-                                <input disabled={this.state.editable ? "": "disabled"} value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
-                            </div>
-                            {/* <button onClick={this.recordPayment} className="btn btn-primary">Record Payment</button>
+                            <div class="form-row">
+
+                                <div class="col-md-6 mb-3">
+                                    <label htmlFor="inputDate" position="left">Due date</label>
+                                    <input disabled value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="date" onChange={this.handleChange}></input>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label htmlFor="inputTax" position="left">Tax amount</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.taxAmount} id="inputTax" name="taxAmount" className='form-control' type="number" min="0" onChange={this.handleChange} placeholder="Rs 1000"></input>
+                                </div>
+                                {/* <button onClick={this.recordPayment} className="btn btn-primary">Record Payment</button>
                             <button onClick={this.writeVehicleDetails} className="btn btn-primary">Submit</button> */}
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-4 mb-3">
-                                <label htmlFor="manDate" position="left">Year of Manufacture</label>
-                                <input disabled={this.state.editable ? "": "disabled"}value={this.state.manDate} className="form-control" id="manDate" name="manDate" type="number" min="2000" onChange={this.handleChange} placeholder="Eg: 2014"></input>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <label htmlFor="lastDate" position="left">Last Paid</label>
-                                <input disabled={this.state.editable ? "": "disabled"}value={this.state.lastDate} className="form-control" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
-                            </div>
-                            {/* <div class="col-md-6 mb-3">
+                            <div class="form-row">
+                                <div class="col-md-4 mb-3">
+                                    <label htmlFor="manDate" position="left">Year of Manufacture</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.manDate} className="form-control" id="manDate" name="manDate" type="number" min="2000" onChange={this.handleChange} placeholder="Eg: 2014"></input>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label htmlFor="lastDate" position="left">Last Paid</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.lastDate} className="form-control" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
+                                </div>
+                                {/* <div class="col-md-6 mb-3">
                             <label htmlFor="regDate" position="left">Date of Registration</label>
                             <input value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="date" onChange={this.handleChange} placeholder="Eg: 7th March 2010"></input>
                         </div> */}
-                            {/* THIS IS TEST CODE FOR NEPALI DATE ------ PURAK */}
-                            <div class="col-md-4 mb-3">
-                                <label htmlFor="regDate" position="left">Date of Registration</label>
-                                <input disabled={this.state.editable ? "": "disabled"} value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/M/DD"></input>
+                                {/* THIS IS TEST CODE FOR NEPALI DATE ------ PURAK */}
+                                <div class="col-md-4 mb-3">
+                                    <label htmlFor="regDate" position="left">Date of Registration</label>
+                                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/M/DD"></input>
+                                </div>
                             </div>
-                        </div>
-                      
+
 
                         </CardBody>
-                   </Card> 
-                   
+                    </Card>
+
                 </section>
-                </div>
-            );
-        }
-         //ALL OF THIS CODE IS UNNECESSARY
+            </div>
+        );
+    }
+    //ALL OF THIS CODE IS UNNECESSARY
 
 
     componentDidMount() {
@@ -538,8 +541,8 @@ class Vehicle extends Component {
     render() {
         console.log("RENDER");
         return (
-           
-            <div>
+
+            <div align = "center">
                 <Card className="popupCards">
                     <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4">  Vehicle details here   </CardHeader>
 

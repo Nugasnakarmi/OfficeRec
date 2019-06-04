@@ -19,10 +19,12 @@ class Business extends Component {
             nature: this.props.details ? this.props.details.businessNature : '',
             category: this.props.details ? this.props.details.businessCategory : '',
             bn: this.props.details ? this.props.details.businessName : '',
-            income: this.props.details ? this.props.details.businessIncome : '',
-            regDate: this.props.details ? this.props.details.regDate : '',
+            income: this.props.details ? this.props.details.annualIncome : '',
+            BRD: this.props.details ? this.props.details.regDate : '',
+            taxAmount : this.props.details ? this.props.details.taxAmount : '',
             lastDate: this.props.details ? this.props.details.lastDate : '',
-            inputID: '',
+            dueDate : this.props.details ? this.props.details.dueDate : '',
+            inputID : '',
             show: false
          }
          this.db = fire.firestore();
@@ -31,13 +33,16 @@ class Business extends Component {
          this.edit = this.edit.bind(this);
          this.cancel = this.cancel.bind(this);
          this.renderForm = this.renderForm.bind(this);
+         this.save = this.save.bind(this);
+         this.delete = this.delete.bind(this);
+         this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
 
          this.handleChange = this.handleChange.bind(this);
         //  this.handleSelectCategoryChange = this.handleSelectCategoryChange.bind(this);
         //  this.implementCategory = this.implementCategory.bind(this);
 
-         this.save = this.save.bind(this);
-         this.delete = this.delete.bind(this);
+        
          this.recordPayment = this.recordPayment.bind(this);
          this.editButton = [<ButtonToolbar  ><Button variant="warning" onClick={this.edit}>Edit</Button>, <Button variant="warning" onClick={this.recordPayment}>Record Payment</Button>, <Button variant="danger" onClick={this.handleShow}>Delete</Button> </ButtonToolbar>]
         this.saveButton = [<ButtonToolbar><Button variant="success" onClick={this.save}>Save</Button>, <Button variant="light" onClick={this.cancel}>Cancel</Button></ButtonToolbar>]
@@ -55,7 +60,7 @@ class Business extends Component {
             lastDate: [todayBS.en.year, todayBS.en.month, todayBS.en.day].join('/')
             //also set a new due date
         });
-        this.db.collection("UserBase").doc(this.props.user).collection("land-tax").doc(this.props.details.id).set({
+        this.db.collection("UserBase").doc(this.props.user).collection("business-tax").doc(this.props.details.id).set({
             //['due date']: this.state.dueDateLand,
             lastDate: this.state.lastDate
         }).then(() => {
@@ -65,6 +70,14 @@ class Business extends Component {
             window.alert("Error: ", error);
         });
     }
+    handleClose() {
+        this.setState({ show: false });
+    }
+
+    handleShow() {
+        this.setState({ show: true });
+    }
+
     handleChange = e => this.setState({ [e.target.name]: e.target.value });
     
     // implementCategory = e => {
@@ -94,13 +107,14 @@ class Business extends Component {
 
     delete(e) {
         e.preventDefault();
+        console.log("TRYING TO DELETE")
         if (this.state.inputID === this.props.user) {
-            this.db.collection("UserBase").doc(this.props.user).collection("house-tax").doc(this.props.details.id).delete().then(() => {
+            this.db.collection("UserBase").doc(this.props.user).collection("business-tax").doc(this.props.details.id).delete().then(() => {
                 window.alert("Success!");
                 this.handleClose();
                 this.props.refresh();
             }).catch((error) => {
-                window.alert("Error: ", error);
+                window.alert("Error: ", error.msg);
             });
         }
         else {
@@ -118,10 +132,10 @@ class Business extends Component {
             businessCategory : this.state.category,
            annualIncome: parseFloat(this.state.income),
             
-            taxAmount: parseFloat(this.state.taxAmountBusiness),
+            taxAmount: parseFloat(this.state.taxAmount),
             dueDate: this.state.dueDateBusiness,
             
-            regDate: this.state.regDate,
+            regDate: this.state.BRD,
             lastDate: this.state.lastDate
         }).then(() => {
             window.alert("Success!");
@@ -163,7 +177,8 @@ class Business extends Component {
     }
     renderForm(isEditable) {
 
-        return (<section>
+        return (
+        <section>
                 
             <div className="form-row">
                 <div class="col-md-3 mb-3">
@@ -172,11 +187,11 @@ class Business extends Component {
                 </div>
                 <div class="col-md-6 mb-3">
                     <label htmlFor="inputbn">Business name</label>
-                    <input  disabled={this.state.editable ? "" : "disabled"} value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} placeholder="Eg: ABC trading pvt ltd."></input>
+                    <input  disabled={this.state.editable ? "" : "disabled"} value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} ></input>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label htmlFor="income"> Annual Income</label>
-                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} ></input>
                 </div>
                 
                 
@@ -214,12 +229,12 @@ class Business extends Component {
                 
                 <div class="col-md-3 mb-3">
                     <label htmlFor="taxAmount"> Tax rate</label>
-                    <input disabled={this.state.editable ? "" : "disabled"}  value={this.state.taxAmountBusiness} id="taxAmountBusiness" name="taxAmountBusiness" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+                    <input disabled={this.state.editable ? "" : "disabled"}  value={this.state.taxAmount} id="taxAmount" name="taxAmount" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
                 </div>
 
                 <div class="col-md-5 mb-3">
                     <label htmlFor="dueDateBusiness"> Due date</label>
-                    <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.dueDateBusiness} type="texts" id="dueDateBusiness" name="dueDateBusiness" className="form-control" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
+                    <input disabled={this.props.addNew ? "" : "disabled"} value={this.state.dueDate} type="text" id="dueDate" name="dueDate" className="form-control" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
                 </div>
                 
                 {/* <button disabled={this.state.editable ? "" : "disabled"}  onClick={this.writeBusinessDetails} className="btn btn-primary">Submit</button> */}
@@ -227,7 +242,7 @@ class Business extends Component {
             <div className="form-row">
             <div class="col-md-6 mb-3">
                     <label htmlFor="lastDate"> Last Paid Date</label>
-                    <input disabled={this.state.editable ? "" : "disabled"} value={this.state.lastDate} id="nlastDate" name="lastDate" type="text" className="form-control" onChange={this.handleChange} ></input>
+                    <input disabled={this.state.addNew ? "" : "disabled"} value={this.state.lastDate} id="lastDate" name="lastDate" type="text" className="form-control" onChange={this.handleChange} ></input>
                 </div>
                 
                 <div class="col-md-6 mb-3">

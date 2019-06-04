@@ -230,7 +230,7 @@ class House extends Component {
     }
 
     getPropertyTax = () => {
-        var totalVal = this.state.houseVal + parseFloat(this.state.landVal);
+        var totalVal = parseFloat(this.state.houseVal) + parseFloat(this.state.landVal);
         var propertyTax = 0, x, crore = 10000000, percent = 0.01, multiplier = 1;
         this.db.collection("TaxRate").doc(this.state.currentYear).collection("PropertyTax").doc("totalVal").get().then((doc) => {
             var PropValArr = new Array();
@@ -295,7 +295,8 @@ class House extends Component {
                     houseValuation: this.state.houseVal,
                     area: this.state.sqft,
                     ['due date']: this.state.dueDateHouse,
-                   
+                    category : this.state.category, 
+
                     taxAmount: parseFloat(this.state.propTax),
                     builtYear: this.state.builtYear,
                     depRate: this.state.depRate,
@@ -383,7 +384,7 @@ class House extends Component {
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <button disabled={isEditable ? "" : "disabled"} onClick={this.getValuationPrompt} className="btn btn-primary">Get Valuation</button>
+                    <button  onClick={this.getValuationPrompt} className="btn btn-primary">Get Valuation</button>
                 </div>
                 <Alert className="alert" color="success" isOpen={this.state.toValuate} toggle={this.onDismissValue}>
                     <p><b>House Valuation </b>: Nrs. {this.state.houseVal}<br></br>
@@ -414,7 +415,7 @@ class House extends Component {
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <button disabled={isEditable ? "" : "disabled"} onClick={this.getTaxPrompt} className="btn btn-primary">Get Property Tax</button>
+                    <button onClick={this.getTaxPrompt} className="btn btn-primary">Get Property Tax</button>
                 </div>
                 {/* {this.getPropertyTax()} */}
                 <Alert className="alert" color="success" isOpen={this.state.toTax} toggle={this.onDismissTax}>
@@ -451,7 +452,7 @@ class House extends Component {
     render() {
         console.log("RENDER");
         return (
-            <div>
+            <div align ="center">
                 <Card className="popupCards">
                     <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Property details </CardHeader>
                     <CardBody>

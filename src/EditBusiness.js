@@ -75,7 +75,7 @@ class EditBusiness extends Component {
             this.itemList.map((item, index) => {
                 this.displayText.push(<Card>
                     <Accordion.Toggle as={Card.Header} eventKey={index}>
-                        {item.id}: {item.businessname}/{item.PAN}
+                        {item.id986}: {item.businessname}/{item.PAN}
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={index}>
                         <Card.Body>

@@ -274,7 +274,7 @@ class Land extends Component {
                         <label htmlFor="area">Area</label>
                         <input disabled={this.state.editable ? "" : "disabled"} value={this.state.area} id="area" name="area" type="number" className="form-control" onChange={this.handleAreaChange} placeholder="Area in sq. meters"></input>                            </div>
                 </div>
-                <button disabled={this.state.editable ? "" : "disabled"} onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
+                <button  onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
                 
                     <Alert className="alert" color="success" isOpen={this.state.taxVisible} toggle={this.onDismiss}>
                     <div class="col-md-4 mb-3">
@@ -320,7 +320,7 @@ class Land extends Component {
             <div align="center">
                 
                 <Card className="popupCards">
-                    <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Land details </CardHeader>
+                    <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Land tax </CardHeader>
 
 
                     <CardBody>
