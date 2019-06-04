@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import firebase from 'firebase';
+import Business from './Business';
 import {
-    Card, Button, CardHeader, CardFooter, CardBody,
-    CardTitle, CardText
+    Spinner
 } from 'reactstrap';
+
+import {Accordion, Modal, Card } from 'react-bootstrap'
 
 class EditBusiness extends Component {
     constructor(props) {
@@ -15,6 +17,10 @@ class EditBusiness extends Component {
             warningStatus: 'inactive'
         };
         this.db = fire.firestore();
+       
+        this.countItem = 0;
+        this.itemList = [];
+        this.displayText = [];
 
         this.handleChange = this.handleChange.bind(this);
         this.writeBusinessDetails = this.writeBusinessDetails.bind(this);
@@ -29,7 +35,7 @@ class EditBusiness extends Component {
         if (this.state.email) {
             userRef = this.db.collection("UserBase").doc(this.state.email).get().then((doc) => {
                 if (doc.data()) {
-                    incomeRef = this.db.collection("UserBase").doc(this.state.email).collection("income-tax");
+                    incomeRef = this.db.collection("UserBase").doc(this.state.email).collection("business-tax");
 
                     incomeRef.doc(this.state.bn).set({
                         PAN: parseFloat(this.state.PAN),
@@ -50,6 +56,54 @@ class EditBusiness extends Component {
             window.alert("User cannot be empty");
         }
     }
+    componentDidMount() {
+        let totalRecords  = 0;
+        let idList = [];
+        var landRef = this.db.collection("UserBase").doc(this.props.user).collection("business-tax");
+        landRef.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                this.countItem++;
+                console.log(doc.id, " => ", doc.data());
+                this.itemList.push({ ...doc.data(), id: doc.id });
+                idList.push(parseFloat(doc.id));
+            });
+        }).then(() => {
+            //console.clear();
+            console.log("NO of property", this.countItem);
+            console.log("The list", this.itemList);
+            this.maxID = Math.max(...idList);
+            this.itemList.map((item, index) => {
+                this.displayText.push(<Card>
+                    <Accordion.Toggle as={Card.Header} eventKey={index}>
+                        {item.id}: {item.businessname}/{item.PAN}
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={index}>
+                        <Card.Body>
+                            <Business user={this.props.user} details={item} isAdmin={this.props.isAdmin} refresh={this.toggleUpdate} />
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>)
+                totalRecords++;
+            })
+            if (this.props.isAdmin){
+                this.displayText.push(<Card align ="center">
+                    <Accordion.Toggle as={Card.Header} eventKey={totalRecords}>
+                        <b>Add Record</b>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={totalRecords}>
+                        <Card.Body>
+                            <Business addNew = {true} user={this.props.user}  maxID = {this.maxID} details={null} isAdmin={this.props.isAdmin} refresh={this.toggleUpdate} />
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>)
+            }
+            this.setState({
+                loaded: true
+            });
+
+            //set a state to list loaded.
+        });
+    }
 
 
 
@@ -66,46 +120,43 @@ class EditBusiness extends Component {
         // let engdate = adbs.bs2ad("2047/4/26");
         // console.log(engdate['month']);
         return (
-            <Card className="popupCards">
-                <CardHeader style={{backgroundColor:"#2D93AD", color :"aliceblue"}} tag="h4"> Business details</CardHeader>
-
-
-                <CardBody>
-            <section>
+            
+            // <section>
                 
-                <div className="form-row">
-                    <div class="col-md-3 mb-3">
-                        <label htmlFor="inputpan">PAN</label>
-                        <input value={this.state.PAN} id="inputpan" name="PAN" type="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label htmlFor="income"> Annual Business</label>
-                        <input value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label htmlFor="employType"> Employment type</label>
-                        <input value={this.state.employType} id="employType" name="employType" className="form-control" onChange={this.handleChange} placeholder="Eg: Business-person"></input>
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div class="col-md-6 mb-3">
-                        <label htmlFor="inputbn">Business name</label>
-                        <input value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} placeholder="Eg: ABC trading pvt ltd."></input>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label htmlFor="dueDateBusiness"> Due date</label>
-                        <input value={this.state.dueDateBusiness} type="date" id="dueDateBusiness" name="dueDateBusiness" className="form-control" onChange={this.handleChange} placeholder="Eg: 12th March 2020"></input>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label htmlFor="taxAmount"> Tax amount</label>
-                        <input value={this.state.taxAmountBusiness} id="taxAmountBusiness" name="taxAmountBusiness" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
-                    </div>
-                    <button onClick={this.writeBusinessDetails} className="btn btn-primary">Submit</button>
-                </div>
+            //     <div className="form-row">
+            //         <div class="col-md-3 mb-3">
+            //             <label htmlFor="inputpan">PAN</label>
+            //             <input value={this.state.PAN} id="inputpan" name="PAN" type="number" className="form-control" onChange={this.handleChange} placeholder="PAN"></input>
+            //         </div>
+            //         <div class="col-md-3 mb-3">
+            //             <label htmlFor="income"> Annual Business</label>
+            //             <input value={this.state.income} id="income" name="income" type="number" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+            //         </div>
+            //         <div class="col-md-6 mb-3">
+            //             <label htmlFor="employType"> Employment type</label>
+            //             <input value={this.state.employType} id="employType" name="employType" className="form-control" onChange={this.handleChange} placeholder="Eg: Business-person"></input>
+            //         </div>
+            //     </div>
+            //     <div className="form-row">
+            //         <div class="col-md-6 mb-3">
+            //             <label htmlFor="inputbn">Business name</label>
+            //             <input value={this.state.bn} id="inputbn" name="bn" className="form-control" onChange={this.handleChange} placeholder="Eg: ABC trading pvt ltd."></input>
+            //         </div>
+            //         <div class="col-md-3 mb-3">
+            //             <label htmlFor="dueDateBusiness"> Due date</label>
+            //             <input value={this.state.dueDateBusiness} type="date" id="dueDateBusiness" name="dueDateBusiness" className="form-control" onChange={this.handleChange} placeholder="Eg: 12th March 2020"></input>
+            //         </div>
+            //         <div class="col-md-3 mb-3">
+            //             <label htmlFor="taxAmount"> Tax amount</label>
+            //             <input value={this.state.taxAmountBusiness} id="taxAmountBusiness" name="taxAmountBusiness" className="form-control" onChange={this.handleChange} placeholder="Eg: Rs 120000"></input>
+            //         </div>
+            //         <button onClick={this.writeBusinessDetails} className="btn btn-primary">Submit</button>
+            //     </div>
 
-            </section>
-            </CardBody>
-            </Card>
+            // </section>
+               <Accordion defaultActiveKey="0">
+               {this.state.loaded ? (this.displayText) : <Spinner color="info" />}
+           </Accordion>
         )
     }
 }
