@@ -162,7 +162,7 @@ class Bahal extends Component {
             
             taxAmount: parseFloat(this.state.taxAmount),
             area: parseFloat(this.state.area),
-            ['due date']: this.state.dueDateLand,
+            ['due date']: this.state.dueDate,
             regDate: this.state.regDate,
             lastDate: this.state.lastDate
         }).then(() => {
@@ -277,7 +277,13 @@ class Bahal extends Component {
                 </div>
 
             </div>
-            <button onClick={this.getRentTax} className="btn btn-primary">Get Rent Tax</button>
+            <div className ="form-row">
+            <div className="col-md-4 sm-4">
+                    <label htmlFor="housePrice">Due Date</label>
+                    <input disabled={isEditable ? "" : "disabled"} value={this.state.dueDate} id="dueDate" name="dueDate" type="text" className="form-control" onChange={this.handleChange} ></input>
+                </div>
+            </div>
+            {/* <button onClick={this.getRentTax} className="btn btn-primary">Get Rent Tax</button> */}
             {/* {this.getRentTax()} */}
             <Alert style={{ width: "100%" }} color="info" isOpen={this.taxVisible} toggle={this.onDismiss}>
                 <p>Rent tax yearly : NRs.{this.state.taxAmount}</p>
@@ -316,7 +322,7 @@ class Bahal extends Component {
 
                     </CardBody>
                 </Card>
-                <Card className="popupCards">
+                {/* <Card className="popupCards">
                     <CardHeader style={{ backgroundColor: "#2D93AD", color: "aliceblue" }} tag="h4"> Property details </CardHeader>
                     <CardBody>
                         {this.renderForm(this.state.editable)}
@@ -324,7 +330,7 @@ class Bahal extends Component {
                         {this.props.isAdmin ? this.state.editable ? this.saveButton : this.editButton : null}
 
                     </CardBody>
-                </Card>
+                </Card> */}
 
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>

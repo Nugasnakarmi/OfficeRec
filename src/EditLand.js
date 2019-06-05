@@ -217,12 +217,13 @@ class EditLand extends Component {
             //console.clear();
             console.log("NO of property", this.countItem);
             console.log("The list", this.itemList);
-            if(!this.itemList ){
-                this.maxID = Math.max(...idList);
-            }
-            else{
-                this.maxID = 0
-            }
+            // if(!this.itemList ){
+            //     this.maxID = Math.max(...idList);
+            // }
+            // else{
+            //     this.maxID = 0
+            // }
+            this.maxID = Math.max(...idList);
             this.itemList.map((item, index) => {
                 this.displayText.push(<Card>
                     <Accordion.Toggle as={Card.Header} eventKey={index}>

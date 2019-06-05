@@ -20,7 +20,7 @@ class House extends Component {
             hdistrict: this.props.details ? this.props.details.Location.district : '',
             hmunicipality: this.props.details ? this.props.details.Location.municipality : '',
             hward: this.props.details ? this.props.details.Location.ward : '',
-            dueDateHouse: this.props.details ? this.props.details['due date'] : '',
+            dueDate: this.props.details ? this.props.details['due date'] : '',
             warningStatus: 'inactive',
             category: this.props.details ? this.props.details.category : '0',
             propTax: this.props.details ? this.props.details.taxAmount : 0,
@@ -331,7 +331,7 @@ class House extends Component {
                     type: this.state.category,
                     houseValuation: this.state.houseVal,
                     area: this.state.sqft,
-                    ['due date']: this.state.dueDateHouse,
+                    ['due date']: this.state.dueDate,
                     category : this.state.category, 
 
                     taxAmount: parseFloat(this.state.propTax),
@@ -415,11 +415,11 @@ class House extends Component {
                 <div className="form-row">
                 <div class="col-md-6 mb-3">
                         <label htmlFor="regDate" position="left">Registered Date</label>
-                        <input readOnly plaintext value={this.state.regDate} className="form-control-plaintext" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
+                        <input disabled={isEditable ? "" : "disabled"} value={this.state.regDate} className="form-control" id="regDate" name="regDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label htmlFor="lastDate" position="left">Last Paid</label>
-                        <input readOnly value={this.state.lastDate} className="form-control-plaintext" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
+                        <input disabled={isEditable ? "" : "disabled"} value={this.state.lastDate} className="form-control" id="lastDate" name="lastDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
@@ -467,12 +467,12 @@ class House extends Component {
                 <div className="form-row">
                     <div class="col-md-6 mb-3">
                         <label htmlFor="inputDate" position="left">Due date</label>
-                        <input readOnly plaintext value={this.state.dueDateHouse} className="form-control-plaintext" id="inputDate" name="dueDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
+                        <input disabled={isEditable ? "" : "disabled"} value={this.state.dueDate} className="form-control" id="inputDate" name="dueDate" type="text" onChange={this.handleChange} placeholder="YYYY/MM/DD"></input>
                         <h3>{this.state.date}</h3>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label htmlFor="inputTax" position="left">Tax amount</label>
-                        <input readOnly plaintext value={this.state.propTax} className="form-control-plaintext" id="inputTax" name="taxAmount" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
+                        <input disabled value={this.state.propTax} className="form-control-plaintext" id="inputTax" name="taxAmount" type="number" min="0" onChange={this.handleChange} placeholder="Rs 5000"></input>
 
                     </div>
                     {/* <div className="form-row">
