@@ -325,13 +325,13 @@ class Land extends Component {
                 <button onClick={this.showLandTax} className="btn btn-primary">Get Land Tax</button>
 
                 <Alert className="alert" color="success" isOpen={this.state.taxVisible} toggle={this.onDismiss}>
-                    <div class="col-md-4 mb-3">
+                    
                         <p>
                             <b> भुमी कर</b> : Nrs. {this.state.taxAmountLand}<br />
                             <b>  No. of Aanas </b> : {(this.state.area / this.state.Aana).toFixed(2)}<br />
                             <b>  Rate per आना </b> : Nrs. {this.state.taxRate}
                         </p>
-                    </div>
+                   
                 </Alert>
 
                 <div className="form-row">

@@ -72,10 +72,11 @@ class EditBusiness extends Component {
             console.log("NO of property", this.countItem);
             console.log("The list", this.itemList);
             if(!this.itemList ){
-                this.maxID = Math.max(...idList);
+                this.maxID = 0
             }
             else{
-                this.maxID = 0
+                this.maxID = Math.max(...idList);
+                
             }
             this.itemList.map((item, index) => {
                 this.displayText.push(<Card>

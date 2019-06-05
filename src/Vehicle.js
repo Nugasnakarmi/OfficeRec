@@ -101,14 +101,14 @@ class Vehicle extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    handleValidation() {
-        let isValid = true;
-        for (let key in this.state) {
-            if (this.state[key] === '')
-                isValid = false;
-        }
-        return isValid;
-    }
+    // handleValidation() {
+    //     let isValid = true;
+    //     for (let key in this.state) {
+    //         if (this.state[key] === '')
+    //             isValid = false;
+    //     }
+    //     return isValid;
+    // }
 
     checkOverdue = () => {
         const today = new Date(); //todays date object
