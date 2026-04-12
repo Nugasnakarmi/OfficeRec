@@ -6,6 +6,12 @@ A Nepali government office record-keeping web application for managing citizen t
 
 ---
 
+## Architecture
+
+![OfficeRec Architecture](docs/architecture.svg)
+
+---
+
 ## Overview
 
 OfficeRec allows government office staff and citizens to manage property and asset tax records across five categories: land, vehicle, business, house, and rent (Bahal). It implements a two-role system — regular users view their own records, while admins can search, add, and edit all citizens' records.
