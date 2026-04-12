@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680" font-family="Segoe UI, Arial, sans-serif">
+
+  <!-- Background -->
+  <rect width="900" height="680" fill="#f8f9fa" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1a2e">OfficeRec — Application Architecture</text>
+
+  <!-- ─────────────────────────────────────────────────── -->
+  <!-- BROWSER layer -->
+  <!-- ─────────────────────────────────────────────────── -->
+  <rect x="20" y="55" width="860" height="450" rx="10" fill="#ffffff" stroke="#dee2e6" stroke-width="1.5"/>
+  <text x="36" y="75" font-size="11" font-weight="bold" fill="#6c757d" letter-spacing="1">REACT SPA (Browser)</text>
+
+  <!-- App.js -->
+  <rect x="350" y="85" width="200" height="44" rx="8" fill="#4361ee" stroke="#3a0ca3" stroke-width="1.5"/>
+  <text x="450" y="106" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">App.js</text>
+  <text x="450" y="121" text-anchor="middle" font-size="10" fill="#c0d0ff">Auth listener · routes to Login or Home</text>
+
+  <!-- Login -->
+  <rect x="120" y="175" width="150" height="40" rx="8" fill="#7209b7" stroke="#560bad" stroke-width="1.5"/>
+  <text x="195" y="195" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Login</text>
+  <text x="195" y="210" text-anchor="middle" font-size="10" fill="#e0b0ff">Email / password</text>
+
+  <!-- Home.js -->
+  <rect x="350" y="175" width="200" height="40" rx="8" fill="#4361ee" stroke="#3a0ca3" stroke-width="1.5"/>
+  <text x="450" y="195" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Home.js</text>
+  <text x="450" y="210" text-anchor="middle" font-size="10" fill="#c0d0ff">Role check · layout shell</text>
+
+  <!-- Arrows from App.js -->
+  <!-- to Login -->
+  <line x1="390" y1="129" x2="240" y2="175" stroke="#adb5bd" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="295" y="153" text-anchor="middle" font-size="9" fill="#6c757d">not logged in</text>
+  <!-- to Home -->
+  <line x1="450" y1="129" x2="450" y2="175" stroke="#adb5bd" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="465" y="158" font-size="9" fill="#6c757d">logged in</text>
+
+  <!-- ── User branch ── -->
+  <!-- Sidebar -->
+  <rect x="50" y="290" width="130" height="38" rx="7" fill="#06d6a0" stroke="#05b085" stroke-width="1.5"/>
+  <text x="115" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Sidebar</text>
+  <text x="115" y="322" text-anchor="middle" font-size="9" fill="#d0fff5">User nav</text>
+
+  <!-- MainWindow -->
+  <rect x="195" y="290" width="145" height="38" rx="7" fill="#06d6a0" stroke="#05b085" stroke-width="1.5"/>
+  <text x="267" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">MainWindow</text>
+  <text x="267" y="322" text-anchor="middle" font-size="9" fill="#d0fff5">User dashboard &amp; photo</text>
+
+  <!-- Details -->
+  <rect x="195" y="355" width="145" height="38" rx="7" fill="#06d6a0" stroke="#05b085" stroke-width="1.5"/>
+  <text x="267" y="373" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Details</text>
+  <text x="267" y="387" text-anchor="middle" font-size="9" fill="#d0fff5">Tax record cards</text>
+
+  <!-- Tax Cards group -->
+  <rect x="50" y="420" width="310" height="72" rx="7" fill="#e8f5e9" stroke="#06d6a0" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="75" y="437" font-size="9" font-weight="bold" fill="#05b085">TAX RECORD COMPONENTS</text>
+  <rect x="58" y="443" width="60" height="22" rx="5" fill="#06d6a0"/>
+  <text x="88" y="458" text-anchor="middle" font-size="9" fill="#fff">Land</text>
+  <rect x="126" y="443" width="60" height="22" rx="5" fill="#06d6a0"/>
+  <text x="156" y="458" text-anchor="middle" font-size="9" fill="#fff">Vehicle</text>
+  <rect x="194" y="443" width="60" height="22" rx="5" fill="#06d6a0"/>
+  <text x="224" y="458" text-anchor="middle" font-size="9" fill="#fff">House</text>
+  <rect x="262" y="443" width="60" height="22" rx="5" fill="#06d6a0"/>
+  <text x="292" y="458" text-anchor="middle" font-size="9" fill="#fff">Bahal</text>
+  <rect x="58" y="470" width="60" height="18" rx="5" fill="#06d6a0"/>
+  <text x="88" y="483" text-anchor="middle" font-size="9" fill="#fff">Business</text>
+  <rect x="126" y="470" width="90" height="18" rx="5" fill="#06d6a0"/>
+  <text x="171" y="483" text-anchor="middle" font-size="9" fill="#fff">Advertisement</text>
+
+  <!-- ── Admin branch ── -->
+  <!-- AdminSidebar -->
+  <rect x="525" y="290" width="130" height="38" rx="7" fill="#f77f00" stroke="#d62828" stroke-width="1.5"/>
+  <text x="590" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AdminSidebar</text>
+  <text x="590" y="322" text-anchor="middle" font-size="9" fill="#ffe8cc">Admin nav</text>
+
+  <!-- AdminWindow -->
+  <rect x="670" y="290" width="145" height="38" rx="7" fill="#f77f00" stroke="#d62828" stroke-width="1.5"/>
+  <text x="742" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AdminWindow</text>
+  <text x="742" y="322" text-anchor="middle" font-size="9" fill="#ffe8cc">Search &amp; user list</text>
+
+  <!-- Precords -->
+  <rect x="670" y="355" width="145" height="38" rx="7" fill="#f77f00" stroke="#d62828" stroke-width="1.5"/>
+  <text x="742" y="373" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Precords</text>
+  <text x="742" y="387" text-anchor="middle" font-size="9" fill="#ffe8cc">Edit tax records</text>
+
+  <!-- AddUser -->
+  <rect x="525" y="355" width="130" height="38" rx="7" fill="#f77f00" stroke="#d62828" stroke-width="1.5"/>
+  <text x="590" y="373" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AddUser</text>
+  <text x="590" y="387" text-anchor="middle" font-size="9" fill="#ffe8cc">Create citizen account</text>
+
+  <!-- Popup -->
+  <rect x="525" y="420" width="130" height="38" rx="7" fill="#f77f00" stroke="#d62828" stroke-width="1.5"/>
+  <text x="590" y="438" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Popup</text>
+  <text x="590" y="452" text-anchor="middle" font-size="9" fill="#ffe8cc">User detail modal</text>
+
+  <!-- Edit group -->
+  <rect x="665" y="415" width="155" height="50" rx="7" fill="#fff3e0" stroke="#f77f00" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="685" y="431" font-size="9" font-weight="bold" fill="#d62828">EDIT FORMS</text>
+  <rect x="672" y="436" width="65" height="18" rx="5" fill="#f77f00"/>
+  <text x="705" y="449" text-anchor="middle" font-size="9" fill="#fff">EditLand/Vehicle</text>
+  <rect x="745" y="436" width="68" height="18" rx="5" fill="#f77f00"/>
+  <text x="779" y="449" text-anchor="middle" font-size="9" fill="#fff">EditHouse/Bahal…</text>
+
+  <!-- Arrows Home → user/admin branches -->
+  <line x1="400" y1="215" x2="200" y2="290" stroke="#adb5bd" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="280" y="250" text-anchor="middle" font-size="9" fill="#6c757d">user</text>
+  <line x1="500" y1="215" x2="595" y2="290" stroke="#adb5bd" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="565" y="250" text-anchor="middle" font-size="9" fill="#6c757d">admin</text>
+
+  <!-- Internal arrows user -->
+  <line x1="267" y1="328" x2="267" y2="355" stroke="#05b085" stroke-width="1.2" marker-end="url(#arrowGreen)"/>
+  <line x1="240" y1="393" x2="180" y2="420" stroke="#05b085" stroke-width="1.2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Internal arrows admin -->
+  <line x1="742" y1="328" x2="742" y2="355" stroke="#d62828" stroke-width="1.2" marker-end="url(#arrowOrange)"/>
+  <line x1="700" y1="393" x2="700" y2="415" stroke="#d62828" stroke-width="1.2" marker-end="url(#arrowOrange)"/>
+  <line x1="590" y1="328" x2="590" y2="355" stroke="#d62828" stroke-width="1.2" marker-end="url(#arrowOrange)"/>
+  <line x1="620" y1="440" x2="665" y2="440" stroke="#d62828" stroke-width="1.2" marker-end="url(#arrowOrange)"/>
+
+  <!-- ─────────────────────────────────────────────────── -->
+  <!-- FIREBASE layer -->
+  <!-- ─────────────────────────────────────────────────── -->
+  <rect x="20" y="520" width="860" height="145" rx="10" fill="#fff8e1" stroke="#ffc107" stroke-width="1.5"/>
+  <text x="36" y="540" font-size="11" font-weight="bold" fill="#e65100" letter-spacing="1">FIREBASE (Backend-as-a-Service)</text>
+
+  <!-- Firebase Auth -->
+  <rect x="50" y="550" width="175" height="48" rx="8" fill="#ff6d00" stroke="#e65100" stroke-width="1.5"/>
+  <text x="137" y="572" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Firebase Auth</text>
+  <text x="137" y="588" text-anchor="middle" font-size="10" fill="#ffd0b0">Email / password auth</text>
+
+  <!-- Firestore -->
+  <rect x="250" y="550" width="215" height="48" rx="8" fill="#ff6d00" stroke="#e65100" stroke-width="1.5"/>
+  <text x="357" y="572" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Firestore</text>
+  <text x="357" y="588" text-anchor="middle" font-size="10" fill="#ffd0b0">UserBase / tax subcollections</text>
+
+  <!-- Storage -->
+  <rect x="490" y="550" width="175" height="48" rx="8" fill="#ff6d00" stroke="#e65100" stroke-width="1.5"/>
+  <text x="577" y="572" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Firebase Storage</text>
+  <text x="577" y="588" text-anchor="middle" font-size="10" fill="#ffd0b0">User profile photos</text>
+
+  <!-- config/fire.js -->
+  <rect x="690" y="550" width="170" height="48" rx="8" fill="#ffa000" stroke="#e65100" stroke-width="1.5"/>
+  <text x="775" y="572" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">config/fire.js</text>
+  <text x="775" y="588" text-anchor="middle" font-size="10" fill="#fff3cc">SDK initialisation</text>
+
+  <!-- Firestore data model note -->
+  <rect x="50" y="608" width="810" height="48" rx="7" fill="#fff9c4" stroke="#ffc107" stroke-width="1"/>
+  <text x="455" y="626" text-anchor="middle" font-size="10" font-weight="bold" fill="#795548">Firestore Data Model</text>
+  <text x="455" y="643" text-anchor="middle" font-size="10" fill="#5d4037">UserBase/{email}  →  { Name, Citizenship, DOB, isAdmin }  +  subcollections: land-tax · vehicle-tax · business-tax · house-tax · rent-tax</text>
+
+  <!-- Connector lines: SPA → Firebase -->
+  <line x1="195" y1="440" x2="137" y2="550" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrowGray)"/>
+  <line x1="267" y1="328" x2="357" y2="550" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrowGray)"/>
+  <line x1="267" y1="328" x2="577" y2="550" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrowGray)"/>
+  <line x1="742" y1="355" x2="480" y2="550" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrowGray)"/>
+  <line x1="590" y1="355" x2="137" y2="550" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrowGray)"/>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#adb5bd"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#05b085"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#d62828"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#adb5bd"/>
+    </marker>
+  </defs>
+
+  <!-- Legend -->
+  <rect x="20" y="505" width="860" height="14" rx="0" fill="#f8f9fa"/>
+  <rect x="36" y="507" width="12" height="10" rx="2" fill="#4361ee"/>
+  <text x="52" y="516" font-size="9" fill="#495057">Core React</text>
+  <rect x="120" y="507" width="12" height="10" rx="2" fill="#06d6a0"/>
+  <text x="136" y="516" font-size="9" fill="#495057">User flow</text>
+  <rect x="200" y="507" width="12" height="10" rx="2" fill="#f77f00"/>
+  <text x="216" y="516" font-size="9" fill="#495057">Admin flow</text>
+  <rect x="285" y="507" width="12" height="10" rx="2" fill="#7209b7"/>
+  <text x="301" y="516" font-size="9" fill="#495057">Auth</text>
+  <rect x="340" y="507" width="12" height="10" rx="2" fill="#ff6d00"/>
+  <text x="356" y="516" font-size="9" fill="#495057">Firebase services</text>
+</svg>
