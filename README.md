@@ -1,68 +1,133 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# OfficeRec
+
+A Nepali government office record-keeping web application for managing citizen tax records. Built with React and Firebase, deployed on GitHub Pages.
+
+🌐 **Live app:** https://nugasnakarmi.github.io/OfficeRec
+
+---
+
+## Overview
+
+OfficeRec allows government office staff and citizens to manage property and asset tax records across five categories: land, vehicle, business, house, and rent (Bahal). It implements a two-role system — regular users view their own records, while admins can search, add, and edit all citizens' records.
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| **React 16** (class components) | UI framework |
+| **Firebase 5** (Auth + Firestore + Storage) | Backend — authentication, database, file storage |
+| **React Router 4** | Client-side navigation |
+| **Reactstrap / Bootstrap 4** | UI components and styling |
+| **react-content-loader** | Loading skeleton animations |
+| **ad-bs-converter** | Nepali AD ↔ BS date conversion |
+| **gh-pages** | Deployment to GitHub Pages |
+
+---
+
+## Features
+
+- **Authentication** — Email/password login via Firebase Auth
+- **Role-based access** — User vs. Admin, stored as `isAdmin` flag in Firestore
+- **User dashboard** — Profile info and photo from Firebase Storage
+- **Tax record views** — Cards for each of: land tax, vehicle tax, business tax, house tax, rent tax (Bahal)
+- **Admin panel** — Search all users, view records, open detail popup
+- **Add User** — Admin creates Firebase Auth account + Firestore document in one step
+- **Edit records** — Admin can edit any user's tax records inline
+
+---
+
+## Firestore Data Model
+
+```
+UserBase (collection)
+  └── {email} (document)
+        ├── Name
+        ├── Citizenship Number
+        ├── Date of Birth
+        ├── isAdmin
+        └── Subcollections:
+              ├── land-tax/
+              ├── vehicle-tax/
+              ├── business-tax/
+              ├── house-tax/
+              └── rent-tax/
+```
+
+---
+
+## Project Structure
+
+```
+src/
+├── config/
+│   ├── fire.js          # Firebase initialisation
+│   └── admin.js
+├── res/                 # Static image assets
+├── App.js               # Auth listener → routes to Login or Home
+├── home.js              # Role check, layout (sidebar + content pane)
+├── login.js             # Login form
+├── MainWindow.js        # User dashboard (profile info + photo)
+├── AdminWindow.js       # Admin dashboard (searchable user list)
+├── Details.js           # Fetches & renders all tax subcollections
+├── Land.js / EditLand.js
+├── Vehicle.js / EditVehicle.js
+├── Business.js / EditBusiness.js
+├── House.js / EditHouse.js
+├── Bahal.js / EditBahal.js
+├── Advertisement.js / EditAdvertisement.js
+├── AddUser.js           # Admin: create new user
+├── precords.js          # Admin: edit user tax records
+├── Popup.js             # Modal overlay for user details
+├── RecordList.js        # Clickable user row in admin list
+├── Sidebar.js           # Nav bar for regular users
+├── AdminSidebar.js      # Nav bar for admins
+└── FixDate.js           # Date formatting utility
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js ≥ 10
+- npm
+
+### Install
+
+```bash
+npm install
+```
+
+### Run locally
+
+```bash
+npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Build for production
+
+```bash
+npm run build
+```
+
+### Deploy to GitHub Pages
+
+```bash
+npm run deploy
+```
+
+---
 
 ## Available Scripts
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+| Script | Description |
+|---|---|
+| `npm start` | Start development server |
+| `npm test` | Run tests in watch mode |
+| `npm run build` | Production build |
+| `npm run deploy` | Build and publish to GitHub Pages |
